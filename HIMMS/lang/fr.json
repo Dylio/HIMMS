@@ -1,0 +1,48 @@
+{
+    "site":{
+        "name": "HOW I MET MY SERIE",
+        "name2": "HIMMS",
+        "slogan": "Vos séries fondées sur vos affinités."
+    },
+    
+    "serie":{
+        "title": "SERIES TV",
+        "input_search": "Entrez une série ..."
+    },
+    
+    "recommendation":{
+        "title": "RECOMMANDATION",
+        "input_search": "vos serie selon vos gout !"
+    },
+    
+    "search":{
+        "title": "RECHERCHE",
+        "input_search": "Affinez votre recherche ..."
+    },
+            
+    "tooltip":{ 
+        "search": "Recherchez !",
+        "reset": "Réinitialiser la zone de recherche.",
+        "like":{
+            "like": "Afficher seulement les séries que j'aime.",
+            "all": "Afficher tous les séries.",
+            "unlike": "Afficher seulement les séries que je n'aime pas encore."
+        },
+        "MediaObject":{
+            "CaseG": "Vue en grande Grille",
+            "CaseP": "Vue en petite Grille",
+            "CaseList": "Vue en Liste"
+        },
+        "sort":{
+            "sort1": "Trier par ordre de titre croissant",
+            "sort2": "Trier par ordre de titre décroissant",
+            "sort3": "Trier par ordre de date de début croissant",
+            "sort4": "Trier par ordre de date de début décroissant",
+            "sortRand": "Trier aléatoirement"
+        },
+        "interest":{
+            "on":"Voir que les séries qui m'interesse",
+            "off":"Voir toutes les séries"
+        }
+    }
+}
