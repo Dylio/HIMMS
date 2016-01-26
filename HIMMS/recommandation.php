@@ -30,8 +30,8 @@ $str = lang::getlang(); ?>
     <body <?php echo $affichage->alea_Image_Fond(); ?> >
         <?php $affichage->affichage_titrePartie($str['recommendation']['title']);
        
+        $affichage->like_recommandation($num_user);
         if($bd->recommandation_exist($num_user) == 1){
-            $affichage->like_recommandation($num_user);
             $_SESSION['SerieTV']->vue_trie2($str['recommendation']['input_search'],$num_user);
             $req=$bd->recommandation( $_SESSION['SerieTV']->getTxtLike(),
                 $_SESSION['SerieTV']->getTxtRecommandation(),
@@ -40,7 +40,6 @@ $str = lang::getlang(); ?>
                 $num_user); 
             $affichage->affichage_serie($req, null, $num_user, $_SESSION['SerieTV']->getMediaObject());
         }else{
-            $affichage->like_recommandation($num_user);
             $req=$bd->serie_top_coeur(20);
             $affichage->affichage_serie($req, null, $num_user, $_SESSION['SerieTV']->getMediaObject());
         } ?>
