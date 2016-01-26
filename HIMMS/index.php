@@ -27,7 +27,7 @@ $str = lang::getlang(); ?>
         
         <?php $affichage->like_recommandation($num_user);
         if($bd->recommandation_exist($num_user) == 1){
-            $affichage->carouselle($num_user, true, false, false); 
+            $affichage->carouselle($num_user, true, true, false); 
         }else{
             $affichage->carouselle($num_user, false, true, false); 
         } ?>
