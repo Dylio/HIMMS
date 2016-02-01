@@ -53,9 +53,7 @@ $str = lang::getlang(); ?>
             Genre : <span class="txtDetailSerie"><?php echo $data['genre']; ?></span><br/>
             Format : <span class="txtDetailSerie"><?php echo $data['nbSaison'].' saison';
                 if($data['nbSaison'] > 1){ echo "s"; }
-                echo ' répartis en '.$data['nbEpisode'].' épisodes de '.$data['format'].' min'; ?></span><br/>
-            <br/>
-            <span style="color:red">Synopsis : </span><br/><p class="txtDetailSerieBlack"><?php echo "<span style='color:red; visibility : hidden;'>Synopsis : </span>".$data['synopsis']; ?></p>
+                echo ' répartis en '.$data['nbEpisode'].' épisodes de '.$data['format'].' min'; ?></span>
             </p>
         </div></div>
         <div class="jumbotron SerieDetailContainer2">
