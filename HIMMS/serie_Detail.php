@@ -19,7 +19,7 @@ $str = lang::getlang(); ?>
             require_once 'class_controleur.php';
             $bd = new class_db();
             $num_user = $bd->user(false);
-            $affichage = new class_affichage();
+            $affichage = new class_affichage($num_user);
             $req1 = Db::getInstance()->query("SELECT * from serie where num_serie = '".$_GET['num_serie']."';"); 
             $data = $req1->fetch();
         ?>

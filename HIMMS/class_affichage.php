@@ -1,7 +1,7 @@
 <?php class class_affichage {
     private $_str;
     
-    public function __construct(){
+    public function __construct($num_user){
         require_once 'class_media_object.php';
         require_once 'lang.php';
         $this->_str = lang::getlang();
@@ -14,7 +14,7 @@
         })</script>";
         
         $this->menu_top();
-        $this->menu_bottom();
+        $this->menu_bottom($num_user);
     }
     
     public function affichage_titrePartie($partie){
@@ -260,7 +260,7 @@
         </nav>
     <?php }
     
-    public function menu_bottom(){ ?>
+    public function menu_bottom($num_user){ ?>
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -275,7 +275,7 @@
                             <a class="ItemMenuBas">Donnez votre avis sur le site</a>
                         </li>
                         <li class="dropdown">
-                            <a class="ItemMenuBas">CGU</a>
+                            <a href="cgu.php" class="ItemMenuBas">CGU</a>
                         </li>
                         <li class="dropdown">
                             <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal2">Plan du site</a>
@@ -297,30 +297,37 @@
                     <form action="" method="POST">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="recipient-name" class="control-label">Nom :</label>
-                                <input type="text" class="form-control" id="recipient-name" required>
+                                <label for="recipient-name" class="control-label">Pseudo :</label>
+                                <input type="text" name="pseudo" class="form-control" id="recipient-name" maxlength="50" required>
                             </div>
                             <div class="form-group">
                                 <label for="recipient-mail" class="control-label">E-Mail :</label>
-                                <input type="email" class="form-control" id="recipient-mail" required>
+                                <input type="email" name="email" class="form-control" id="recipient-mail" maxlength="255" required>
                             </div>
                             <div class="form-group">
                                 <label for="recipient-sujet" class="control-label">Sujet :</label>
-                                <input type="text" class="form-control" id="recipient-sujet" required>
+                                <input type="text" name="Sujet" class="form-control" id="recipient-sujet" maxlength="255" required>
                             </div>
                             <div class="form-group">
                                 <label for="message-text" class="control-label">Message :</label>
-                                <textarea class="form-control" id="message-text"></textarea>
+                                <textarea name="Message" class="form-control" id="message-text" maxlength="2000"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-primary">Envoyer</button>
+                            <input type="submit" name="Envoyer" value="Envoyer" class="btn btn-primary" />
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
+        <?php if(isset($_POST['Envoyer'])){
+            require_once 'class_db.php';
+            $bd= new class_db();
+            $bd->user_contact($num_user, $_POST['pseudo'], $_POST['email'], $_POST['Sujet'], $_POST['Message']);
+        }
+        ?>
 
         <div class="modal fade bs-example-modal-lg" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog modal-lg">

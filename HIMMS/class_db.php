@@ -174,6 +174,9 @@
     public function serie_nonRecommandation_delete($num_user, $serie){
         $this->_db->query("DELETE from NonRecommandation where num_user='$num_user' and num_serie='$serie';");
     }
+    public function user_contact($num_user, $pseudo, $email, $sujet, $texte){
+        $this->_db->query("INSERT INTO contact values('$num_user', 'now()','$pseudo','$email','$sujet','$texte', false);");
+    }
     
     public function user($restriction){ 
         if(isset($_COOKIE['log'])){

@@ -17,7 +17,7 @@ $str = lang::getlang(); ?>
             require_once 'class_affichage.php';
             $bd = new class_db();
             $num_user = $bd->user("false");
-            $affichage = new class_affichage();
+            $affichage = new class_affichage($num_user);
         ?>
     </head>
     

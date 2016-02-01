@@ -363,7 +363,7 @@ html {
 
 /* DETAIL */
 .SerieDetailContainer{
-    background-color: rgba(97, 189, 227, 0.70);
+    background-color: rgba(97, 189, 227, 0.80);
     width : 100%;
     margin-left: auto;
     margin-right: auto;
@@ -371,7 +371,7 @@ html {
     padding-bottom: 0px !important;
 }
 .SerieDetailContainer2{
-    background-color: rgba(220, 220, 220, 0.70);
+    background-color: rgba(220, 220, 220, 0.80);
     padding: 10px;
     width : 90%;
     margin-left: auto;
@@ -418,4 +418,9 @@ html {
 .buttonDetailSerieW2{
     font-size: 20px; 
     color: white !important;    
+}
+
+.cguArticle{
+    font-size: 25px;
+    font-weight: bold;
 }

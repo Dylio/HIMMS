@@ -17,7 +17,7 @@ $str = lang::getlang(); ?>
             require_once 'class_affichage.php';
             $bd = new class_db();
             $num_user = $bd->user("false");
-            $affichage = new class_affichage();
+            $affichage = new class_affichage($num_user);
         ?>
     </head>
     
@@ -44,13 +44,17 @@ $str = lang::getlang(); ?>
             
             <span class="cguArticle">ARTICLE 4 : accès aux services</span><br/>
             Le site permet à l'Utilisateur un accès gratuit aux services suivants :<br/>
-                <ul><li>Possibilité de création d'une liste de séries favorites ;</li>
-                    <li>Possibilité de création d'une liste de mots clés intéressés ;</li></ul>
-            Le site est accessible gratuitement en tout lieu à tout Utilisateur ayant un accès à Internet. Tous les frais supportés par l'Utilisateur pour accéder au service (matériel informatique, logiciels, connexion Internet, etc.) sont à sa charge.
+                <ul><li>Consultation de toutes les séries proposé par howimetmyserie (dans la limite du légal) ;</li>
+                    <li>Possibilité de création d'une liste de séries favorites ;</li>
+                    <li>Possibilité de création d'une liste de mots clés intéressés ;</li>
+                    <li>Consultation d'une liste de série recommander selon les goût (séries favorites et mots clés intéressés) de l'utilisateur ;</li></ul>
+            Le site est accessible gratuitement en tout lieu à tout Utilisateur ayant un accès à Internet.<br/>
+            Rappels sur les cookies : Les « cookies » sont des fichiers texte déposés sur le disque dur de l’internaute par le serveur du site web visité. Les cookies permettent de mémoriser des choix faits par l’internaute lors de sa navigation sur un site web. Ils peuvent notamment être utilisés pour faciliter une authentification, mémoriser les préférences de consultation du site. Chaque cookie a sa propre durée de vie d'une durée d'un an. A chaque visite, la durée de vie est réactualisé pour un an de plus. Passé ce délais, les préférences de l'utilisateur seront supprimmer.
             <br/><br/><br/>
 
             <span class="cguArticle">ARTICLE 5 : Propriété intellectuelle</span><br/>
             Les marques, logos, signes et tout autre contenu du site font l'objet d'une protection par le Code de la propriété intellectuelle et plus particulièrement par le droit d'auteur.<br/>
+            Toutes les séries et contenus (textes, images ...) proposés sur howimetmyserie.fr sont des séries appartenant exclusivement à LP Prod.<br/>
             L'Utilisateur s'engage à une utilisation des contenus du site dans un cadre strictement privé. Une utilisation des contenus à des fins commerciales est strictement interdite.<br/>
             Tout contenu mis en ligne par l'Utilisateur est de sa seule responsabilité. L'Utilisateur s'engage à ne pas mettre en ligne de contenus pouvant porter atteinte aux intérêts de tierces personnes. Tout recours en justice engagé par un tiers lésé contre le site sera pris en charge par l'Utilisateur.<br/>
             Le contenu de l'Utilisateur peut être à tout moment et pour n'importe quelle raison supprimé ou modifié par le site. L'Utilisateur ne reçoit aucune justification et notification préalablement à la suppression ou à la modification du contenu Utilisateur.
@@ -71,20 +75,15 @@ $str = lang::getlang(); ?>
             La responsabilité du site ne peut être engagée en cas de force majeure ou du fait imprévisible et insurmontable d'un tiers.
             <br/><br/><br/>
             
-            <span class="cguArticle">ARTICLE 8 : Liens hypertextes</span><br/>
-            De nombreux liens hypertextes sortants sont présents sur le site, cependant les pages web où mènent ces liens n'engagent en rien la responsabilité de howimetmyserie.fr qui n'a pas le contrôle de ces liens.<br/>
-            L'Utilisateur s'interdit donc à engager la responsabilité du site concernant le contenu et les ressources relatives à ces liens hypertextes sortants.
-            <br/><br/><br/>
-            
-            <span class="cguArticle">ARTICLE 9 : Évolution du contrat</span><br/>
+            <span class="cguArticle">ARTICLE 8 : Évolution du contrat</span><br/>
             Le site se réserve à tout moment le droit de modifier les clauses stipulées dans le présent contrat.
             <br/><br/><br/>
             
-            <span class="cguArticle">ARTICLE 10 : Durée</span><br/>
+            <span class="cguArticle">ARTICLE 9 : Durée</span><br/>
             La durée du présent contrat est indéterminée. Le contrat produit ses effets à l'égard de l'Utilisateur à compter de l'utilisation du service.
             <br/><br/><br/>
             
-            <span class="cguArticle">ARTICLE 11 : Droit applicable et juridiction compétente</span><br/>
+            <span class="cguArticle">ARTICLE 10 : Droit applicable et juridiction compétente</span><br/>
             La législation française s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, seuls les tribunaux du ressort de la Cour d'appel de la ville de Toulouse sont compétents.
             <br/><br/>
         </div> 
