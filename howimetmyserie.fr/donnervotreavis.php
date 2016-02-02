@@ -26,57 +26,39 @@ $str = lang::getlang(); ?>
         <div class="jumbotron SerieDetailContainer"><p class="NomPartie"> VOTRE AVIS NOUS INTERESSE </p></div>
 
         <form action="" method="POST">
-        <div  style="width: 70%;
-                margin-left: auto;
-                margin-right: auto;
-                background-color: rgba(255,255,255,0.8);"> 
-            <?php 
-            $affichage->question('Je trouve le site moderne :', 1);
-            $affichage->question('Je trouve le site facile d\'utilisation :', 2);
-            $affichage->question('Je pense que le site est cohérence :', 3);
-            $affichage->question('Je trouve les differentes fonctions de ce site bien intégrées :', 4); ?>
-
-                Vos résultats de rcherche sont-ils satifaisants 
-                <div align="center">
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
-                          <input type="radio" name="Question5" value="2"> Très Satisfait
-                        </label>
-                        <label class="btn btn-primary">
-                          <input type="radio" name="Question5" value="1"> Moyennement Satisfait
-                        </label>
-                        <label class="btn btn-primary">
-                          <input type="radio" name="Question5" value="0"> Non Satisfait
-                        </label>
-                    </div>
+            <div  style="width: 70%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    background-color: rgba(255,255,255,0.8);
+                    padding: 20px; "> 
+                <?php 
+                $affichage->question_oui_non('Je trouve le site moderne :', 1);
+                $affichage->question_oui_non('Je trouve le site facile d\'utilisation :', 2);
+                $affichage->question_oui_non('Je pense que le site est cohéren :', 3);
+                $affichage->question_oui_non('Je trouve les differentes fonctions de ce site bien intégrées :', 4);
+                $affichage->question_satisfaction('Vos résultats de recherche sont-ils satifaisants :', 5);
+                $affichage->question_satisfaction('Les recommandations qui vous ont été proposées vous ont-elles satisfaites :', 6); 
+                $affichage->question_oui_non('Je recommanderais ce site à un ami :', 7); ?>
+                <div class='question'>Commentaire :<br/>
+                    <TEXTAREA name="commentaire" rows=6 maxlength=1000 style="width: 75%" placeholder="Laissez nous un message" ></TEXTAREA>
+                </div><br/>
+                <div class='question'>
+                    <input type="submit" class="btn btn-info btn-lg" style="font-size: 22px" name="valider" value="Valider !">
                 </div>
-                <p style="text-align:center; font-size: 16px;"> 
-                <br/><br/> Les recommandations qui vous ont été proposées vous ont-elles satisfaites 
-                <div align="center">
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
-                          <input type="radio" name="Question5" value="2"> Très Satisfait
-                        </label>
-                        <label class="btn btn-primary">
-                          <input type="radio" name="Question5" value="1"> Moyennement Satisfait
-                        </label>
-                        <label class="btn btn-primary">
-                          <input type="radio" name="Question5" value="0"> Non Satisfait
-                        </label>
-                    </div>
-                </div>
-                
-                <?php $affichage->question('Je recommanderais ce site à un ami :', 7); ?>
-                
-                Commentaire : 
-                <br/>
-                <div align="center"> 
-                    <TEXTAREA name="nom" rows=4 cols=100 placeholder="Laissez nous un message" ></TEXTAREA>
-                </div><br/> 
-                
-                <input type="submit" class="btn btn-info btn-lg sub" name="valider" value="Valider !">
             </div>
         </form>
         <br/>
+        <?php if(isset($_POST['valider'])){
+            $bd->questionnaire($num_user, 
+                                $_POST['question1'],
+                                $_POST['question2'],
+                                $_POST['question3'],
+                                $_POST['question4'],
+                                $_POST['question5'],
+                                $_POST['question6'],
+                                $_POST['question7'],
+                                $_POST['commentaire']);
+        }
+        ?>
     </body>               
 </html>
