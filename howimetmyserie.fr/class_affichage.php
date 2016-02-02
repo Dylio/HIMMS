@@ -272,7 +272,7 @@
                             <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal">Contact</a>
                         </li>
                         <li class="dropdown">
-                            <a class="ItemMenuBas">Donnez votre avis sur le site</a>
+                            <a href="donnervotreavis.php" class="ItemMenuBas">Donnez votre avis sur le site</a>
                         </li>
                         <li class="dropdown">
                             <a href="cgu.php" class="ItemMenuBas">CGU</a>
