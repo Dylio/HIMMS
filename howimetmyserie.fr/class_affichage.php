@@ -380,17 +380,34 @@
         return $chaine;
     }
     
-    public static function question($question, $nb){
+    public static function question_oui_non($question, $nb){
         echo "<div class='question'>$question<br/>"
             ."<div class='cc-selector-2'>"
                 ."<span style='margin:10px'>"
                     ."<input type='radio' name='Question$nb' id='Question".$nb."_0' value='0' required />"
-                    ."<label class='drinkcard-cc BoNo' for='Question".$nb."_0'></label>"
+                    ."<label class='drinkcard-cc BoNo' for='question".$nb."_0' data-toggle='tooltip' data-placement='left' title='Non !'></label>"
                 ."</span>"
                 ."<span style='margin:10px'>"
                     ."<input type='radio' name='Question$nb' id='Question".$nb."_1' value='1' required />"
-                    ."<label class='drinkcard-cc BoOk' for='Question".$nb."_1'></label>"
+                    ."<label class='drinkcard-cc BoOk' for='question".$nb."_1'  data-toggle='tooltip' data-placement='right' title='Oui !'></label>"
                 ."</span>"
+            ."</div>"
+        ."</div>";
+    }
+    public static function question_satisfaction($question, $nb){
+        echo "<div class='question'>$question<br/>"
+            ."<div align='center'>"
+                ."<div class='btn-group' data-toggle='buttons'>"
+                    ."<label class='btn btn-primary' style='margin-bottom:20px'>"
+                        ."<input type='radio' name='question$nb' value='0' required> Non Satisfait"
+                    ."</label>"
+                    ."<label class='btn btn-primary' style='margin-bottom:20px'>"
+                        ."<input type='radio' name='question$nb' value='1' required> Moyennement Satisfait"
+                    ."</label>"
+                    ."<label class='btn btn-primary' style='margin-bottom:20px'>"
+                        ."<input type='radio' name='question$nb' value='2' required> Très Satisfait"
+                    ."</label>"
+                ."</div>"
             ."</div>"
         ."</div>";
     }

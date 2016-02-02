@@ -177,6 +177,19 @@
     public function user_contact($num_user, $pseudo, $email, $sujet, $texte){
         $this->_db->query("INSERT INTO contact values('$num_user', 'now()','$pseudo','$email','$sujet','$texte', false);");
     }
+    public function questionnaire($num_user, $question1, $question2, $question3, $question4, $question5, $question6, $question7, $commentaire){
+        $this->_db->query("UPDATE utilisateur "
+                        . "set question_1 = $question1, "
+                        . "question_2 = $question2, "
+                        . "question_3 = $question3, "
+                        . "question_4 = $question4, "
+                        . "question_5 = $question5, "
+                        . "question_6 = $question6, "
+                        . "question_7 = $question7, "
+                        . "question_commentaire = $commentaire, "
+                        . "question_date = now() "
+                        . "where num_user = $num_user;");
+    }
     
     public function user($restriction){ 
         if(isset($_COOKIE['log'])){
@@ -191,7 +204,7 @@
         }else{
             $num_user = uniqid(rand(), true);
             setcookie('log', $num_user , time() + 365*24*3600, null, null, false, true);
-            $this->_db->query("INSERT INTO utilisateur values('$num_user', 1, null);");
+            $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, restriction) values('$num_user', 1, null);");
             session_start();
         }
         $reqRestriction = $this->_db->query("Select restriction from utilisateur where num_user = '$num_user';");

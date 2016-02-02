@@ -441,7 +441,7 @@ html {
     -webkit-filter: none;
        -moz-filter: none;
             filter: none;
-    border: solid 4px darkorchid;
+    border: solid 4px #204D74;
 }
 .drinkcard-cc{
     cursor:pointer;
