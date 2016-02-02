@@ -40,7 +40,7 @@ $str = lang::getlang(); ?>
                 $affichage->question_satisfaction('Les recommandations qui vous ont été proposées vous ont-elles satisfaites :', 6); 
                 $affichage->question_oui_non('Je recommanderais ce site à un ami :', 7); ?>
                 <div class='question'>Commentaire :<br/>
-                    <TEXTAREA name="commentaire" rows=6 maxlength=1000 style="width: 75%" placeholder="Laissez nous un message" ></TEXTAREA>
+                    <TEXTAREA name="commentaire" rows=6 maxlength=1000 style="width: 70%" placeholder="Laissez nous un message" ></TEXTAREA>
                 </div><br/>
                 <div class='question'>
                     <input type="submit" class="btn btn-info btn-lg" style="font-size: 22px" name="valider" value="Valider !">

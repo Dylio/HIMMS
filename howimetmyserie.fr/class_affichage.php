@@ -271,9 +271,13 @@
                         <li class="dropdown">
                             <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal">Contact</a>
                         </li>
+                        <?php require_once 'class_db.php';
+                        $bd = new class_db(); 
+                        if($bd->questionnaire_exist($num_user) == 0){ ?>
                         <li class="dropdown">
                             <a href="donnervotreavis.php" class="ItemMenuBas">Donnez votre avis sur le site</a>
                         </li>
+                        <?php } ?>
                         <li class="dropdown">
                             <a href="cgu.php" class="ItemMenuBas">CGU</a>
                         </li>
@@ -384,11 +388,11 @@
         echo "<div class='question'>$question<br/>"
             ."<div class='cc-selector-2'>"
                 ."<span style='margin:10px'>"
-                    ."<input type='radio' name='Question$nb' id='Question".$nb."_0' value='0' required />"
+                    ."<input type='radio' name='question$nb' id='question".$nb."_0' value='0' required />"
                     ."<label class='drinkcard-cc BoNo' for='question".$nb."_0' data-toggle='tooltip' data-placement='left' title='Non !'></label>"
                 ."</span>"
                 ."<span style='margin:10px'>"
-                    ."<input type='radio' name='Question$nb' id='Question".$nb."_1' value='1' required />"
+                    ."<input type='radio' name='question$nb' id='question".$nb."_1' value='1' required />"
                     ."<label class='drinkcard-cc BoOk' for='question".$nb."_1'  data-toggle='tooltip' data-placement='right' title='Oui !'></label>"
                 ."</span>"
             ."</div>"
