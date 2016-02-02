@@ -34,9 +34,9 @@ $str = lang::getlang(); ?>
                 <li><a href="#art5"><?php echo $str['cgu']['article']['5']['title']; ?></a></li>
                 <li><a href="#art6"><?php echo $str['cgu']['article']['6']['title']; ?></a></li>
                 <li><a href="#art7"><?php echo $str['cgu']['article']['7']['title']; ?></a></li>
-                <li><a href="#art8">ARTICLE 8 : Évolution du contrat</a></li>
-                <li><a href="#art9">ARTICLE 9 : Durée</a></li>
-                <li><a href="#art10">ARTICLE 10 : Droit applicable et juridiction compétente</a></li>
+                <li><a href="#art8"><?php echo $str['cgu']['article']['8']['title']; ?></a></li>
+                <li><a href="#art9"><?php echo $str['cgu']['article']['9']['title']; ?></a></li>
+                <li><a href="#art10"><?php echo $str['cgu']['article']['10']['title']; ?></a></li>
             </ul>
             
             (Dernière mise à jour le 02/02/2016)<br/><br/>
