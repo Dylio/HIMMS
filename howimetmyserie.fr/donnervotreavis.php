@@ -33,7 +33,7 @@ $str = lang::getlang(); ?>
             <?php 
             $affichage->question('Je trouve le site moderne :', 1);
             $affichage->question('Je trouve le site facile d\'utilisation :', 2);
-            $affichage->question('Je pense qu\'il y a trop d\'incohérence sur ce site :', 3);
+            $affichage->question('Je pense que le site est cohérence :', 3);
             $affichage->question('Je trouve les differentes fonctions de ce site bien intégrées :', 4); ?>
 
                 Vos résultats de rcherche sont-ils satifaisants 
