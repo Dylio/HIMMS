@@ -384,22 +384,22 @@
         return $chaine;
     }
     
-    public static function question_oui_non($question, $nb){
-        echo "<div class='question'>$question<br/>"
+    public static function question_oui_non($nb, $question){
+        echo "<div class='question'>$nb - $question :<br/>"
             ."<div class='cc-selector-2'>"
-                ."<span style='margin:10px'>"
+                ."<span style='margin:20px'>"
                     ."<input type='radio' name='question$nb' id='question".$nb."_0' value='0' required />"
                     ."<label class='drinkcard-cc BoNo' for='question".$nb."_0' data-toggle='tooltip' data-placement='left' title='Non !'></label>"
                 ."</span>"
-                ."<span style='margin:10px'>"
+                ."<span style='margin:20px'>"
                     ."<input type='radio' name='question$nb' id='question".$nb."_1' value='1' required />"
                     ."<label class='drinkcard-cc BoOk' for='question".$nb."_1'  data-toggle='tooltip' data-placement='right' title='Oui !'></label>"
                 ."</span>"
             ."</div>"
         ."</div>";
     }
-    public static function question_satisfaction($question, $nb){
-        echo "<div class='question'>$question<br/>"
+    public static function question_satisfaction($nb, $question){
+        echo "<div class='question'>$nb - $question<br/>"
             ."<div align='center'>"
                 ."<div class='btn-group' data-toggle='buttons'>"
                     ."<label class='btn btn-primary' style='margin-bottom:20px'>"

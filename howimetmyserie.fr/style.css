@@ -421,12 +421,26 @@ html {
 }
 
 /* CGU */
-.cguArticle{
+.cgu_entete{
+    text-align: center;
+    font-size: 30px;
+}
+.cgu_article{
     font-size: 25px;
     font-weight: bold;
+    text-decoration : underline;
+}
+.artId{
+    position: relative;
+    top: -55px;
+    margin-top: 40px;
 }
 
 /* QUESTIONNAIRE */ 
+.question_entete{
+    text-align: center;
+    font-size: 30px;
+}
 .question{
     text-align:center;
     font-size: 20px;

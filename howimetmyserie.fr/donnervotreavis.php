@@ -22,24 +22,25 @@ $str = lang::getlang(); ?>
     </head>
     
     <body style='background: url(css/cgu.png) no-repeat center fixed; background-size: 100% 100%; min-width: 100%;'>
-            
-        <div class="jumbotron SerieDetailContainer"><p class="NomPartie"> VOTRE AVIS NOUS INTERESSE </p></div>
+         
+        <?php $affichage->affichage_titrePartie($str['questionnaire']['title']); ?>
 
         <form action="" method="POST">
-            <div  style="width: 70%;
+            <div  style="width: 65%;
                     margin-left: auto;
                     margin-right: auto;
                     background-color: rgba(255,255,255,0.8);
                     padding: 20px; "> 
-                <?php 
-                $affichage->question_oui_non('Je trouve le site moderne :', 1);
-                $affichage->question_oui_non('Je trouve le site facile d\'utilisation :', 2);
-                $affichage->question_oui_non('Je pense que le site est cohéren :', 3);
-                $affichage->question_oui_non('Je trouve les differentes fonctions de ce site bien intégrées :', 4);
-                $affichage->question_satisfaction('Vos résultats de recherche sont-ils satifaisants :', 5);
-                $affichage->question_satisfaction('Les recommandations qui vous ont été proposées vous ont-elles satisfaites :', 6); 
-                $affichage->question_oui_non('Je recommanderais ce site à un ami :', 7); ?>
-                <div class='question'>Commentaire :<br/>
+                <?php $i = 1;
+                echo "<p class='question_entete'>".$str['questionnaire']['texte']."</p><br/>";
+                $affichage->question_oui_non($i++, $str['questionnaire']['1']);
+                $affichage->question_oui_non($i++, $str['questionnaire']['2']);
+                $affichage->question_oui_non($i++, $str['questionnaire']['3']);
+                $affichage->question_oui_non($i++, $str['questionnaire']['4']);
+                $affichage->question_satisfaction($i++, $str['questionnaire']['5']);
+                $affichage->question_satisfaction($i++, $str['questionnaire']['6']); 
+                $affichage->question_oui_non($i++, $str['questionnaire']['7']); ?>
+                <div class='question'><?php echo $str['questionnaire']['commentaire']; ?><br/>
                     <TEXTAREA name="commentaire" rows=6 maxlength=1000 style="width: 70%" placeholder="Laissez nous un message" ></TEXTAREA>
                 </div><br/>
                 <div class='question'>
