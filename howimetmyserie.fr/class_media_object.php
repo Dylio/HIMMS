@@ -4,7 +4,6 @@ class class_media_object {
     private  $_titre;
     private  $_dateD;
     private  $_dateF;
-    private  $_synopsis;
     private  $_classification;
     private  $_num_user;
     
@@ -13,7 +12,6 @@ class class_media_object {
         $this->_titre = "";
         $this->_dateD = "";
         $this->_dateF = "";
-        $this->_synopsis = "";
         $this->_classification = "";
         $this->_num_user = $num_user;
     } 
@@ -23,7 +21,6 @@ class class_media_object {
         $this->_titre = $data['titre'];
         $this->_dateD = $data['dateD'];
         $this->_dateF = $data['dateF'];
-        $this->_synopsis = $data['synopsis'];
         $this->_classification = $data['classification'];
     }    
     
@@ -91,9 +88,8 @@ class class_media_object {
                         echo $this->serie_titre("SerieListTitre");
                         echo $this->serie_like_recommandation("SerieListButton");
                         echo $this->serie_date("SerieListDate");
-                        echo '<p class="SerieListSynopsis">'.$this->_synopsis.'</p>
-                    </div>
-                </div>';
+                    echo '</div>'
+                .'</div>';
             break;
             case "MediaObjectCaseP" :
                 echo "<div class='thumbnail SerieCasePContainerSerie'>"

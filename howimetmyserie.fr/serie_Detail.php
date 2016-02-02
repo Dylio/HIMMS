@@ -58,7 +58,7 @@ $str = lang::getlang(); ?>
         </div></div>
         <div class="jumbotron SerieDetailContainer2">
         <p style="text-align: center">Si vous aimez cette série, vous pourriez aimer ...</p>
-        <?php $req = Db::getInstance()->query("SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.synopsis, s.classification "
+        <?php $req = Db::getInstance()->query("SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.classification "
                 . "FROM appartenir a join serie s on s.num_serie = a.num_serie "
                 . "WHERE exists(select num_serie "
                             . "from appartenir "

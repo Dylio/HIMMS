@@ -274,9 +274,9 @@
                         <?php require_once 'class_db.php';
                         $bd = new class_db(); 
                         if($bd->questionnaire_exist($num_user) == 0){ ?>
-                        <li class="dropdown">
-                            <a href="donnervotreavis.php" class="ItemMenuBas">Donnez votre avis sur le site</a>
-                        </li>
+                            <li class="dropdown">
+                                <a href="donnervotreavis.php" class="ItemMenuBas">Donnez votre avis sur le site</a>
+                            </li>
                         <?php } ?>
                         <li class="dropdown">
                             <a href="cgu.php" class="ItemMenuBas">CGU</a>
