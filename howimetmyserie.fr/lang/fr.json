@@ -10,6 +10,17 @@
         "input_search": "Entrez une série ..."
     },
     
+    "serie_detail":{
+        "Production": "Produit par : ",
+        "Création": "Créée par : ",
+        "Acteur": "Avec : ",
+        "Date": "Date : ",
+        "Nationalité": "Nationalité : ",
+        "Genre": "Genre : ",
+        "Format": "Format : ",
+        "Recommandation": "Si vous aimez cette série, vous pourriez aimer ..."
+    },
+    
     "recommendation":{
         "title": "RECOMMANDATION",
         "input_search": "vos serie selon vos gout !"
