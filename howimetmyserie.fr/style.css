@@ -1,14 +1,4 @@
-.TitreSerie{
-    font-family : "Guardians", sans-serif ;
-    font-size : 45px !important;
-    margin-bottom : 5px !important;
-    padding-top : 11px !important;
-    padding-bottom : 5px !important;
-    text-align : left;
-    margin-left : 30px;
-    vertical-align:middle;
-    text-align:left;
-}
+
 .txtDetailSerie{
     color : #007493;
 }
@@ -362,6 +352,17 @@ html {
 }
 
 /* DETAIL */
+.TitreSerie{
+    font-family : "Guardians", sans-serif ;
+    font-size : 45px !important;
+    margin-bottom : 5px !important;
+    padding-top : 11px !important;
+    padding-bottom : 5px !important;
+    text-align : left;
+    margin-left : 30px;
+    vertical-align:middle;
+    float:left;
+}
 .SerieDetailContainer{
     background-color: rgba(97, 189, 227, 0.80);
     width : 100%;
@@ -391,11 +392,19 @@ html {
     font-size: 38px; 
     margin-left:15px;
     color: red;
+    float : left;
 }
 .SerieDetailButtonB {
     font-size: 38px; 
     margin-left:15px;
     color: blue;
+    float : left;
+}
+.SerieDetailButtonN {
+    font-size: 38px; 
+    margin-left:15px;
+    color: black;
+    float : left;
 }
 .buttonDetailSerieR2 {
     font-size: 20px;

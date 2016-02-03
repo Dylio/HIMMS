@@ -84,6 +84,19 @@
         }
         echo '</div>';
         $this->serie_warning($i, $dataNb);
+    }       
+    
+    public function affichage_serie_detail($req, $dataNb, $num_user, $media){
+        echo '<div class="SerieContainerIner">';
+        $i = 0;
+        $media_object = new class_media_object($num_user);
+        while($data = $req->fetch()){
+           $media_object->newSerieDetail($data);
+           $media_object->media_object($media);
+           $i++;
+        }
+        echo '</div>';
+        $this->serie_warning($i, $dataNb);
     }
     
     public function affichage_serie2($req, $dataNb, $num_user, $media){
@@ -209,7 +222,7 @@
         </div>
     <?php }
         
-    public function menu_top(){ 
+    public function menu_top(){        
         ob_start(); ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">

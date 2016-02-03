@@ -1,18 +1,24 @@
 <?php
 class class_media_object {
+    private  $_str;
     private  $_num_serie;
     private  $_titre;
     private  $_dateD;
     private  $_dateF;
+    private  $_nationalite;
+    private  $_créateurs;
+    private  $_acteurs;
+    private  $_genre;
+    private  $_format;
+    private  $_nbSaison;
+    private  $_nbEpisode;
+    	
     private  $_classification;
     private  $_num_user;
     
     public function __construct($num_user){
-        $this->_num_serie = "";
-        $this->_titre = "";
-        $this->_dateD = "";
-        $this->_dateF = "";
-        $this->_classification = "";
+        require_once 'lang.php';
+        $this->_str = lang::getlang();
         $this->_num_user = $num_user;
     } 
     
@@ -21,6 +27,21 @@ class class_media_object {
         $this->_titre = $data['titre'];
         $this->_dateD = $data['dateD'];
         $this->_dateF = $data['dateF'];
+        $this->_classification = $data['classification'];
+    }    
+    
+    public function newSerieDetail($data){
+        $this->_num_serie = $data['num_serie'];
+        $this->_titre = $data['titre'];
+        $this->_dateD = $data['dateD'];
+        $this->_dateF = $data['dateF'];
+        $this->_nationalite = $data['nationalite'];
+        $this->_créateurs = $data['créateurs'];
+        $this->_acteurs = $data['acteurs'];
+        $this->_genre = $data['genre'];
+        $this->_format = $data['format'];
+        $this->_nbSaison = $data['nbSaison'];
+        $this->_nbEpisode = $data['nbEpisode'];
         $this->_classification = $data['classification'];
     }    
     
@@ -38,7 +59,7 @@ class class_media_object {
                 $date = $date.' - En production';
             }
         }    
-        return "<div class='$style'>$date</div>";
+        return "<span class='$style'>$date</span>";
     }
 
     private function serie_like_recommandation($style){
@@ -138,6 +159,33 @@ class class_media_object {
                        echo $this->serie_date("SerieCaseGDate");
                     echo '</div>'
                 . '</div>';
+            break;
+            case "MediaObjectDetail" :
+                 echo "<div class='jumbotron SerieDetailContainer'>";
+                    echo $this->serie_titre("TitreSerie");
+                    echo $this->serie_like_recommandation("SerieDetailButton");
+                echo "</div>"
+                    ."<div class='jumbotron SerieDetailContainer2'>"
+                        .$this->_str['serie_detail']['Production']."<span class='txtDetailSerie'>LP PROD</span><br/>"
+                        .$this->_str['serie_detail']['Création']."<span class='txtDetailSerie'>$this->_créateurs</span><br/>"
+                        .$this->_str['serie_detail']['Acteur']."<span class='txtDetailSerie'>$this->_acteurs ...</span><br/><br/>"
+                        .$this->_str['serie_detail']['Date'];
+                        echo $this->serie_date("txtDetailSerie")."<br/>";
+                        echo $this->_str['serie_detail']['Nationalité']."<span class='txtDetailSerie'>$this->_nationalite</span><br/>"
+                        .$this->_str['serie_detail']['Genre']."<span class='txtDetailSerie'>$this->_genre</span><br/>"
+                        .$this->_str['serie_detail']['Format']."<span class='txtDetailSerie'>$this->_nbSaison saison";
+                            if($this->_nbSaison > 1){ echo "s"; }
+                            echo " répartis en $this->_nbEpisode épisodes de $this->_format min.</span>"
+                    ."</div>"
+                    ."<div class='jumbotron SerieDetailContainer2'>"
+                        ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
+                        require_once 'class_db.php';
+                        require_once 'class_affichage.php';
+                        $bd = new class_db();
+                        $affichage = new class_affichage($this->_num_user);
+                        $req = $bd->recommandation_serie($this->_num_serie);
+                        $affichage->affichage_serie($req, null, $this->_num_user, 'MediaObjectCaseG2');
+                    echo "</div>";
             break;
         }   
     }

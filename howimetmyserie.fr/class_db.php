@@ -14,7 +14,6 @@
         }
     }
     
-    
     public function serie($TxtSearch, $TxtLike, $TxtRecommandation, $TxtOrder){
         return $this->_db->query("SELECT s.num_serie, s.titre, s.dateD, s.dateF, s.classification "
                                 . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
@@ -22,6 +21,10 @@
                                 . "group by s.num_serie "
                                 . "$TxtRecommandation "
                                 . "order by $TxtOrder");
+    }
+    
+    public function une_serie($num_serie){
+        return $this->_db->query("SELECT * from serie where num_serie = '$num_serie';");
     }
     
     public function serie_count($TxtLike, $TxtRecommandation){
@@ -46,37 +49,6 @@
                                 . "group by s.num_serie "
                                 . "order by count(nr.num_serie) asc, rand() "
                                 . "limit $limit;");
-    }
-
-    public function recommandation2($TxtLike, $TxtRecommandation, $TxtOrder, $limit, $num_user){
-        $end_date = date('Y-m-d H:m:s', strtotime("-30 days"));
-        return $this->_db->query("Select s.titre, s.num_serie, s.dateD, s.dateF, s.classification "
-                    . "from ((SELECT  s.titre, s.num_serie, s.dateD, s.dateF, s.classification " 
-                        . "from $this->_serie s join appartenir a on s.num_serie = a.num_serie "
-                        . "join interesser i on a.num_motcle = i.num_motcle "
-                        . "where i.dateDerniereSaisie > '$end_date' "
-                        . "and i.num_user = '$num_user' "
-                        . "group by s.num_serie "
-                        . "order by count(*) desc limit $limit ) "
-                    . " UNION"
-                        . " (SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.classification " 
-                        . "FROM appartenir a join $this->_serie s on s.num_serie = a.num_serie "
-                        . "WHERE a.num_motcle in (select a2.num_motcle "
-                                        . "from appartenir a2, voir v2 "
-                                        . "where v2.num_user = '$num_user' "
-                                        . "and v2.num_serie = a2.num_serie "
-                                        . "and v2.num_serie not in (select num_serie "
-                                                                    . "from nonrecommandation "
-                                                                    . "where num_user = v2.num_user) ) "
-                        . "group by s.num_serie "
-                        . "order by count(*) desc limit $limit )) as s "
-                    . "left join nonrecommandation nr on s.num_serie = nr.num_serie "
-                    . "where 1 "
-                    . "$TxtLike "
-                    . "group by s.num_serie "
-                    . "$TxtRecommandation "
-                    . "order by count(nr.num_serie), $TxtOrder "
-                    . "limit $limit;");
     }
     
     public function recommandation($TxtLike, $TxtRecommandation, $TxtOrder, $limit, $num_user){
@@ -106,6 +78,18 @@
                     . "$TxtRecommandation "
                     . "order by count(nr.num_serie), $TxtOrder "
                     . "limit $limit;");
+    }
+    
+    public function recommandation_serie($num_serie){
+        return $reqRec = $this->_db->query("SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.classification "
+                . "FROM appartenir a join serie s on s.num_serie = a.num_serie "
+                . "WHERE exists(select num_serie "
+                            . "from appartenir "
+                            . "where num_motcle = a.num_motcle "
+                            . "and num_serie = '$num_serie') "
+                . "group by s.num_serie "
+                . "ORDER BY count(*) DESC "
+                . "limit 5 OFFSET 1;");
     }
     
     public function recommandation_exist($num_user){
