@@ -26,11 +26,7 @@ $str = lang::getlang(); ?>
         <?php $affichage->affichage_titrePartie($str['questionnaire']['title']); ?>
 
         <form action="" method="POST">
-            <div  style="width: 65%;
-                    margin-left: auto;
-                    margin-right: auto;
-                    background-color: rgba(255,255,255,0.8);
-                    padding: 20px; "> 
+            <div  class="jumbotron SerieDetailContainer2"> 
                 <?php $i = 1;
                 echo "<p class='question_entete'>".$str['questionnaire']['texte']."</p><br/>";
                 $affichage->question_oui_non($i++, $str['questionnaire']['1']);
