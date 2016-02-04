@@ -14,12 +14,12 @@ class class_db {
             $this->_user = $_COOKIE['log']; 
             if(!isset($_COOKIE['PHPSESSID'])){      // s'il n'y a pas déjà eu une création d'une session avant
                 setcookie('log', $this->_user , time() + 365*24*3600, null, null, false, true);     // mise à jour du cookie : rajout un an à sa durée 
-                $this->_db->query("UPDATE utilisateur set nbVisite = nbVisite + 1 where num_user = '$this->_user' ;");  // incrémente de 1 le nombre de visite de l'utilisateur
+                $this->user_update();       // mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
             }
         }else{  // si un cookie contenant le numéro d'utilisateur n'existe pas encore et donc est un nouveau utilisateur
             $this->_user = uniqid(rand(), true);    // création d'un numéro d'utilisateur aléatoire unique
             setcookie('log', $this->_user , time() + 365*24*3600, null, null, false, true); // création d'un cookie contenant le numéro d'utilisateur
-            $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, restriction) values('$this->_user', 1, null);"); // insertion du nouveau utilisateur dans la base de données
+            $this->user_insert();           // insertion du nouveau utilisateur dans la base de données
         }
         session_start(); // demarre la session
         if($this->restriction() == NULL && $pageIndexFirst == 'false'){ // vérification si l'utilisateur a déjà annoncer sa majorité ou non pour la restriction 
@@ -29,6 +29,16 @@ class class_db {
         }else if($this->restriction() == 0){ // aucune restriction : selectionne la table serie
             $this->_serie = 'serie';
         }
+    }
+    
+    // requete : insertion du nouveau utilisateur dans la base de données
+    private function user_insert(){
+        $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, restriction) values('$this->_user', 1, null);");
+    }
+    
+    // requete : mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
+    private function user_update(){
+        $this->_db->query("UPDATE utilisateur set nbVisite = nbVisite + 1 where num_user = '$this->_user' ;");
     }
     
     // renvoie le numéro unique de l'utilisateur
