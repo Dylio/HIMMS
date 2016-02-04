@@ -33,7 +33,7 @@
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($j === $nbImage and substr($file, -4) == ".jpg"){
-                    return "style='background: url(./css/fond/$file) no-repeat center fixed !important; background-size: 100% 100% !important;'>";
+                    return "style='background: url(./css/fond/$file) no-repeat center fixed !important; background-size: 100% 100% !important;'";
                 }
                 if(substr($file, -4) == ".jpg"){
                     $j++;
