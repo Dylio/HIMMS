@@ -2,7 +2,7 @@
 // Cette classe permet de restituer sous différents styles d'objets abstraits la construction graphique d'une
 // séries TV via divers types de composants qui présentent son affiche et le contenu textuel.
 class class_media_object {
-    private  $_str;             // variable stockant le texte du site décrit dans lang selon la langue
+    private  $_str;             // constantes textuelles du site web
     private  $_num_serie;       // numéro de la série
     private  $_titre;           // titre de la série
     private  $_date;            // date de début et de fin de la série
@@ -83,7 +83,7 @@ class class_media_object {
         $this->_créateurs = $data['créateurs'];
         $this->_acteurs = $data['acteurs'];
         $this->_genre = $data['genre'];
-        $this->format($data['format'], $data['nbSaison'], $data['nbEpisode']);
+        $this->format($data['nbSaison'], $data['nbEpisode'], $data['format']);
         $this->_classification = $data['classification'];
     }
     
@@ -158,7 +158,7 @@ class class_media_object {
             case "MediaObjectList" : // sous forme de liste
                 echo "<div class='thumbnail SerieListContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
-                        ."<img class='media-object SerieListImg' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieListImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                    ."</a>"
                    ."<div class='media-body'>"; // conteneur du texte de la serie TV
                         echo $this->serie_titre("SerieListTitre");
@@ -170,7 +170,7 @@ class class_media_object {
             case "MediaObjectCaseP" : // sous forme de petite case (1er forme)
                 echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
-                        ."<img class='media-object SerieCasePImg' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCasePImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     ."</a>"
                     ."<div class='media-body SerieCasePTxt'>"; // conteneur du texte de la serie TV
                         echo $this->serie_like_recommandation("SerieCasePButton");
@@ -182,7 +182,7 @@ class class_media_object {
             case "MediaObjectCaseP2" : // sous forme de petite case (2eme forme)
                 echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
-                        ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     ."</a>"
                     ."<div class='media-body SerieCaseP2Txt'>"; // conteneur du texte de la serie TV
                         echo $this->serie_like_recommandation("SerieCasePButton");
@@ -194,7 +194,7 @@ class class_media_object {
             case "MediaObjectCaseG" : // sous forme de grande case (1er forme)
                 echo "<div class='thumbnail SerieCaseGContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie'>"
-                        ."<img class='media-object SerieCaseGImg' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCaseGImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     . "</a>"
                     ."<div class='caption'>"; // conteneur du texte de la serie TV
                        echo $this->serie_like_recommandation("SerieCaseGButton");    
@@ -206,7 +206,7 @@ class class_media_object {
             case "MediaObjectCaseG2" : // sous forme de grande case (2eme forme)
                 echo "<div class='thumbnail SerieCaseG2ContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie'>"
-                        ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     . "</a>"
                     ."<div class='caption'>"; // conteneur du texte de la serie TV
                        echo $this->serie_like_recommandation("SerieCaseGButton");    

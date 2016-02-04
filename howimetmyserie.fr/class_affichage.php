@@ -1,4 +1,5 @@
-<?php class class_affichage {
+<?php 
+class class_affichage {
     private $_str;
     
     public function __construct($num_user){
