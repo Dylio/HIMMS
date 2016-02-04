@@ -46,8 +46,7 @@ $str = lang::getlang(); ?>
         </form>
         <br/>
         <?php if(isset($_POST['valider'])){
-            $bd->questionnaire($num_user, 
-                                $_POST['question1'],
+            $bd->questionnaire($_POST['question1'],
                                 $_POST['question2'],
                                 $_POST['question3'],
                                 $_POST['question4'],

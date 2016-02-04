@@ -102,14 +102,13 @@ class class_media_object {
     // Renvoie les boutons like et nonRecommandation d'une série avec son style de représentation
     // IN : $style style qui permet de décrire la representation des boutons like et recommandation d'une série.
     private function serie_like_recommandation($style){
-        $bd = new class_db();
         echo "<form action='' method='POST'> "
             ."<input type='hidden' name='Serie' value ='$this->_num_serie'/>"
             ."<input type='hidden' name='TitreSerie' value ='$this->_titre'/>";
 
             // vérifie l'utilisateur like ou non cette série
             // change le glyphicons et le style(couleur) du bouton selon le cas
-            if($bd->serie_like_exist($this->_num_user, $this->_num_serie) == 0){
+            if($_SESSION['bd']->serie_like_exist($this->_num_user, $this->_num_serie) == 0){
                 // bouton de like avec un tooltip en bas "J'aime cette série !"
                 echo '<button type="submit" class="btn button2 '.$style.'N" name="Like" data-toggle="tooltip" data-placement="bottom" title="J\'aime cette série !">'
                     . '<span id="$titre" class="glyphicon glyphicon-heart-empty"/>'
@@ -123,7 +122,7 @@ class class_media_object {
 
             // vérifie l'utilisateur veut être recommander par rapport à cette série ou non
             // change le glyphicons et le style(couleur) du bouton selon le cas
-            if($bd->serie_nonRecommandation_exist($this->_num_user, $this->_num_serie) == 0){
+            if($_SESSION['bd']->serie_nonRecommandation_exist($this->_num_user, $this->_num_serie) == 0){
                 // bouton de non recommandation avec un tooltip en bas "Je ne veux pas être recommandé par rapport à cette série."
                 echo '<button type="submit" class="btn button2 '.$style.'B" name="Recommandation" data-toggle="tooltip" data-placement="bottom" title="Je ne veux pas être recommandé par rapport à cette série.">'
                     . '<span id="$titre" class="glyphicon glyphicon-eye-open"/>'
@@ -160,7 +159,7 @@ class class_media_object {
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
                         ."<img class='media-object SerieListImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                    ."</a>"
-                   ."<div class='media-body'>"; // conteneur du texte de la serie TV
+                   ."<div class='media-body'>"; // conteneur de la description de la serie TV
                         echo $this->serie_titre("SerieListTitre");
                         echo $this->serie_like_recommandation("SerieListButton");
                         echo $this->serie_date("SerieListDate");
@@ -172,7 +171,7 @@ class class_media_object {
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
                         ."<img class='media-object SerieCasePImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     ."</a>"
-                    ."<div class='media-body SerieCasePTxt'>"; // conteneur du texte de la serie TV
+                    ."<div class='media-body SerieCasePTxt'>"; // conteneur de la description de la serie TV
                         echo $this->serie_like_recommandation("SerieCasePButton");
                         echo $this->serie_titre("SerieCasePTitre");
                         echo $this->serie_date("SerieCasePDate");
@@ -184,7 +183,7 @@ class class_media_object {
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
                         ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     ."</a>"
-                    ."<div class='media-body SerieCaseP2Txt'>"; // conteneur du texte de la serie TV
+                    ."<div class='media-body SerieCaseP2Txt'>"; //  conteneur de la description de la serie TV
                         echo $this->serie_like_recommandation("SerieCasePButton");
                         echo $this->serie_titre("SerieCasePTitre");
                         echo $this->serie_date("SerieCasePDate");
@@ -196,7 +195,7 @@ class class_media_object {
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie'>"
                         ."<img class='media-object SerieCaseGImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     . "</a>"
-                    ."<div class='caption'>"; // conteneur du texte de la serie TV
+                    ."<div class='caption'>"; //  conteneur de la description de la serie TV
                        echo $this->serie_like_recommandation("SerieCaseGButton");    
                        echo $this->serie_titre("SerieCaseGTitre");
                        echo $this->serie_date("SerieCaseGDate");
@@ -204,7 +203,7 @@ class class_media_object {
                 . "</div>";
             break;
             case "MediaObjectCaseG2" : // sous forme de grande case (2eme forme)
-                echo "<div class='thumbnail SerieCaseG2ContainerSerie'>" // conteneur de l'affiche de la serie TV
+                echo "<div class='thumbnail SerieCaseG2ContainerSerie'>" // conteneur de la description de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie'>"
                         ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     . "</a>"
@@ -220,7 +219,7 @@ class class_media_object {
                     echo $this->serie_titre("TitreSerie");
                     echo $this->serie_like_recommandation("SerieDetailButton");
                 echo "</div>"
-                ."<div class='jumbotron SerieDetailContainer2'>" // conteneur du texte de la serie TV
+                ."<div class='jumbotron SerieDetailContainer2'>" // conteneur de la description de la serie TV
                     .$this->_str['serie_detail']['Production']."<span class='txtDetailSerie'>LP PROD</span><br/>"
                     .$this->_str['serie_detail']['Création']."<span class='txtDetailSerie'>$this->_créateurs</span><br/>"
                     .$this->_str['serie_detail']['Acteur']."<span class='txtDetailSerie'>$this->_acteurs ...</span><br/><br/>"
@@ -234,9 +233,8 @@ class class_media_object {
                     ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
                     require_once 'class_db.php';
                     require_once 'class_affichage.php';
-                    $bd = new class_db();
                     $affichage = new class_affichage($this->_num_user);
-                    $req = $bd->recommandation_serie($this->_num_serie);
+                    $req = $_SESSION['bd']->recommandation_serie($this->_num_serie);
                     $affichage->affichage_serie($req, null, $this->_num_user, 'MediaObjectCaseG2');
                 echo "</div>";
             break;

@@ -141,23 +141,22 @@ class class_affichage {
     }
     
     public function like_recommandation($num_user){
-        $bd = new class_db();
         if(isset($_POST['Like'])){
-            if($bd->serie_like_exist($num_user, $_POST['Serie']) == 0){
-                $bd->serie_like_insert($num_user, $_POST['Serie']);
+            if($_SESSION['bd']->serie_like_exist($num_user, $_POST['Serie']) == 0){
+                $_SESSION['bd']->serie_like_insert($num_user, $_POST['Serie']);
                 echo '<div class="alert alert-success" id="info" role="alert"><span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries favorites !<br/></div>';
             }else{
-                $bd->serie_like_delete($num_user, $_POST['Serie']);
+                $_SESSION['bd']->serie_like_delete($num_user, $_POST['Serie']);
                 echo '<div class="alert alert-danger" id="info" role="alert"><span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries favorites !<br/></div>';
             }
         }
 
         if(isset($_POST['Recommandation'])){
-            if($bd->serie_nonRecommandation_exist($num_user, $_POST['Serie']) == 0){
-                $bd->serie_nonRecommandation_insert($num_user, $_POST['Serie']);
+            if($_SESSION['bd']->serie_nonRecommandation_exist($num_user, $_POST['Serie']) == 0){
+                $_SESSION['bd']->serie_nonRecommandation_insert($num_user, $_POST['Serie']);
                 echo '<div class="alert alert-danger" id="info" role="alert"><span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries de recommandation !<br/></div>';
             }else{
-                $bd->serie_nonRecommandation_delete($num_user, $_POST['Serie']);
+                $_SESSION['bd']->serie_nonRecommandation_delete($num_user, $_POST['Serie']);
                 echo '<div class="alert alert-success" id="info" role="alert"><span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries de recommandation !<br/></div>';
             }   
         }
@@ -169,8 +168,7 @@ class class_affichage {
     }
     
     public function carouselle($num_user, $item1, $item2, $item3){ 
-        require_once 'class_db.php';
-        $bd= new class_db(); ?>
+        require_once 'class_db.php'; ?>
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="6000" style="height: 380px;">
             <div class="carousel-inner" role="listbox" style="width:72%; margin-left: auto; margin-right : auto;">
                 <?php if($item1){ ?>
@@ -178,7 +176,7 @@ class class_affichage {
                        <div class='IndexCarou'><a href='Recommandation.php'>VOUS POURRIEZ AIMER</a></div> 
                        <div class="SerieContainerIner" style="width: 100%;">
                        <?php
-                       $req1=$bd->recommandation( null, null, 'rand()', 3, $num_user);
+                       $req1=$_SESSION['bd']->recommandation( null, null, 'rand()', 3, $num_user);
                        $this->affichage_serie($req1, null, $num_user, 'MediaObjectCaseG2');
                        ?>
                       </div>
@@ -188,7 +186,7 @@ class class_affichage {
                     <div class="item <?php if(!$item1){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-heart"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
-                      <?php $req1=$bd->serie_top_coeur(9);
+                      <?php $req1=$_SESSION['bd']->serie_top_coeur(9);
                       $this->affichage_serie($req1, null, $num_user, 'MediaObjectCaseP2'); ?>
                      </div>
                     </div>
@@ -197,7 +195,7 @@ class class_affichage {
                     <div class="item <?php if(!$item1 && !$item2){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-eye-open"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
-                      <?php $req2=$bd->serie_top_recommandation(9);
+                      <?php $req2=$_SESSION['bd']->serie_top_recommandation(9);
                       $this->affichage_serie($req2, null, $num_user, 'MediaObjectCaseP2'); ?>
                      </div>
                     </div>
@@ -287,8 +285,7 @@ class class_affichage {
                             <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal">Contact</a>
                         </li>
                         <?php require_once 'class_db.php';
-                        $bd = new class_db(); 
-                        if($bd->questionnaire_exist($num_user) == 0){ ?>
+                        if($_SESSION['bd']->questionnaire_exist() == 0){ ?>
                             <li class="dropdown">
                                 <a href="donnervotreavis.php" class="ItemMenuBas">Donnez votre avis sur le site</a>
                             </li>
@@ -343,8 +340,7 @@ class class_affichage {
 
         <?php if(isset($_POST['Envoyer'])){
             require_once 'class_db.php';
-            $bd= new class_db();
-            $bd->user_contact($num_user, $_POST['pseudo'], $_POST['email'], $_POST['Sujet'], $_POST['Message']);
+            $_SESSION['bd']->user_contact($num_user, $_POST['pseudo'], $_POST['email'], $_POST['Sujet'], $_POST['Message']);
         }
         ?>
 
