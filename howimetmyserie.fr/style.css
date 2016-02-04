@@ -1,4 +1,3 @@
-
 .txtDetailSerie{
     color : #007493;
 }
@@ -60,7 +59,7 @@
 
 /* GENERAL */
 body{
-    min-width: 1000px;
+    min-width: 1200px;
     max-width: 100%;
     height: auto;
     margin : 4.5% auto 1% auto;
@@ -264,11 +263,11 @@ html {
     height:75px;   
 }
 .SerieCaseP2Img{
-    width:90px !important;
+    width:80px !important;
     height:70px !important;   
 }
 .SerieCaseP2Txt{
-    width:145px;
+    width:165px;
     height:70px;   
 }
 .SerieCasePButtonR {

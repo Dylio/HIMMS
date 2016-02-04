@@ -82,7 +82,7 @@
     
     public function recommandation_serie($num_serie){
         return $reqRec = $this->_db->query("SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.classification "
-                . "FROM appartenir a join serie s on s.num_serie = a.num_serie "
+                . "FROM appartenir a join $this->_serie s on s.num_serie = a.num_serie "
                 . "WHERE exists(select num_serie "
                             . "from appartenir "
                             . "where num_motcle = a.num_motcle "

@@ -21,7 +21,7 @@ $str = lang::getlang(); ?>
         ?>
     </head>
     
-    <body style='background: url(css/4243604.png) no-repeat center fixed; background-size: 100% 100%; min-width: 100%;'>
+    <body style='background: url(css/4243604.png) no-repeat center fixed; background-size: 100% 100%;;'>
         <h1 class="NomSite"><?php echo $str['site']['name']; ?></h1>
         <p class="IndexSlogan"><?php echo $str['site']['slogan']; ?></p><br/>
         

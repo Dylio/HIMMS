@@ -5,10 +5,6 @@
         require_once 'class_media_object.php';
         require_once 'lang.php';
         $this->_str = lang::getlang();
-        echo '<script type="text/javascript">
-            setTimeout( function(){
-                document.getElementById("info").style.display = "none"; }, 3500);
-        </script>';
         echo "<script type='text/javascript'> $(function () {
             $('[data-toggle='tooltip']').tooltip();
         })</script>";
@@ -37,7 +33,7 @@
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($j === $nbImage and substr($file, -4) == ".jpg"){
-                    return "style='background: url(./css/fond/$file) no-repeat center fixed !important; background-size: 100% 100% !important; min-width: 100%;'>";
+                    return "style='background: url(./css/fond/$file) no-repeat center fixed !important; background-size: 100% 100% !important;'>";
                 }
                 if(substr($file, -4) == ".jpg"){
                     $j++;
@@ -163,7 +159,12 @@
                 $bd->serie_nonRecommandation_delete($num_user, $_POST['Serie']);
                 echo '<div class="alert alert-success" id="info" role="alert"><span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries de recommandation !<br/></div>';
             }   
-        } 
+        }
+        
+        echo '<script type="text/javascript">
+            setTimeout( function(){
+                document.getElementById("info").style.display = "none"; }, 3500);
+        </script>';
     }
     
     public function carouselle($num_user, $item1, $item2, $item3){ 
@@ -222,8 +223,8 @@
         </div>
     <?php }
         
-    public function menu_top(){        
-        ob_start(); ?>
+    public function menu_top(){
+        ob_implicit_flush(); ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
