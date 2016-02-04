@@ -1,17 +1,15 @@
-<?php 
-class class_affichage {
+<?php class class_affichage {
     private $_str;
+    private $_db;
     
-    public function __construct($num_user){
+    public function __construct($db){
         require_once 'class_media_object.php';
         require_once 'lang.php';
         $this->_str = lang::getlang();
-        echo "<script type='text/javascript'> $(function () {
-            $('[data-toggle='tooltip']').tooltip();
-        })</script>";
+        $this->_db = $db;
         
         $this->menu_top();
-        $this->menu_bottom($num_user);
+        $this->menu_bottom();
     }
     
     public function affichage_titrePartie($partie){
@@ -70,10 +68,10 @@ class class_affichage {
         }
     }       
     
-    public function affichage_serie($req, $dataNb, $num_user, $media){
+    public function affichage_serie($req, $dataNb, $media){
         echo '<div class="SerieContainerIner">';
         $i = 0;
-        $media_object = new class_media_object($num_user);
+        $media_object = new class_media_object($this->_db);
         while($data = $req->fetch()){
            $media_object->newSerie($data);
            $media_object->media_object($media);
@@ -83,10 +81,10 @@ class class_affichage {
         $this->serie_warning($i, $dataNb);
     }       
     
-    public function affichage_serie_detail($req, $dataNb, $num_user, $media){
+    public function affichage_serie_detail($req, $dataNb, $media){
         echo '<div class="SerieContainerIner">';
         $i = 0;
-        $media_object = new class_media_object($num_user);
+        $media_object = new class_media_object($this->_db);
         while($data = $req->fetch()){
            $media_object->newSerieDetail($data);
            $media_object->media_object($media);
@@ -96,10 +94,10 @@ class class_affichage {
         $this->serie_warning($i, $dataNb);
     }
     
-    public function affichage_serie2($req, $dataNb, $num_user, $media){
+    public function affichage_serie2($req, $dataNb, $media){
         echo '<div class="SerieContainerIner">';
         $i = 0;
-        $media_object = new class_media_object($num_user);
+        $media_object = new class_media_object($this->_db);
         while($data = $req->fetch()){
            $media_object->newSerie($data);
            $media_object->media_object($media);
@@ -140,23 +138,23 @@ class class_affichage {
         } 
     }
     
-    public function like_recommandation($num_user){
+    public function like_recommandation(){
         if(isset($_POST['Like'])){
-            if($_SESSION['bd']->serie_like_exist($num_user, $_POST['Serie']) == 0){
-                $_SESSION['bd']->serie_like_insert($num_user, $_POST['Serie']);
+            if($this->_db->serie_like_exist($_POST['Serie']) == 0){
+                $this->_db->serie_like_insert($_POST['Serie']);
                 echo '<div class="alert alert-success" id="info" role="alert"><span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries favorites !<br/></div>';
             }else{
-                $_SESSION['bd']->serie_like_delete($num_user, $_POST['Serie']);
+                $this->_db->serie_like_delete($_POST['Serie']);
                 echo '<div class="alert alert-danger" id="info" role="alert"><span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries favorites !<br/></div>';
             }
         }
 
         if(isset($_POST['Recommandation'])){
-            if($_SESSION['bd']->serie_nonRecommandation_exist($num_user, $_POST['Serie']) == 0){
-                $_SESSION['bd']->serie_nonRecommandation_insert($num_user, $_POST['Serie']);
+            if($this->_db->serie_nonRecommandation_exist($_POST['Serie']) == 0){
+                $this->_db->serie_nonRecommandation_insert($_POST['Serie']);
                 echo '<div class="alert alert-danger" id="info" role="alert"><span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries de recommandation !<br/></div>';
             }else{
-                $_SESSION['bd']->serie_nonRecommandation_delete($num_user, $_POST['Serie']);
+                $this->_db->serie_nonRecommandation_delete($_POST['Serie']);
                 echo '<div class="alert alert-success" id="info" role="alert"><span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries de recommandation !<br/></div>';
             }   
         }
@@ -167,8 +165,7 @@ class class_affichage {
         </script>';
     }
     
-    public function carouselle($num_user, $item1, $item2, $item3){ 
-        require_once 'class_db.php'; ?>
+    public function carouselle($item1, $item2, $item3){ ?>
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="6000" style="height: 380px;">
             <div class="carousel-inner" role="listbox" style="width:72%; margin-left: auto; margin-right : auto;">
                 <?php if($item1){ ?>
@@ -176,8 +173,8 @@ class class_affichage {
                        <div class='IndexCarou'><a href='Recommandation.php'>VOUS POURRIEZ AIMER</a></div> 
                        <div class="SerieContainerIner" style="width: 100%;">
                        <?php
-                       $req1=$_SESSION['bd']->recommandation( null, null, 'rand()', 3, $num_user);
-                       $this->affichage_serie($req1, null, $num_user, 'MediaObjectCaseG2');
+                       $req1=$this->_db->recommandation( null, " having count(nr.num_serie) = 0 ", 'rand()', 3);
+                       $this->affichage_serie($req1, null, 'MediaObjectCaseG2');
                        ?>
                       </div>
                     </div>
@@ -186,8 +183,8 @@ class class_affichage {
                     <div class="item <?php if(!$item1){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-heart"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
-                      <?php $req1=$_SESSION['bd']->serie_top_coeur(9);
-                      $this->affichage_serie($req1, null, $num_user, 'MediaObjectCaseP2'); ?>
+                      <?php $req1=$this->_db->serie_top_coeur(9);
+                      $this->affichage_serie($req1, null, 'MediaObjectCaseP2'); ?>
                      </div>
                     </div>
                 <?php }
@@ -195,8 +192,8 @@ class class_affichage {
                     <div class="item <?php if(!$item1 && !$item2){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-eye-open"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
-                      <?php $req2=$_SESSION['bd']->serie_top_recommandation(9);
-                      $this->affichage_serie($req2, null, $num_user, 'MediaObjectCaseP2'); ?>
+                      <?php $req2=$this->_db->serie_top_recommandation(9);
+                      $this->affichage_serie($req2, null, 'MediaObjectCaseP2'); ?>
                      </div>
                     </div>
                 <?php } ?>
@@ -248,8 +245,7 @@ class class_affichage {
                                         <button data-toggle="dropdown" class="btn btn-default" role="button" style=" height: 35px;">
                                         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span></button>
                                         <ul class="dropdown-menu" role="menu" style="width: 600px; border-width: 3px; border-color: black; text-align: justify; overflow:hidden; white-space:nowrap; text-justify: inter-word;">
-                                            <?php require_once 'class_db.php';
-                                            $linkpdo = Db::getInstance();
+                                            <?php $linkpdo = Db::getInstance();
                                             $reqNbT = $linkpdo->query("SELECT count(i.num_motcle) from interesser i;");
                                             $dataNbT = $reqNbT->fetch();
                                             $req = $linkpdo->query("SELECT m.motcle, sum(a.occurrence), count(i.num_motcle) from appartenir a, motcle m, interesser i, serie s where s.num_serie = a.num_serie and i.num_motcle = m.num_motcle and a.num_motcle = m.num_motcle group by m.motcle ORDER BY RAND() LIMIT 150;");
@@ -273,7 +269,7 @@ class class_affichage {
         </nav>
     <?php }
     
-    public function menu_bottom($num_user){ ?>
+    public function menu_bottom(){ ?>
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -284,8 +280,7 @@ class class_affichage {
                         <li class="dropdown">
                             <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal">Contact</a>
                         </li>
-                        <?php require_once 'class_db.php';
-                        if($_SESSION['bd']->questionnaire_exist() == 0){ ?>
+                        <?php if($this->_db->questionnaire_exist() == 0){ ?>
                             <li class="dropdown">
                                 <a href="donnervotreavis.php" class="ItemMenuBas">Donnez votre avis sur le site</a>
                             </li>
@@ -339,10 +334,8 @@ class class_affichage {
         </div>
 
         <?php if(isset($_POST['Envoyer'])){
-            require_once 'class_db.php';
-            $_SESSION['bd']->user_contact($num_user, $_POST['pseudo'], $_POST['email'], $_POST['Sujet'], $_POST['Message']);
-        }
-        ?>
+            $this->_db->user_contact($_POST['pseudo'], $_POST['email'], $_POST['Sujet'], $_POST['Message']);
+        } ?>
 
         <div class="modal fade bs-example-modal-lg" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog modal-lg">

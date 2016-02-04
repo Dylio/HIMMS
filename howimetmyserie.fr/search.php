@@ -20,23 +20,20 @@ $str = lang::getlang(); ?>
             require_once 'class_db.php';
             require_once 'class_affichage.php';
             require_once 'class_controleur.php';
-            $bd = new class_db();
-            $num_user = $bd->user("false");
-            $affichage = new class_affichage();
+            $db = new class_db(false);
+            $affichage = new class_affichage($db);
             if(!isset($_SESSION['SerieTV'])){
                 $_SESSION['SerieTV'] = new class_controleur();
-            }else{
-                $_SESSION['SerieTV']->resetSearch();
             }
         ?>
     </head>
     
     <body <?php echo $affichage->alea_Image_Fond(); ?> >
         <?php $affichage->affichage_titrePartie($str['search']['title'].' : </p><p class="MCRecherche">"'.$_GET['mc'].'"</p>');
-        $affichage->like_recommandation($num_user);
+        $affichage->like_recommandation();
         
         if(isset($_GET['mc'])){
-            $_SESSION['SerieTV']->vue_trie($str['search']['input_search'], true, $num_user);
+            $_SESSION['SerieTV']->vue_trie($str['search']['input_search'], true);
             $mc = $affichage->no_special_character($_GET['mc']);
             $mc = explode(" ", $mc);
             $txtSearch  = '';
@@ -46,24 +43,24 @@ $str = lang::getlang(); ?>
                 $linkpdo = Db::getInstance();
                 $reqMotCle = $linkpdo->query("SELECT num_motcle from motcle where motcle = '$linetxt';");
                 $dataMotCle = $reqMotCle->fetch();
-                $reqI = $linkpdo->query("SELECT count(*) from interesser where num_user = '$num_user' and num_motcle = '".$dataMotCle['0']."';");
+                $reqI = $linkpdo->query("SELECT count(*) from interesser where num_user = '".$db->getUser()."' and num_motcle = '".$dataMotCle['0']."';");
                 $dataI = $reqI->fetch();
                 if($dataI['0'] == 0){
-                    $req = $linkpdo->query("Insert into interesser values('$num_user','".$dataMotCle['0']."', 1, now());");
+                    $req = $linkpdo->query("Insert into interesser values('".$db->getUser()."','".$dataMotCle['0']."', 1, now());");
                 }else{
-                    $req = $linkpdo->query("UPDATE interesser set nbChercher = nbChercher + 1, DateDerniereSaisie = now() where num_user = '$num_user' and DateDerniereSaisie <> now() and  num_motcle = '".$dataMotCle['0']."';"); 
+                    $req = $linkpdo->query("UPDATE interesser set nbChercher = nbChercher + 1, DateDerniereSaisie = now() where num_user = '".$db->getUser()."' and DateDerniereSaisie <> now() and  num_motcle = '".$dataMotCle['0']."';"); 
                 }
                 $nbMC ++;
                 $txtSearch = $txtSearch." and s.num_serie in ( select a.num_serie from appartenir a, motcle m where a.num_motcle = m.num_motcle and m.motcle = '$linetxt' )";
-              }
-            $req=$bd->search($_SESSION['SerieTV']->getTxtLike(),
+            }
+            $req=$db->search($_SESSION['SerieTV']->getTxtLike(),
                 $txtSearch,
                 $_SESSION['SerieTV']->getTxtRecommandation(),
                 $_SESSION['SerieTV']->getTxtOrder());
-            $SearchNb=$bd->search_exist($_SESSION['SerieTV']->getTxtLike(),
+            $SearchNb=$db->search_count($_SESSION['SerieTV']->getTxtLike(),
                 $txtSearch,
                 $_SESSION['SerieTV']->getTxtRecommandation());
-            $affichage->affichage_serie2($req, $SearchNb, $num_user, $_SESSION['SerieTV']->getMediaObject());
+            $affichage->affichage_serie2($req, $SearchNb, $_SESSION['SerieTV']->getMediaObject());
         } ?>
     </body>
 </html>

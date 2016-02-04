@@ -73,11 +73,11 @@ $str = lang::getlang(); ?>
                 });
 
                 function a(){
-                document.getElementById('radio1').style.color = '#57d1d1';
-                document.getElementById('radio2').style.color = 'white'; }
+                    document.getElementById('radio1').style.color = '#57d1d1';
+                    document.getElementById('radio2').style.color = 'white'; }
                 function b(){
-                document.getElementById('radio1').style.color = 'white';
-                document.getElementById('radio2').style.color = '#57d1d1'; }
+                    document.getElementById('radio1').style.color = 'white';
+                    document.getElementById('radio2').style.color = '#57d1d1'; }
         </script>
     </body>
 </html>

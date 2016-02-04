@@ -16,13 +16,10 @@ $str = lang::getlang(); ?>
             require_once 'class_db.php';
             require_once 'class_affichage.php';
             require_once 'class_controleur.php';
-            if(!isset($_SESSION['bd'])){
-                $_SESSION['bd'] = $bd = new class_db("false");
-            }
-            $num_user = $_SESSION['bd']->getUser();
-            $affichage = new class_affichage($num_user);
+            $db = new class_db(false);
+            $affichage = new class_affichage($db);
             if(!isset($_SESSION['SerieTV'])){
-                $_SESSION['SerieTV'] = new class_controleur();
+                $_SESSION['SerieTV'] = new class_controleur($db->getUser());
             }
         ?>
     </head>
@@ -30,19 +27,19 @@ $str = lang::getlang(); ?>
     <body <?php echo $affichage->alea_Image_Fond(); ?> >
         <?php 
         $affichage->affichage_titrePartie($str['serie']['title']);
-        $affichage->like_recommandation($num_user);
+        $affichage->like_recommandation();
                 
-        $_SESSION['SerieTV']->vue_trie($str['serie']['input_search'], false, $num_user);
+        $_SESSION['SerieTV']->vue_trie($str['serie']['input_search'], false);
         
-        $req= $_SESSION['bd']->serie($_SESSION['SerieTV']->getTxtSearch(), 
+        $req= $db->serie($_SESSION['SerieTV']->getTxtSearch(), 
                 $_SESSION['SerieTV']->getTxtLike(),
                 $_SESSION['SerieTV']->getTxtRecommandation(),
                 $_SESSION['SerieTV']->getTxtOrder());
         
-        $dataNb = $_SESSION['bd']->serie_count($_SESSION['SerieTV']->getTxtLike(),
+        $dataNb = $db->serie_count($_SESSION['SerieTV']->getTxtLike(),
                 $_SESSION['SerieTV']->getTxtRecommandation());
         
-        $affichage->affichage_serie($req, $dataNb, $num_user, $_SESSION['SerieTV']->getMediaObject());
+        $affichage->affichage_serie($req, $dataNb, $_SESSION['SerieTV']->getMediaObject());
         ?>
     </body>
 </html>

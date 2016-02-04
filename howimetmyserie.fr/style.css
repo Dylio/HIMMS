@@ -162,11 +162,12 @@ html {
     margin-left : auto;
     margin-right : auto;
 }
-.SerieCasePButtonR:hover, .SerieCaseGButtonR:hover, .SerieListButtonR:hover {
-    color: blue; 
-}
+.SerieCasePButtonR:hover, .SerieCaseGButtonR:hover, .SerieListButtonR:hover, 
 .SerieCasePButtonB:hover, .SerieCaseGButtonB:hover, .SerieListButtonB:hover {
-    color: red; 
+    color: black; 
+}
+.SerieCasePButtonN:hover, .SerieCaseGButtonN:hover, .SerieListButtonN:hover {
+    color: darkorchid; 
 }
 
 /* CASE G*/

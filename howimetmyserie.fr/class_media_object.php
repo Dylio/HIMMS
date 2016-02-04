@@ -3,7 +3,7 @@
 // séries TV via divers types de composants qui présentent son affiche et le contenu textuel.
 class class_media_object {
     private  $_str;             // constantes textuelles du site web
-    private  $_num_serie;       // numéro de la série
+    private  $_serie;           // numéro de la série
     private  $_titre;           // titre de la série
     private  $_date;            // date de début et de fin de la série
     private  $_nationalite;     // nationalité de la série   
@@ -12,19 +12,19 @@ class class_media_object {
     private  $_genre;           // genre de la série
     private  $_format;          // durée moyen d'un épisode, nombre de saison et nombre d'épisode total de la série
     private  $_classification;  // classification (restriction d'âge) de la série
-    private  $_num_user;        // numéro unqiue de l'utilisateur courrant
+    private  $_db;              // instance vers la base de données
     
     // Constructeur de la classe class_media_object
     // IN : $num_user numéro unique de l'utilisateur courrant
-    public function __construct($num_user){
+    public function __construct($db){
         require_once 'lang.php';        // importation la classe lang.fr qui permet d'initiliser les zone texte du site hors description des séries.
         $this->_str = lang::getlang();
-        $this->_num_user = $num_user;
+        $this->_db = $db;
     }
     
     // Supprimmer la série courante
     private function cleanSerie(){
-        unset ($this->_num_serie);
+        unset ($this->_serie);
         unset ($this->_titre);
         unset ($this->_date);
         unset ($this->_nationalite);
@@ -66,7 +66,7 @@ class class_media_object {
     // IN : $data tableau contenant les informations minimum nécessaire pour décrire une série.
     public function newSerie($data){
         $this->cleanSerie();
-        $this->_num_serie = $data['num_serie'];
+        $this->_serie = $data['num_serie'];
         $this->_titre = $data['titre'];
         $this->date($data['dateD'], $data['dateF']);
         $this->_classification = $data['classification'];
@@ -76,7 +76,7 @@ class class_media_object {
     // IN : $data tableau contenant les informations nécessaire pour décrire une série.
     public function newSerieDetail($data){
         $this->cleanSerie();
-        $this->_num_serie = $data['num_serie'];
+        $this->_serie = $data['num_serie'];
         $this->_titre = $data['titre'];
         $this->date($data['dateD'], $data['dateF']);
         $this->_nationalite = $data['nationalite'];
@@ -90,7 +90,7 @@ class class_media_object {
     // Renvoie le titre d'une série avec son style de representation
     // IN : $style style qui permet de décrire la representation du titre d'une série.
     private function serie_titre($style){
-        return "<div class='$style'><a href='./Serie_Detail.php?num_serie=$this->_num_serie'>$this->_titre</a></div>";
+        return "<div class='$style'><a href='./Serie_Detail.php?num_serie=$this->_serie'>$this->_titre</a></div>";
     }
     
     // Renvoie les dates d'une série avec son style de représentation
@@ -103,12 +103,12 @@ class class_media_object {
     // IN : $style style qui permet de décrire la representation des boutons like et recommandation d'une série.
     private function serie_like_recommandation($style){
         echo "<form action='' method='POST'> "
-            ."<input type='hidden' name='Serie' value ='$this->_num_serie'/>"
+            ."<input type='hidden' name='Serie' value ='$this->_serie'/>"
             ."<input type='hidden' name='TitreSerie' value ='$this->_titre'/>";
 
             // vérifie l'utilisateur like ou non cette série
             // change le glyphicons et le style(couleur) du bouton selon le cas
-            if($_SESSION['bd']->serie_like_exist($this->_num_user, $this->_num_serie) == 0){
+            if($this->_db->serie_like_exist($this->_serie) == 0){
                 // bouton de like avec un tooltip en bas "J'aime cette série !"
                 echo '<button type="submit" class="btn button2 '.$style.'N" name="Like" data-toggle="tooltip" data-placement="bottom" title="J\'aime cette série !">'
                     . '<span id="$titre" class="glyphicon glyphicon-heart-empty"/>'
@@ -122,7 +122,7 @@ class class_media_object {
 
             // vérifie l'utilisateur veut être recommander par rapport à cette série ou non
             // change le glyphicons et le style(couleur) du bouton selon le cas
-            if($_SESSION['bd']->serie_nonRecommandation_exist($this->_num_user, $this->_num_serie) == 0){
+            if($this->_db->serie_nonRecommandation_exist($this->_serie) == 0){
                 // bouton de non recommandation avec un tooltip en bas "Je ne veux pas être recommandé par rapport à cette série."
                 echo '<button type="submit" class="btn button2 '.$style.'B" name="Recommandation" data-toggle="tooltip" data-placement="bottom" title="Je ne veux pas être recommandé par rapport à cette série.">'
                     . '<span id="$titre" class="glyphicon glyphicon-eye-open"/>'
@@ -156,7 +156,7 @@ class class_media_object {
         switch ($object) {
             case "MediaObjectList" : // sous forme de liste
                 echo "<div class='thumbnail SerieListContainerSerie'>" // conteneur de l'affiche de la serie TV
-                    ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
+                    ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
                         ."<img class='media-object SerieListImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                    ."</a>"
                    ."<div class='media-body'>"; // conteneur de la description de la serie TV
@@ -168,7 +168,7 @@ class class_media_object {
             break;
             case "MediaObjectCaseP" : // sous forme de petite case (1er forme)
                 echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
-                    ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
+                    ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
                         ."<img class='media-object SerieCasePImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     ."</a>"
                     ."<div class='media-body SerieCasePTxt'>"; // conteneur de la description de la serie TV
@@ -180,7 +180,7 @@ class class_media_object {
             break;
             case "MediaObjectCaseP2" : // sous forme de petite case (2eme forme)
                 echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
-                    ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
+                    ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
                         ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     ."</a>"
                     ."<div class='media-body SerieCaseP2Txt'>"; //  conteneur de la description de la serie TV
@@ -192,7 +192,7 @@ class class_media_object {
             break;
             case "MediaObjectCaseG" : // sous forme de grande case (1er forme)
                 echo "<div class='thumbnail SerieCaseGContainerSerie'>" // conteneur de l'affiche de la serie TV
-                    ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie'>"
+                    ."<a href='./Serie_Detail.php?num_serie=$this->_serie'>"
                         ."<img class='media-object SerieCaseGImg' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     . "</a>"
                     ."<div class='caption'>"; //  conteneur de la description de la serie TV
@@ -204,7 +204,7 @@ class class_media_object {
             break;
             case "MediaObjectCaseG2" : // sous forme de grande case (2eme forme)
                 echo "<div class='thumbnail SerieCaseG2ContainerSerie'>" // conteneur de la description de la serie TV
-                    ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie'>"
+                    ."<a href='./Serie_Detail.php?num_serie=$this->_serie'>"
                         ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     . "</a>"
                     ."<div class='caption'>"; // conteneur du texte de la serie TV
@@ -231,11 +231,10 @@ class class_media_object {
                 ."</div>"
                 ."<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
                     ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
-                    require_once 'class_db.php';
                     require_once 'class_affichage.php';
-                    $affichage = new class_affichage($this->_num_user);
-                    $req = $_SESSION['bd']->recommandation_serie($this->_num_serie);
-                    $affichage->affichage_serie($req, null, $this->_num_user, 'MediaObjectCaseG2');
+                    $affichage = new class_affichage($this->_db->getUser());
+                    $req = $this->_db-->recommandation_serie($this->_serie);
+                    $affichage->affichage_serie($req, null, 'MediaObjectCaseG2');
                 echo "</div>";
             break;
         }   

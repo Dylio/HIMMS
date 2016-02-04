@@ -8,14 +8,16 @@ class class_controleur {
     private  $_MediaObject;
     
     private  $_str;
+    private  $_user;
     
-    public function __construct(){
+    public function __construct($user){
         $this->_TxtSearch = '';
         $this->_TxtLike = '';
         $this->_Like = 'all';
         $this->_Order = 'sort1';
         $this->_Recommandation = false;
         $this->_MediaObject = "MediaObjectCaseG";
+        $this->_user = $user;
         require_once 'lang.php';
         $this->_str = lang::getlang();
     }    
@@ -59,15 +61,15 @@ class class_controleur {
         return $this->_MediaObject;
     }
 
-    public function vue_trie($placeholder, $valueEmpty, $num_user){
-        $this->like($num_user);
+    public function vue_trie($placeholder, $valueEmpty){
+        $this->like($this->_user);
         $this->search($placeholder, $valueEmpty).'<br/>';
         $this->order();
         $this->media();
     }
 
-    public function vue_trie2($placeholder, $num_user){
-        $this->like($num_user);
+    public function vue_trie2($placeholder){
+        $this->like($this->_user);
         echo "<form action='' method='POST'>"
             . "<div class='input-group formSearch'>"
                 . "<input type='text' name='search' class='form-control SearchInput RecommandationInput' value='$placeholder' disabled>"
@@ -107,10 +109,10 @@ class class_controleur {
         ."</form>";
     }
     
-    private function like($num_user){
+    private function like(){
         if(isset($_POST['List_like'])){
-            $this->_Like = "like";
-           $this->_TxtLike=" and s.num_serie in (select num_serie from voir where num_user = '$num_user')" ;
+           $this->_Like = "like";
+           $this->_TxtLike=" and s.num_serie in (select num_serie from voir where num_user = '$this->_user')" ;
         }
         if(isset($_POST['List_all'])){
            $this->_Like = "all";
@@ -118,7 +120,7 @@ class class_controleur {
         }
         if(isset($_POST['List_unlike'])){
             $this->_Like = "unlike";
-            $this->_TxtLike="and s.num_serie not in (select num_serie from voir where num_user = '$num_user') ";
+            $this->_TxtLike="and s.num_serie not in (select num_serie from voir where num_user = '$this->_user') ";
         }
         echo "<form action='' method='POST' class='formLike'>"
             .'<button type="submit" name="List_like" data-toggle="tooltip" data-placement="left" title="'.$this->_str['tooltip']['like']['like'].'"';
