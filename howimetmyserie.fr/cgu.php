@@ -87,9 +87,6 @@ $str = lang::getlang(); ?>
             <div id="art10" class="artId"></div>
             <span class="cgu_article"><?php echo $str['cgu']['article']['10']['title']; ?></span><br/>
             <?php echo $str['cgu']['article']['10']['texte']; ?>
-            <br/>
-
-            
             <br/><br/>
         </div> 
     </body>

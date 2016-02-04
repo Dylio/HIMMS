@@ -10,9 +10,7 @@ class class_media_object {
     private  $_créateurs;       // créateur de la série
     private  $_acteurs;         // acteurs de la série
     private  $_genre;           // genre de la série
-    private  $_format;          // durée moyen d'un épisode de cette série
-    private  $_nbSaison;        // nombre de saison de la série
-    private  $_nbEpisode;       // nombre d'épisode total de la série
+    private  $_format;          // durée moyen d'un épisode, nombre de saison et nombre d'épisode total de la série
     private  $_classification;  // classification (restriction d'âge) de la série
     private  $_num_user;        // numéro unqiue de l'utilisateur courrant
     
@@ -34,8 +32,6 @@ class class_media_object {
         unset ($this->_acteurs);
         unset ($this->_genre);
         unset ($this->_format);
-        unset ($this->_nbSaison);
-        unset ($this->_nbEpisode);
         unset ($this->_classification);
     }
     
@@ -53,6 +49,17 @@ class class_media_object {
             }
         }
         $this->_date = $date;
+    }
+    
+    // Renvoie une forme textuel le format de la série.
+    // IN : $nbSaison nombre de saison de la série.
+    // IN : $nbEpisode nombre d'épisode total de la série.
+    // IN : $duree durée moyen d'un épisode de la série.
+    private function format($nbSaison, $nbEpisode, $duree){
+        $format = $nbSaison." saison";
+        if($nbSaison > 1){ echo "s"; }
+            $format .= " répartis en $nbEpisode épisodes de $duree min.";
+        $this->_format = $format;   
     }
     
     // Permet d'initialiser les varibles minimum nécessaire pour décrire une série
@@ -76,9 +83,7 @@ class class_media_object {
         $this->_créateurs = $data['créateurs'];
         $this->_acteurs = $data['acteurs'];
         $this->_genre = $data['genre'];
-        $this->_format = $data['format'];
-        $this->_nbSaison = $data['nbSaison'];
-        $this->_nbEpisode = $data['nbEpisode'];
+        $this->format($data['format'], $data['nbSaison'], $data['nbEpisode']);
         $this->_classification = $data['classification'];
     }
     
@@ -105,10 +110,12 @@ class class_media_object {
             // vérifie l'utilisateur like ou non cette série
             // change le glyphicons et le style(couleur) du bouton selon le cas
             if($bd->serie_like_exist($this->_num_user, $this->_num_serie) == 0){
+                // bouton de like avec un tooltip en bas "J'aime cette série !"
                 echo '<button type="submit" class="btn button2 '.$style.'N" name="Like" data-toggle="tooltip" data-placement="bottom" title="J\'aime cette série !">'
                     . '<span id="$titre" class="glyphicon glyphicon-heart-empty"/>'
                 . '</button>';
             }else{
+                // bouton de non like avec un tooltip en bas "Je n'aime plus cette série !"
                 echo '<button type="submit" class="btn button2 '.$style.'R" name="Like" data-toggle="tooltip" data-placement="bottom" title="Je n\'aime plus cette série !">'
                     . '<span id="$titre" class="glyphicon glyphicon-heart"/>'
                 . '</button>';
@@ -117,10 +124,12 @@ class class_media_object {
             // vérifie l'utilisateur veut être recommander par rapport à cette série ou non
             // change le glyphicons et le style(couleur) du bouton selon le cas
             if($bd->serie_nonRecommandation_exist($this->_num_user, $this->_num_serie) == 0){
+                // bouton de non recommandation avec un tooltip en bas "Je ne veux pas être recommandé par rapport à cette série."
                 echo '<button type="submit" class="btn button2 '.$style.'B" name="Recommandation" data-toggle="tooltip" data-placement="bottom" title="Je ne veux pas être recommandé par rapport à cette série.">'
                     . '<span id="$titre" class="glyphicon glyphicon-eye-open"/>'
                 . '</button>';
             }else{
+                // bouton de recommandation avec un tooltip en bas "Je veux être recommandé par rapport à cette série."
                 echo '<button type="submit" class="btn button2 '.$style.'N" name="Recommandation" data-toggle="tooltip" data-placement="bottom" title="Je veux être recommandé par rapport à cette série.">'
                     . '<span id="$titre" class="glyphicon glyphicon-eye-close"/>'
                 . '</button>';
@@ -170,7 +179,7 @@ class class_media_object {
                     echo '</div>'
                 . '</div>';
             break;
-            case "MediaObjectCaseP2" : // sous forme de petite case (2e forme)
+            case "MediaObjectCaseP2" : // sous forme de petite case (2eme forme)
                 echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie' class='media-left media-middle'>"
                         ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
@@ -194,7 +203,7 @@ class class_media_object {
                     echo "</div>"
                 . "</div>";
             break;
-            case "MediaObjectCaseG2" : // sous forme de grande case (2e forme)
+            case "MediaObjectCaseG2" : // sous forme de grande case (2eme forme)
                 echo "<div class='thumbnail SerieCaseG2ContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_num_serie'>"
                         ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
@@ -219,9 +228,7 @@ class class_media_object {
                     echo $this->serie_date("txtDetailSerie")."<br/>";
                     echo $this->_str['serie_detail']['Nationalité']."<span class='txtDetailSerie'>$this->_nationalite</span><br/>"
                     .$this->_str['serie_detail']['Genre']."<span class='txtDetailSerie'>$this->_genre</span><br/>"
-                    .$this->_str['serie_detail']['Format']."<span class='txtDetailSerie'>$this->_nbSaison saison";
-                        if($this->_nbSaison > 1){ echo "s"; }
-                        echo " répartis en $this->_nbEpisode épisodes de $this->_format min.</span>"
+                    .$this->_str['serie_detail']['Format']."<span class='txtDetailSerie'>$this->_format</span>"
                 ."</div>"
                 ."<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
                     ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
@@ -238,7 +245,7 @@ class class_media_object {
     
     // Renvoie l'adresse relatif d'une image aléatoire de la série TV
     // OUT : adresse relatif d'une image aléatoire de la série TV
-    private function alea_image(){
+    public function alea_image(){
         $dirname = "./Affiche/$this->_titre";       // adresse relatif de la série TV
         if(file_exists($dirname) ){                 // vérification que le dossier existe
             $j = 0;                                 // $j nombre d'affiche de la série TV
