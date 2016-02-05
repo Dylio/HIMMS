@@ -25,6 +25,6 @@ $str = lang::getlang(); ?>
     <body style='background: url("<?php echo $affichage->alea_Image($data['titre']); ?>") no-repeat center fixed; background-size: 100% auto !important'>
         <?php $affichage->like_recommandation();
         $req=$db->une_serie($_GET['num_serie']);
-        $affichage->affichage_serie_detail($req, null, $num_user, 'MediaObjectDetail'); ?>
+        $affichage->affichage_serie_detail($req, null, 'MediaObjectDetail'); ?>
     </body>
 </html>

@@ -15,10 +15,10 @@ class class_media_object {
     private  $_db;              // instance vers la base de données
     
     // Constructeur de la classe class_media_object
-    // IN : $num_user numéro unique de l'utilisateur courrant
-    public function __construct($db){
-        require_once 'lang.php';        // importation la classe lang.fr qui permet d'initiliser les zone texte du site hors description des séries.
-        $this->_str = lang::getlang();
+    // IN : $db instance vers la base de données
+    // IN : $str constantes textuelles du site web
+    public function __construct($db, $str){
+        $this->_str = $str;     // 
         $this->_db = $db;
     }
     
@@ -232,8 +232,8 @@ class class_media_object {
                 ."<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
                     ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
                     require_once 'class_affichage.php';
-                    $affichage = new class_affichage($this->_db->getUser());
-                    $req = $this->_db-->recommandation_serie($this->_serie);
+                    $affichage = new class_affichage($this->_db, $this->_str);
+                    $req = $this->_db->recommandation_serie($this->_serie);
                     $affichage->affichage_serie($req, null, 'MediaObjectCaseG2');
                 echo "</div>";
             break;

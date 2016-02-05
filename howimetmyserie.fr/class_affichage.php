@@ -70,7 +70,7 @@
     public function affichage_serie($req, $dataNb, $media){
         echo '<div class="SerieContainerIner">';
         $i = 0;
-        $media_object = new class_media_object($this->_db);
+        $media_object = new class_media_object($this->_db, $this->_str);
         while($data = $req->fetch()){
            $media_object->newSerie($data);
            $media_object->media_object($media);
@@ -83,7 +83,7 @@
     public function affichage_serie_detail($req, $dataNb, $media){
         echo '<div class="SerieContainerIner">';
         $i = 0;
-        $media_object = new class_media_object($this->_db);
+        $media_object = new class_media_object($this->_db, $this->_str);
         while($data = $req->fetch()){
            $media_object->newSerieDetail($data);
            $media_object->media_object($media);
@@ -96,7 +96,7 @@
     public function affichage_serie2($req, $dataNb, $media){
         echo '<div class="SerieContainerIner">';
         $i = 0;
-        $media_object = new class_media_object($this->_db);
+        $media_object = new class_media_object($this->_db, $this->_str);
         while($data = $req->fetch()){
            $media_object->newSerie($data);
            $media_object->media_object($media);
@@ -219,7 +219,7 @@
     <?php }
         
     public function menu_top(){
-        ob_implicit_flush(); ?>
+        ob_start(); ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
