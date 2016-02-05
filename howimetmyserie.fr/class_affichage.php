@@ -2,10 +2,9 @@
     private $_str;
     private $_db;
     
-    public function __construct($db){
+    public function __construct($db, $str){
         require_once 'class_media_object.php';
-        require_once 'lang.php';
-        $this->_str = lang::getlang();
+        $this->_str = $str;
         $this->_db = $db;
         
         $this->menu_top();
@@ -244,13 +243,23 @@
                                         <button type="submit" class="btn btn-default" name="btn" style=" height: 35px;"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                                         <button data-toggle="dropdown" class="btn btn-default" role="button" style=" height: 35px;">
                                         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span></button>
-                                        <ul class="dropdown-menu" role="menu" style="width: 600px; border-width: 3px; border-color: black; text-align: justify; overflow:hidden; white-space:nowrap; text-justify: inter-word;">
+                                        <ul class="dropdown-menu" role="menu" style="width: 600px !important; border-width: 3px; line-height:1; text-align: justify; white-space: normal!important; border-color: black;
+                                                -webkit-hyphens: auto;
+                                                -moz-hyphens: auto;
+                                                -ms-hyphens: auto;
+                                                -o-hyphens: auto;
+                                                hyphens: auto;
+                                              ">
                                             <?php $linkpdo = Db::getInstance();
-                                            $reqNbT = $linkpdo->query("SELECT count(i.num_motcle) from interesser i;");
+                                            $reqNbT = $linkpdo->query("SELECT sum(nbChercher) from interesser group by num_motcle order by sum(nbChercher) desc limit 1;");
                                             $dataNbT = $reqNbT->fetch();
-                                            $req = $linkpdo->query("SELECT m.motcle, sum(a.occurrence), count(i.num_motcle) from appartenir a, motcle m, interesser i, serie s where s.num_serie = a.num_serie and i.num_motcle = m.num_motcle and a.num_motcle = m.num_motcle group by m.motcle ORDER BY RAND() LIMIT 150;");
+                                            $req = $linkpdo->query("SELECT m.motcle, sum(i.nbChercher) from motcle m, interesser i where m.num_motcle = i.num_motcle group by m.motcle ORDER BY RAND() LIMIT 50;");
                                             while($data = $req->fetch()){
-                                               echo '<a href="Search.php?mc='.$data['0'].'&btn=Valider"><FONT size="'.($data['2']/$dataNbT['0']).';">'.$data['0'].'</font></a> ';
+                                                echo '<a href="Search.php?mc='.$data['0'].'">'
+                                                    . '<FONT size="'.($data['1']*$dataNbT['0']/$dataNbT['0']).';">'
+                                                        .$data['0'].''
+                                                    . '</font>'
+                                                . '</a> ';
                                             } ?>
                                         </ul> 
                                     </div>

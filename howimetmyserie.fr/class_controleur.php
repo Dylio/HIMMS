@@ -1,7 +1,6 @@
 <?php
 class class_controleur {
     private  $_TxtSearch;
-    private  $_TxtLike;
     private  $_Like;
     private  $_Order;
     private  $_Recommandation;
@@ -10,16 +9,15 @@ class class_controleur {
     private  $_str;
     private  $_user;
     
-    public function __construct($user){
+    public function __construct($user, $str){
         $this->_TxtSearch = '';
-        $this->_TxtLike = '';
         $this->_Like = 'all';
         $this->_Order = 'sort1';
         $this->_Recommandation = false;
         $this->_MediaObject = "MediaObjectCaseG";
+        
         $this->_user = $user;
-        require_once 'lang.php';
-        $this->_str = lang::getlang();
+        $this->_str = $str;
     }    
     
     public function getTxtSearch(){
@@ -31,7 +29,13 @@ class class_controleur {
     }
     
     public function getTxtLike(){
-        return $this->_TxtLike;
+        if($this->_Like == "like"){
+           return " and s.num_serie in (select num_serie from voir where num_user = '$this->_user')" ;
+        }else if($this->_Like == "unlike"){
+            return "and s.num_serie not in (select num_serie from voir where num_user = '$this->_user') ";
+        }else{
+            return '';
+        }
     }
     public function getTxtOrder(){
         switch ($this->_Order){
@@ -112,15 +116,12 @@ class class_controleur {
     private function like(){
         if(isset($_POST['List_like'])){
            $this->_Like = "like";
-           $this->_TxtLike=" and s.num_serie in (select num_serie from voir where num_user = '$this->_user')" ;
         }
         if(isset($_POST['List_all'])){
            $this->_Like = "all";
-           $this->_TxtLike='';
         }
         if(isset($_POST['List_unlike'])){
             $this->_Like = "unlike";
-            $this->_TxtLike="and s.num_serie not in (select num_serie from voir where num_user = '$this->_user') ";
         }
         echo "<form action='' method='POST' class='formLike'>"
             .'<button type="submit" name="List_like" data-toggle="tooltip" data-placement="left" title="'.$this->_str['tooltip']['like']['like'].'"';
