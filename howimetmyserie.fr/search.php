@@ -21,7 +21,7 @@ $str = lang::getlang(); ?>
             require_once 'class_affichage.php';
             require_once 'class_controleur.php';
             $db = new class_db(false);
-            $affichage = new class_affichage($db->getUser(), $str);
+            $affichage = new class_affichage($db, $str);
             if(!isset($_SESSION['SerieTV'])){
                 $_SESSION['SerieTV'] = new class_controleur($db->getUser(), $str);
             }

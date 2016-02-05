@@ -220,14 +220,14 @@ class class_media_object {
                     echo $this->serie_like_recommandation("SerieDetailButton");
                 echo "</div>"
                 ."<div class='jumbotron SerieDetailContainer2'>" // conteneur de la description de la serie TV
-                    .$this->_str['serie_detail']['Production']."<span class='txtDetailSerie'>LP PROD</span><br/>"
-                    .$this->_str['serie_detail']['Création']."<span class='txtDetailSerie'>$this->_créateurs</span><br/>"
-                    .$this->_str['serie_detail']['Acteur']."<span class='txtDetailSerie'>$this->_acteurs ...</span><br/><br/>"
+                    .$this->_str['serie_detail']['Production']."<span class='Serie_Detail_txt'>LP PROD</span><br/>"
+                    .$this->_str['serie_detail']['Création']."<span class='Serie_Detail_txt'>$this->_créateurs</span><br/>"
+                    .$this->_str['serie_detail']['Acteur']."<span class='Serie_Detail_txt'>$this->_acteurs ...</span><br/><br/>"
                     .$this->_str['serie_detail']['Date'];
-                    echo $this->serie_date("txtDetailSerie")."<br/>";
-                    echo $this->_str['serie_detail']['Nationalité']."<span class='txtDetailSerie'>$this->_nationalite</span><br/>"
-                    .$this->_str['serie_detail']['Genre']."<span class='txtDetailSerie'>$this->_genre</span><br/>"
-                    .$this->_str['serie_detail']['Format']."<span class='txtDetailSerie'>$this->_format</span>"
+                    echo $this->serie_date("Serie_Detail_txt")."<br/>";
+                    echo $this->_str['serie_detail']['Nationalité']."<span class='Serie_Detail_txt'>$this->_nationalite</span><br/>"
+                    .$this->_str['serie_detail']['Genre']."<span class='Serie_Detail_txt'>$this->_genre</span><br/>"
+                    .$this->_str['serie_detail']['Format']."<span class='Serie_Detail_txt'>$this->_format</span>"
                 ."</div>"
                 ."<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
                     ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";

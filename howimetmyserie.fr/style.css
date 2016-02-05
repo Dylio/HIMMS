@@ -1,10 +1,3 @@
-.txtDetailSerie{
-    color : #007493;
-}
-.txtDetailSerieBlack{
-    color: black;
-    text-align : justify !important;
-}
 .txt2{
     text-align: center;
     font-size : 16px;
@@ -363,6 +356,9 @@ html {
     vertical-align:middle;
     float:left;
 }
+.Serie_Detail_txt{
+    color : #007493;
+}
 .SerieDetailContainer{
     background-color: rgba(97, 189, 227, 0.80);
     width : 100%;
@@ -378,6 +374,24 @@ html {
     margin-left: auto;
     margin-right: auto;
 }
+.SerieDetailButtonR {
+    font-size: 45px; 
+    margin-left:15px;
+    color: red;
+    float : left;
+}
+.SerieDetailButtonB {
+    font-size: 45px; 
+    margin-left:15px;
+    color: blue;
+    float : left;
+}
+.SerieDetailButtonN {
+    font-size: 45px; 
+    margin-left:15px;
+    color: black;
+    float : left;
+}
 
 
 /* BOUTTONS */ 
@@ -387,24 +401,6 @@ html {
     border: none;
     cursor:pointer;
     overflow: hidden;
-}
-.SerieDetailButtonR {
-    font-size: 38px; 
-    margin-left:15px;
-    color: red;
-    float : left;
-}
-.SerieDetailButtonB {
-    font-size: 38px; 
-    margin-left:15px;
-    color: blue;
-    float : left;
-}
-.SerieDetailButtonN {
-    font-size: 38px; 
-    margin-left:15px;
-    color: black;
-    float : left;
 }
 .buttonDetailSerieR2 {
     font-size: 20px;

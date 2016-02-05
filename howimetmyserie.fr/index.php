@@ -16,7 +16,7 @@ $str = lang::getlang(); ?>
             require_once 'class_db.php';
             require_once 'class_controleur.php';
             $db = new class_db(false);
-            $affichage = new class_affichage($num_user, $str);
+            $affichage = new class_affichage($db, $str);
         ?>
     </head>
     
