@@ -29,7 +29,7 @@ $str = lang::getlang(); ?>
         $affichage->affichage_titrePartie($str['serie']['title']);
         $affichage->like_recommandation();
                 
-        $_SESSION['SerieTV']->vue_trie($str['serie']['input_search'], false);
+        $_SESSION['SerieTV']->vue_tri($str['serie']['input_search'], false);
         
         $req= $db->serie($_SESSION['SerieTV']->getTxtSearch(), 
                 $_SESSION['SerieTV']->getTxtLike(),

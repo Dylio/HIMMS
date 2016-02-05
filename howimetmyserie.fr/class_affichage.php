@@ -1,36 +1,43 @@
-<?php class class_affichage {
-    private $_str;
-    private $_db;
+<?php
+// Cette classe permet l'affichage les données.
+class class_affichage{
+    private  $_str;             // constantes textuelles du site web
+    private  $_db;              // instance vers la base de données
     
+    // Constructeur de la classe class_media_object
+    // IN : $db instance vers la base de données
+    // IN : $str constantes textuelles du site web
     public function __construct($db, $str){
         require_once 'class_media_object.php';
         $this->_str = $str;
         $this->_db = $db;
-        
-        $this->menu_top();
-        $this->menu_bottom();
+        $this->menu_top();          // affichage du menu du haut
+        $this->menu_bottom();       // affichage du menu du bas 
     }
     
     public function affichage_titrePartie($partie){
         echo "<div class='jumbotron SerieDetailContainer'><p class='NomPartie'>$partie</p></div>";
     }
     
+    // Renvoie l'adresse relatif d'une image aléatoire pour le fond du site
+    // OUT : adresse relatif d'une image aléatoire pour le fond du site
     public function alea_Image_Fond(){
-        $dirname = './css/fond';
-        if(file_exists($dirname) ){
-            $j = 0;
+        $dirname = './css/fond';                    // adresse relatif des fonds d'écran
+        if(file_exists($dirname) ){                 // vérification que le dossier existe
+            $j = 0;                                 // $j nombre de fond d'écran
             $dir = opendir($dirname);
-            while($file = readdir($dir)) {
-                if(substr($file, -4) == ".jpg"){
+            while($file = readdir($dir)) {          // compte le nombre d'affiche de la série TV
+                if(substr($file, -4) == ".jpg"){    // les affiches doivent être tous sous format .jpg
                     $j++;
                 }
             }
             closedir($dir);
-            $nbImage = rand(1, $j);
-            $j = 1;
+            $aleaImage = rand(1, $j);                 // $aleaImage un nombre aléatoire entre 1 et $j
+            $i = 1;                                   // $i numéro actuel de l'affiche de la série TV
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
-                if($j === $nbImage and substr($file, -4) == ".jpg"){
+                if($j === $aleaImage and substr($file, -4) == ".jpg"){      // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
+                    // renvoie la $aleaImage fond d'écran
                     return "style='background: url(./css/fond/$file) no-repeat center fixed !important; background-size: 100% 100% !important;'";
                 }
                 if(substr($file, -4) == ".jpg"){

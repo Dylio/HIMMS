@@ -33,7 +33,7 @@ $str = lang::getlang(); ?>
         $affichage->like_recommandation();
         
         if(isset($_GET['mc'])){
-            $_SESSION['SerieTV']->vue_trie($str['search']['input_search'], true);
+            $_SESSION['SerieTV']->vue_tri($str['search']['input_search'], true);
             $mc = $affichage->no_special_character($_GET['mc']);
             $mc = explode(" ", $mc);
             $txtSearch  = '';

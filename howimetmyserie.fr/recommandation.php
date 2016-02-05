@@ -29,7 +29,7 @@ $str = lang::getlang(); ?>
        
         $affichage->like_recommandation();
         if($db->recommandation_exist() == 1){
-            $_SESSION['SerieTV']->vue_trie2($str['recommendation']['input_search']);
+            $_SESSION['SerieTV']->vue_tri2($str['recommendation']['input_search']);
             $req=$db->recommandation( $_SESSION['SerieTV']->getTxtLike(),
                 $_SESSION['SerieTV']->getTxtRecommandation(),
                 $_SESSION['SerieTV']->getTxtOrder(),

@@ -18,7 +18,7 @@ class class_media_object {
     // IN : $db instance vers la base de données
     // IN : $str constantes textuelles du site web
     public function __construct($db, $str){
-        $this->_str = $str;     // 
+        $this->_str = $str;
         $this->_db = $db;
     }
     
@@ -276,8 +276,8 @@ class class_media_object {
             $i = 1;                                   // $i numéro actuel de l'affiche de la série TV
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
-                if($i === $aleaImage and substr($file, -4) == ".png"){ // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "Affiche/$this->_titre/".$file;      // renvoie la $aleaImage affiche de série TV
+                if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
+                    return "Affiche/$this->_titre/".$file;              // renvoie la $aleaImage affiche de série TV
                 }
                 if(substr($file, -4) == ".png"){
                     $i++;

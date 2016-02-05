@@ -23,7 +23,16 @@
     margin-right: 100px;
     margin-bottom : 0px !important;
 }
-
+.tri_group1{
+    float: left;
+    margin-left: 100px;
+    margin-bottom: 0px !important;
+}
+.tri_group2{
+    float: left;
+    margin-left: 25px;
+    margin-bottom: 0px !important;
+}
 
 /* POLICE */
 @font-face { font-family: "Coalition_v2"; src: url('./fonts/Coalition_v2.ttf') format('truetype'); }
