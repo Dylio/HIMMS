@@ -1,53 +1,62 @@
 <?php
 class class_controleur {
-    private  $_TxtSearch;
-    private  $_Like;
-    private  $_Order;
-    private  $_Recommandation;
-    private  $_MediaObject;
+    private  $_TxtSearch;           // texte d'une recherche des séries TV spécifiques
+    private  $_Like;                // recherche des series TV like ou non
+    private  $_Order;               // ordre de restitution des valeurs
+    private  $_Recommandation;      // recherche des séries TV dont l'utilisateur souhaite être recommander ou non
+    private  $_MediaObject;         // styles d'objets abstraits pour la visualisation des séries TV
+    private  $_user;                // numéro unique identifiant un utilisateur
+    private  $_str;                 // constantes textuelles du site web
     
-    private  $_str;
-    private  $_user;
-    
+    // Constructeur de la classe class_controleur
+    // IN : $user numéro unique identifiant un utilisateur
+    // IN : $str constantes textuelles du site web
     public function __construct($user, $str){
-        $this->_TxtSearch = '';
-        $this->_Like = 'all';
-        $this->_Order = 'sort1';
-        $this->_Recommandation = false;
-        $this->_MediaObject = "MediaObjectCaseG";
-        
+        $this->_TxtSearch = '';                     // aucune recherche spécifique par défaut
+        $this->_Like = 'all';                       // recherche par défaut de toutes les series TV (like ou non)
+        $this->_Order = 'sort1';                    // ordre de restitution des valeurs par défaut : titre croissant
+        $this->_Recommandation = false;             // recherche par défaut de toutes les series TV (recommander ou non)
+        $this->_MediaObject = "MediaObjectCaseG";   // styles d'objets abstraits pour la visualisation des séries TV  par défaut : sous forme de grande case
         $this->_user = $user;
         $this->_str = $str;
     }    
     
+    // retourne une partie de requete SQL permettant la recherche spécifique de séries TV selon son titre
+    // OUT : partie de requete SQL permettant la recherche spécifique de séries TV selon son titre
     public function getTxtSearch(){
         return 'and s.titre like "%'.$this->_TxtSearch.'%" ';
     }
     
+    // supprimer le contenu de le la varible $_TxtSearch
     public function resetSearch(){
         $this->_TxtSearch = '';
     }
     
+    // retourne une partie de requete SQL permettant la recherche spécifique de séries TV que l'utilisateur like  ou pas
+    // OUT : partie de requete SQL permettant la recherche spécifique de séries TV que l'utilisateur like ou pas
     public function getTxtLike(){
-        if($this->_Like == "like"){
+        if($this->_Like == "like"){ // si l'utilisateur veut voir que les séries TV like
            return " and s.num_serie in (select num_serie from voir where num_user = '$this->_user')" ;
-        }else if($this->_Like == "unlike"){
+        }else if($this->_Like == "unlike"){ // si l'utilisateur veut voir que les séries TV pas encore like
             return "and s.num_serie not in (select num_serie from voir where num_user = '$this->_user') ";
-        }else{
+        }else{ // si l'utilisateur veut voir toutes les séries TV sans distinction
             return '';
         }
     }
+    
+    // retourne une partie de requete SQL permettant de chosir l'ordre d'appartition des séries TV
+    // OUT : partie de requete SQL permettant de chosir l'ordre d'appartition des séries TV
     public function getTxtOrder(){
         switch ($this->_Order){
-            case 'sort1' :
+            case 'sort1' :      // trie par titre croissant puis par date de début croissant
                 return "s.titre asc, s.dateD desc";
-            case 'sort2' :
+            case 'sort2' :      // trie par titre décroissant puis par date de début croissant
                 return "s.titre desc, s.dateD desc";
-            case 'sort3' :
+            case 'sort3' :      // trie par date de début croissant puis par titre croissant
                 return "s.dateD asc, s.titre asc";
-            case 'sort4' :
+            case 'sort4' :      // trie par date de début décroissant puis par titre croissant
                 return "s.dateD desc, s.titre asc";
-             case 'sortRand' :
+             case 'sortRand' :  // trie aléatoire
                 return "rand()";
         }
     }

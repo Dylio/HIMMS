@@ -63,7 +63,7 @@ class class_db {
     // requete : selectionne toutes les séries TV selon plusieurs critères
     // IN : $TxtSearch recherche des séries TV spécifiques
     // IN : $TxtLike recherche des series TV like ou non
-    // IN : $TxtRecommandation recherche des séries TV dont l'utilisateur souhaite être recommander
+    // IN : $TxtRecommandation recherche des séries TV dont l'utilisateur souhaite être recommander ou non
     // IN : $TxtOrder ordre de restitution des valeurs
     // OUT : requete de selection des séries TV
     public function serie($TxtSearch, $TxtLike, $TxtRecommandation, $TxtOrder){
@@ -111,7 +111,7 @@ class class_db {
     // IN : $limit nombre de tuple à retourner
     // OUT : requete de selection des séries TV les plus recommandées
     public function serie_top_recommandation($limit){
-        return $this->_db->query("SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.classification "
+        return $this->_db->query("SELECT s.* "
                                 . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
                                 . "group by s.num_serie "
                                 . "order by count(nr.num_serie) asc, rand() "

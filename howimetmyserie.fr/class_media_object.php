@@ -2,7 +2,6 @@
 // Cette classe permet de restituer sous différents styles d'objets abstraits la construction graphique d'une
 // séries TV via divers types de composants qui présentent son affiche et le contenu textuel.
 class class_media_object {
-    private  $_str;             // constantes textuelles du site web
     private  $_serie;           // numéro de la série
     private  $_titre;           // titre de la série
     private  $_date;            // date de début et de fin de la série
@@ -12,6 +11,7 @@ class class_media_object {
     private  $_genre;           // genre de la série
     private  $_format;          // durée moyen d'un épisode, nombre de saison et nombre d'épisode total de la série
     private  $_classification;  // classification (restriction d'âge) de la série
+    private  $_str;             // constantes textuelles du site web
     private  $_db;              // instance vers la base de données
     
     // Constructeur de la classe class_media_object
