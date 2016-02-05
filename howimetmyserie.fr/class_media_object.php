@@ -57,7 +57,7 @@ class class_media_object {
     // IN : $duree durée moyen d'un épisode de la série.
     private function format($nbSaison, $nbEpisode, $duree){
         $format = $nbSaison." saison";
-        if($nbSaison > 1){ echo "s"; }
+        if($nbSaison > 1){ $format .= "s"; }
             $format .= " répartis en $nbEpisode épisodes de $duree min.";
         $this->_format = $format;   
     }
@@ -136,16 +136,16 @@ class class_media_object {
             
             // rencoie selon la classification de la série un pictogramme de restriction d'âge adapté
             if($this->_classification == 10){ // classification : -10 ans
-                echo '<img width=32 height=24 class="'.$style.'N" src="css/signes-csa10.jpg"/>';
+                echo '<img class="'.$style.'Classification" src="css/signes-csa10.jpg"/>';
             }
             if($this->_classification == 12){ // classification : -12 ans
-                echo '<img width=32 height=24 class="'.$style.'N" src="css/signes-csa12.jpg"/>';
+                echo '<img class="'.$style.'Classification" src="css/signes-csa12.jpg"/>';
             }
             if($this->_classification == 16){ // classification : -16 ans
-                echo '<img width=32 height=24 class="'.$style.'N" src="css/signes-csa16.jpg"/>';
+                echo '<img class="'.$style.'Classification" src="css/signes-csa16.jpg"/>';
             }
             if($this->_classification == 18){ // classification : -18 ans
-                echo '<img width=32 height=24 class="'.$style.'N" src="css/signes-csa18.jpg"/>';
+                echo '<img class="'.$style.'Classification" src="css/signes-csa18.jpg"/>';
             }
         echo '</form>';
     }
@@ -162,7 +162,14 @@ class class_media_object {
                    ."<div class='media-body'>"; // conteneur de la description de la serie TV
                         echo $this->serie_titre("SerieListTitre");
                         echo $this->serie_like_recommandation("SerieListButton");
-                        echo $this->serie_date("SerieListDate");
+                        echo $this->_str['serie_detail']['Production']."<span class='Serie_Detail_txt'>LP PROD</span><br/>"
+                        .$this->_str['serie_detail']['Création']."<span class='Serie_Detail_txt'>$this->_créateurs</span><br/>"
+                        .$this->_str['serie_detail']['Acteur']."<span class='Serie_Detail_txt'>$this->_acteurs ...</span><br/><br/>"
+                        .$this->_str['serie_detail']['Date'];
+                        echo $this->serie_date("Serie_Detail_txt")."<br/>";
+                        echo $this->_str['serie_detail']['Nationalité']."<span class='Serie_Detail_txt'>$this->_nationalite</span><br/>"
+                        .$this->_str['serie_detail']['Genre']."<span class='Serie_Detail_txt'>$this->_genre</span><br/>"
+                        .$this->_str['serie_detail']['Format']."<span class='Serie_Detail_txt'>$this->_format</span>";
                     echo '</div>'
                 .'</div>';
             break;
@@ -208,9 +215,9 @@ class class_media_object {
                         ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image()."' alt='".$this->_titre."'>"
                     . "</a>"
                     ."<div class='caption'>"; // conteneur du texte de la serie TV
-                       echo $this->serie_like_recommandation("SerieCaseGButton");    
-                       echo $this->serie_titre("SerieCaseGTitre");
-                       echo $this->serie_date("SerieCaseGDate");
+                        echo $this->serie_like_recommandation("SerieCaseGButton");    
+                        echo $this->serie_titre("SerieCaseGTitre");
+                        echo $this->serie_date("SerieCaseGDate");
                     echo '</div>'
                 . '</div>';
             break;

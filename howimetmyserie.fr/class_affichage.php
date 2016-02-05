@@ -72,7 +72,7 @@
         $i = 0;
         $media_object = new class_media_object($this->_db, $this->_str);
         while($data = $req->fetch()){
-           $media_object->newSerie($data);
+           $media_object->newSerieDetail($data);
            $media_object->media_object($media);
            $i++;
         }
@@ -98,7 +98,7 @@
         $i = 0;
         $media_object = new class_media_object($this->_db, $this->_str);
         while($data = $req->fetch()){
-           $media_object->newSerie($data);
+           $media_object->newSerieDetail($data);
            $media_object->media_object($media);
            $i++;
         }

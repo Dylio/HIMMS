@@ -180,7 +180,7 @@ class class_controleur {
                 echo "<span class='glyphicon glyphicon-th'></span>"
             ."</button> "
             .'<button type="submit" name="MediaObjectList" data-toggle="tooltip" data-placement="top" title="'.$this->_str['tooltip']['MediaObject']['CaseList'].'"';
-                if($this->_MediaObject == "MediaObjectCaseList"){
+                if($this->_MediaObject == "MediaObjectList"){
                     echo 'class="btn btn-success buttonDetailSerieW2" disabled>';
                 }else{
                     echo 'class="btn btn-info buttonDetailSerieW2">';

@@ -33,12 +33,15 @@ class class_db {
     
     // requete : insertion du nouveau utilisateur dans la base de données
     private function user_insert(){
-        $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, restriction) values('$this->_user', 1, null);");
+        $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, restriction) "
+                        . "values('$this->_user', 1, null);");
     }
     
     // requete : mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
     private function user_update(){
-        $this->_db->query("UPDATE utilisateur set nbVisite = nbVisite + 1 where num_user = '$this->_user' ;");
+        $this->_db->query("UPDATE utilisateur "
+                        . "set nbVisite = nbVisite + 1 "
+                        . "where num_user = '$this->_user' ;");
     }
     
     // renvoie le numéro unique de l'utilisateur
@@ -50,7 +53,9 @@ class class_db {
     // renvoie la valeur de la restriction pour l'utilisateur
     // OUT : null si aucune valeur - 0 si aucune restriction - 1 si restriction
     public function restriction(){
-        $req = $this->_db->query("Select restriction from utilisateur where num_user = '$this->_user';");
+        $req = $this->_db->query("Select restriction "
+                                . "from utilisateur "
+                                . "where num_user = '$this->_user';");
         $data = $req->fetch();
         return $data['restriction'];
     }
@@ -62,7 +67,7 @@ class class_db {
     // IN : $TxtOrder ordre de restitution des valeurs
     // OUT : requete de selection des séries TV
     public function serie($TxtSearch, $TxtLike, $TxtRecommandation, $TxtOrder){
-        return $this->_db->query("SELECT s.num_serie, s.titre, s.dateD, s.dateF, s.classification "
+        return $this->_db->query("SELECT s.* "
                                 . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
                                 . "where 1 $TxtSearch $TxtLike "
                                 . "group by s.num_serie "
@@ -74,7 +79,9 @@ class class_db {
     // IN : $num_serie numéro unique d'une série TV
     // OUT : requete de selection d'une série TV
     public function une_serie($num_serie){
-        return $this->_db->query("SELECT * from serie where num_serie = '$num_serie';");
+        return $this->_db->query("SELECT * "
+                                . "from serie "
+                                . "where num_serie = '$num_serie';");
     }
     
     // requete : compte le nombre de séries TV selon plusieurs critères
@@ -120,7 +127,7 @@ class class_db {
     // IN : $limit nombre de tuple à retourner
     // OUT : requete de selection des séries TV recommandées
     public function recommandation($TxtLike, $TxtRecommandation, $TxtOrder, $limit){
-         return $this->_db->query("SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.classification "
+         return $this->_db->query("SELECT s.* "
                     . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
                     . "where (s.num_serie in (SELECT r1.num_serie from (SELECT s.num_serie " 
                         . "from $this->_serie s join appartenir a on s.num_serie = a.num_serie "
@@ -152,7 +159,7 @@ class class_db {
     // IN : $num_serie numéro unique de la série TV
     // OUT : requete de selection des séries TV ressemblant à la série TV
     public function recommandation_serie($num_serie){
-        return $reqRec = $this->_db->query("SELECT s.titre, s.num_serie, s.dateD, s.dateF, s.classification "
+        return $reqRec = $this->_db->query("SELECT s.* "
                 . "FROM appartenir a join $this->_serie s on s.num_serie = a.num_serie "
                 . "WHERE exists(select num_serie "
                             . "from appartenir "
@@ -167,10 +174,14 @@ class class_db {
     // OUT : retourne 1 si l'utilisateur a entré ses goûts (like ou recherche) sinon 0
     public function recommandation_exist(){
         // Nombre de mots-clés recherchés par l'utilisateur
-        $reqRec = $this->_db->query("Select count(*) from interesser where num_user = '$this->_user';");
+        $reqRec = $this->_db->query("Select count(*) "
+                                . "from interesser "
+                                . "where num_user = '$this->_user';");
             $dataRec = $reqRec->fetch();
         // Nombre de série TV like par l'utilisateur
-        $reqRec2 = $this->_db->query("Select count(*) from voir where num_user = '$this->_user';");
+        $reqRec2 = $this->_db->query("Select count(*) "
+                                    . "from voir "
+                                    . "where num_user = '$this->_user';");
             $dataRec2 = $reqRec2->fetch();
         if($dataRec['0'] > 0 or $dataRec2['0'] > 0){
             return 1;
@@ -186,7 +197,7 @@ class class_db {
     // IN : $TxtOrder ordre de restitution des valeurs
     // OUT : requete de selection des séries TV
     public function search($TxtLike, $TxtSearch, $TxtRecommandation, $TxtOrder){
-        return $this->_db->query("SELECT s.num_serie, s.titre, s.dateD, s.dateF, s.classification "
+        return $this->_db->query("SELECT s.* "
                                 . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
                                 . "where 1 "
                                 . "$TxtLike "
@@ -228,12 +239,15 @@ class class_db {
     // requete : insert dans la table "voir" le like de la série TV de l'utilisateur
     // IN : $num_serie numéro unique de la série TV 
     public function serie_like_insert($serie){
-        $this->_db->query("INSERT INTO voir values('$this->_user','$serie');");
+        $this->_db->query("INSERT INTO voir "
+                        . "values('$this->_user','$serie');");
     }
     // requete : supprime dans la table "voir" le like de la série TV de l'utilisateur
     // IN : $num_serie numéro unique de la série TV 
     public function serie_like_delete($serie){
-        $this->_db->query("DELETE from voir where num_user='$this->_user' and num_serie='$serie';");
+        $this->_db->query("DELETE from voir "
+                        . "where num_user='$this->_user' "
+                        . "and num_serie='$serie';");
     }
     
     // requete : vérifie si l'utilisateur veut être recommander par rapport à cette série
@@ -251,12 +265,15 @@ class class_db {
     // requete : insert dans la table "NonRecommandation" le souhait de l'utilisateur de ne pas être recommander par rapport à cette série TV
     // IN : $num_serie numéro unique de la série TV 
     public function serie_nonRecommandation_insert($serie){
-        $this->_db->query("INSERT INTO NonRecommandation values('$this->_user','$serie');");
+        $this->_db->query("INSERT INTO NonRecommandation "
+                        . "values('$this->_user','$serie');");
     }
     // requete : supprime dans la table "NonRecommandation" le souhait de l'utilisateur de ne pas être recommander par rapport à cette série TV
     // IN : $num_serie numéro unique de la série TV 
     public function serie_nonRecommandation_delete($serie){
-        $this->_db->query("DELETE from NonRecommandation where num_user='$this->_user' and num_serie='$serie';");
+        $this->_db->query("DELETE from NonRecommandation "
+                        . "where num_user='$this->_user' "
+                        . "and num_serie='$serie';");
     }
     
     // requete : insert dans la table "contact" le message de l'utilisateur

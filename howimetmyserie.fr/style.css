@@ -155,13 +155,6 @@ html {
     margin-left : auto;
     margin-right : auto;
 }
-.SerieCasePButtonR:hover, .SerieCaseGButtonR:hover, .SerieListButtonR:hover, 
-.SerieCasePButtonB:hover, .SerieCaseGButtonB:hover, .SerieListButtonB:hover {
-    color: black; 
-}
-.SerieCasePButtonN:hover, .SerieCaseGButtonN:hover, .SerieListButtonN:hover {
-    color: darkorchid; 
-}
 
 /* CASE G*/
 .SerieCaseGTitre{
@@ -225,6 +218,13 @@ html {
     float : right;
     clear: both;
 }
+.SerieCaseGButtonClassification {
+    width: 28px;
+    height: 24px;
+    float : right;
+    clear: both;
+}
+
 
 /* CASE P*/
 .SerieCasePTitre{
@@ -285,12 +285,18 @@ html {
     float : right;
     clear: both;
 }
+.SerieCasePButtonClassification{
+    width: 28px;
+    height: 24px;
+    float : right;
+    clear: both;
+}
 
 
 /* LIST */
 .SerieListTitre{
     font-family : "Guardians", sans-serif ;
-    font-size : 20px;
+    font-size : 50px;
     font-weight:lighter;
     letter-spacing:0.1px;
     text-align: left;
@@ -309,11 +315,6 @@ html {
     font-size : 16px;
     color : black;
 }
-.SerieListSynopsis{
-    font-family : "Arial", sans-serif ;
-    font-size : 17px;
-    color : black;
-}
 .SerieListContainer{
     background-color: rgba(220, 220, 220, 0.65);
     padding: 10px;
@@ -323,25 +324,30 @@ html {
 }
 .SerieListButtonR {
     font-size: 22px; 
-    margin: -5px 20px 0px 20px;
+    margin: 0px 20px 0px 20px;
     color: red;
     padding: 0px 2px;
 }
 .SerieListButtonB {
     font-size: 22px;
-    margin: -5px 20px 0px 20px;
+    margin: 0px 20px 0px 20px;
     color: blue; 
     padding: 0px 2px;
 }
 .SerieListButtonN {
     font-size: 22px;
-    margin: -5px 20px 0px 20px;
+    margin: 0px 20px 0px 20px;
     color: black; 
     padding: 0px 2px;
 }
+.SerieListButtonClassification {
+    width: 32px;
+    height: 24px;
+    margin: 0px 20px 0px 20px;
+}
 .SerieListImg{
-    width: 325px;
-    height: 200px;   
+    width: 550px;
+    height: 300px !important;   
 }
 
 /* DETAIL */
@@ -379,22 +385,39 @@ html {
     margin-left:15px;
     color: red;
     float : left;
+    margin-top: 8px;
 }
 .SerieDetailButtonB {
-    font-size: 45px; 
+    font-size: 50px; 
     margin-left:15px;
     color: blue;
     float : left;
+    margin-top: 8px;
 }
 .SerieDetailButtonN {
-    font-size: 45px; 
+    font-size: 50px; 
     margin-left:15px;
     color: black;
     float : left;
+    margin-top: 8px;
+}
+.SerieDetailButtonClassification {
+    width: 50px;
+    height: 45px;
+    float : left;
+    margin-left:15px;
+    margin-top: 20px;
 }
 
 
-/* BOUTTONS */ 
+/* BOUTTONS */
+.SerieCasePButtonR:hover, .SerieCaseGButtonR:hover, .SerieListButtonR:hover, .SerieDetailButtonR:hover, 
+.SerieCasePButtonB:hover, .SerieCaseGButtonB:hover, .SerieListButtonB:hover, .SerieDetailButtonB:hover {
+    color: black; 
+}
+.SerieCasePButtonN:hover, .SerieCaseGButtonN:hover, .SerieListButtonN:hover , .SerieDetailButtonN:hover {
+    color: darkorchid; 
+}
 .button2 {
     background-color: Transparent;
     background-repeat: no-repeat;
