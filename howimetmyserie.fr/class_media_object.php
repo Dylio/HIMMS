@@ -56,9 +56,17 @@ class class_media_object {
     // IN : $nbEpisode nombre d'épisode total de la série.
     // IN : $duree durée moyen d'un épisode de la série.
     private function format($nbSaison, $nbEpisode, $duree){
-        $format = $nbSaison." saison";
-        if($nbSaison > 1){ $format .= "s"; }
-            $format .= " répartis en $nbEpisode épisodes de $duree min.";
+        $format = "";
+        if($nbSaison != null){
+            $format = $nbSaison." saison";
+            if($nbSaison > 1){ $format .= "s"; }
+        }
+        if($nbEpisode != null){
+            $format .= " répartis en $nbEpisode épisodes";
+        }
+        if($duree != null){
+            $format .= " de $duree min.";
+        }
         $this->_format = $format;   
     }
     
@@ -238,10 +246,14 @@ class class_media_object {
                 ."</div>"
                 ."<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
                     ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
-                    require_once 'class_affichage.php';
-                    $affichage = new class_affichage($this->_db, $this->_str);
+                     echo '<div class="SerieContainerIner">';
                     $req = $this->_db->recommandation_serie($this->_serie);
-                    $affichage->affichage_serie($req, null, 'MediaObjectCaseG2');
+                    $media_object = new class_media_object($this->_db, $this->_str);
+                    while($data = $req->fetch()){
+                       $media_object->newSerieDetail($data);
+                       $media_object->media_object("MediaObjectCaseG2");
+                    }
+                    echo '</div>';
                 echo "</div>";
             break;
         }   

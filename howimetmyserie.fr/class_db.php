@@ -167,7 +167,7 @@ class class_db {
                             . "and num_serie = '$num_serie') "
                 . "group by s.num_serie "
                 . "ORDER BY count(*) DESC "
-                . "limit 5 OFFSET 1;");
+                . "limit 3 OFFSET 1;");
     }
     
     // requete : vérification si l'utilisateur a entré ses goûts (like ou recherche)

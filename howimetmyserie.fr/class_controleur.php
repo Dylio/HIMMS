@@ -1,7 +1,7 @@
 <?php
 class class_controleur {
     private  $_TxtSearch;           // texte d'une recherche des séries TV spécifiques
-    private  $_Like;                // recherche des series TV like ou non
+    private  $_Like;                // recherche des series TV aimé ou non
     private  $_Order;               // ordre de restitution des valeurs
     private  $_Recommandation;      // recherche des séries TV dont l'utilisateur souhaite être recommander ou non
     private  $_MediaObject;         // styles d'objets abstraits pour la visualisation des séries TV
@@ -13,10 +13,10 @@ class class_controleur {
     // IN : $str constantes textuelles du site web
     public function __construct($user, $str){
         $this->_TxtSearch = '';                     // aucune recherche spécifique par défaut
-        $this->_Like = 'all';                       // recherche par défaut de toutes les series TV (like ou non)
+        $this->_Like = 'all';                       // recherche par défaut de toutes les series TV (aime ou non)
         $this->_Order = 'sort1';                    // ordre de restitution des valeurs par défaut : titre croissant
         $this->_Recommandation = false;             // recherche par défaut de toutes les series TV (recommander ou non)
-        $this->_MediaObject = "MediaObjectCaseG";   // styles d'objets abstraits pour la visualisation des séries TV  par défaut : sous forme de grande case
+        $this->_MediaObject = "MediaObjectCaseG";   // styles d'objets abstraits pour la visualisation des séries TV par défaut : sous forme de grande case
         $this->_user = $user;
         $this->_str = $str;
     }    
@@ -32,8 +32,8 @@ class class_controleur {
         $this->_TxtSearch = '';
     }
     
-    // retourne une partie de requete SQL permettant la recherche spécifique de séries TV que l'utilisateur like  ou pas
-    // OUT : partie de requete SQL permettant la recherche spécifique de séries TV que l'utilisateur like ou pas
+    // retourne une partie de requete SQL permettant la recherche spécifique de séries TV que l'utilisateur aime ou pas
+    // OUT : partie de requete SQL permettant la recherche spécifique de séries TV que l'utilisateur aime ou pas
     public function getTxtLike(){
         if($this->_Like == "like"){ // si l'utilisateur veut voir que les séries TV like
            return " and s.num_serie in (select num_serie from voir where num_user = '$this->_user')" ;
@@ -60,47 +60,60 @@ class class_controleur {
                 return "rand()";
         }
     }
-
+    
+    // retourne une partie de requete SQL permettant la recherche spécifique de séries TV dont l'utilisateur veut être recommander
+    // OUT : partie de requete SQL permettant la recherche spécifique de séries TV dont l'utilisateur veut être recommander
     public function getTxtRecommandation(){
         switch ($this->_Recommandation){
-            case false :
+            case false :        // recherche toutes les séries TV
                 return " ";
-            case true :
+            case true :         // recherche les séries TV qui ne sont pas dans la table "NonRecommandation"
                return " having count(nr.num_serie) = 0 ";
         }
     }
     
+    // retourne le style d'objet abstrait pour la visualisation des séries TV 
+    // OUT : style d'objet abstrait pour la visualisation des séries TV 
     public function getMediaObject(){
         return $this->_MediaObject;
     }
 
+    // permet d'afficher les différents éléments permettant l'interaction avec l'utilisateur
+    // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
+    // IN : $valueEmpty 1 si la valeur dans la zone de texte doit être garder en mémoire sinon 0
     public function vue_trie($placeholder, $valueEmpty){
-        $this->like($this->_user);
-        $this->search($placeholder, $valueEmpty).'<br/>';
-        $this->order();
-        $this->media();
+        $this->like();                                          // choix : aimé/tous/non aimé
+        $this->search($placeholder, $valueEmpty).'<br/>';       // recherche ciblé
+        $this->order();                                         // choix : ordre d'appartition
+        $this->media();                                         // choix : style d'objet abstrait pour la visualisation des séries TV
     }
 
+    // permet d'afficher les différents éléments permettant l'interaction avec l'utilisateur sans zone texte
+    // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
     public function vue_trie2($placeholder){
-        $this->like($this->_user);
+        $this->like();          // choix : aimé/tous/non aimé
         echo "<form action='' method='POST'>"
             . "<div class='input-group formSearch'>"
                 . "<input type='text' name='search' class='form-control SearchInput RecommandationInput' value='$placeholder' disabled>"
             . "</div>"
          . "</form><br/>";
-        $this->order();
-        $this->media();
+        $this->order();         // choix : ordre d'appartition
+        $this->media();         // choix : style d'objet abstrait pour la visualisation des séries TV
     }       
-    
+
+    // afficher l'élément graphique permettant la recherche de séries TV via une entrée texte 
+    // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
+    // IN : $valueEmpty 1 si la valeur dans la zone de texte doit être garder en mémoire sinon 0
     private function search($placeholder, $valueEmpty){
         if(isset($_POST['ok'])){
            require_once 'class_affichage.php';
+           // enlève les caractères spécials 
            $this->_TxtSearch = class_affichage::no_special_character($_POST['search']);
         }
         if(isset($_POST['empty'])){
+           // réinitialisation de la zone texte 
            $this->resetSearch();
         }
-        
         echo "<form action='' method='POST'>"
             ."<div class='input-group formSearch'>"
                 ."<input type='text' name='search' class='form-control SearchInput' value='";
@@ -111,9 +124,11 @@ class class_controleur {
                 }
                 echo "'placeholder='$placeholder'>"
                 ."<div class='input-group-btn'>"
+                     // bouton de recherche
                     ."<button type='submit' name='ok' class='btn btn-default SearchInput' value='true' data-toggle='tooltip' data-placement='bottom' title='".$this->_str['tooltip']['search']."'>"
                         ."<span class='glyphicon glyphicon-search'></span>"
                     ."</button>"
+                     // bouton de réinitialisation de la zone texte
                     ."<button type='submit' name='empty' class='btn btn-default SearchInput' data-toggle='tooltip' data-placement='bottom' title='".$this->_str['tooltip']['reset']."'>"
                         ."<span class='glyphicon glyphicon-remove'></span>"
                     ."</button>"
@@ -122,17 +137,22 @@ class class_controleur {
         ."</form>";
     }
     
+    // afficher l'élément graphique permettant à l'utilisateur de choisir de voir les séries TV qui sont aimées, non aimées ou les deux
     private function like(){
         if(isset($_POST['List_like'])){
-           $this->_Like = "like";
+           $this->_Like = "like";           // valeur si l'utilisateur veut voir que ces séries TV aimées
         }
         if(isset($_POST['List_all'])){
-           $this->_Like = "all";
+           $this->_Like = "all";            // valeur si l'utilisateur veut voir toutes les séries TV aimées ou pas encore aimées
         }
         if(isset($_POST['List_unlike'])){
-            $this->_Like = "unlike";
+            $this->_Like = "unlike";        // valeur si l'utilisateur veut voir que ces séries TV pas encore aimées
         }
+        // Trois boutons correspondant aux 3 options (aimé / tous / non aimé)
+        // Le bouton de l'option selectionné est d'une couleur verte et non selectionnable
+        // Les autres boutons sont d'une couleur bleu et selectionnable
         echo "<form action='' method='POST' class='formLike'>"
+            // bouton séries TV que l'utilisateur aime
             .'<button type="submit" name="List_like" data-toggle="tooltip" data-placement="left" title="'.$this->_str['tooltip']['like']['like'].'"';
                 if($this->_Like == 'like'){
                     echo "class='btn btn-success buttonDetailSerieR2' disabled>";
@@ -141,7 +161,8 @@ class class_controleur {
                 }
                 echo "<span class='glyphicon glyphicon-heart'></span>"
             ."</button> "
-            ."<button type='submit' name='List_all' style='font-size:20px' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['like']['all']."'";
+            // bouton toutes les séries TV
+            ."<button type='submit' name='List_all' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['like']['all']."'";
                 if($this->_Like == 'all'){
                     echo "class='btn btn-success buttonDetailSerieW2' disabled>";
                 }else{
@@ -149,6 +170,7 @@ class class_controleur {
                 }
                 echo "Tous"
             ."</button> "
+            // bouton séries TV que l'utilisateur n'aime pas encore
             .'<button type="submit" name="List_unlike" data-toggle="tooltip" data-placement="right" title="'.$this->_str['tooltip']['like']['unlike'].'"';
                 if($this->_Like == 'unlike'){
                     echo "class='btn btn-success buttonDetailSerieN2' disabled>";

@@ -238,26 +238,23 @@
                         <li class="dropdown">
                             <form class="navbar-form" role="search" action="Search.php" method="GET">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" style="width:320px; height: 35px;" placeholder="Que recherchez-vous dans une série ?" name="mc" required>
+                                    <input type="text" class="form-control menu_search" placeholder="Que recherchez-vous dans une série ?" name="mc" required>
                                     <div class="input-group-btn">
-                                        <button type="submit" class="btn btn-default" name="btn" style=" height: 35px;"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                                        <button data-toggle="dropdown" class="btn btn-default" role="button" style=" height: 35px;">
+                                        <button type="submit" class="btn btn-default menu_btn_search" name="btn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                        <button data-toggle="dropdown" class="btn btn-default menu_btn_search" role="button">
                                         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span></button>
-                                        <ul class="dropdown-menu" role="menu" style="width: 600px !important; border-width: 3px; line-height:1; text-align: justify; white-space: normal!important; border-color: black;
-                                                -webkit-hyphens: auto;
-                                                -moz-hyphens: auto;
-                                                -ms-hyphens: auto;
-                                                -o-hyphens: auto;
-                                                hyphens: auto;
-                                              ">
+                                        <ul class="dropdown-menu menu_tags_motsCles" role="menu" >
                                             <?php $linkpdo = Db::getInstance();
                                             $reqNbT = $linkpdo->query("SELECT sum(nbChercher) from interesser group by num_motcle order by sum(nbChercher) desc limit 1;");
                                             $dataNbT = $reqNbT->fetch();
-                                            $req = $linkpdo->query("SELECT m.motcle, sum(i.nbChercher) from motcle m, interesser i where m.num_motcle = i.num_motcle group by m.motcle ORDER BY RAND() LIMIT 50;");
+                                            $req = $linkpdo->query("SELECT m.motcle, sum(i.nbChercher) from motcle m, interesser i where m.num_motcle = i.num_motcle group by m.motcle ORDER BY RAND() LIMIT 150;");
                                             while($data = $req->fetch()){
-                                                echo '<a href="Search.php?mc='.$data['0'].'">'
-                                                    . '<FONT size="'.($data['1']*$dataNbT['0']/$dataNbT['0']).';">'
-                                                        .$data['0'].''
+                                                $r = rand(1,255);
+                                                $g = rand(1,255);
+                                                $b = rand(1,255);
+                                                echo " <a href='Search.php?mc=".$data['0']."' style='color:rgb($r,$g,$b)'>"
+                                                    . "<FONT size='".($data['1']*$dataNbT['0']/$dataNbT['0']).";'>"
+                                                        .$data['0']
                                                     . '</font>'
                                                 . '</a> ';
                                             } ?>
