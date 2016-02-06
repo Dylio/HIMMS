@@ -51,7 +51,7 @@ $str = lang::getlang(); ?>
                     $req = $linkpdo->query("UPDATE interesser set nbChercher = nbChercher + 1, DateDerniereSaisie = now() where num_user = '".$db->getUser()."' and DateDerniereSaisie <> now() and  num_motcle = '".$dataMotCle['0']."';"); 
                 }
                 $nbMC ++;
-                $txtSearch = $txtSearch." and s.num_serie in ( select a.num_serie from appartenir a, motcle m where a.num_motcle = m.num_motcle and m.motcle = '$linetxt' )";
+                $txtSearch = $txtSearch." and s.num_serie in ( select num_serie from appartenir where num_motcle = '".$dataMotCle['0']."' )";
             }
             $req=$db->search($_SESSION['SerieTV']->getTxtLike(),
                 $txtSearch,
@@ -60,7 +60,7 @@ $str = lang::getlang(); ?>
             $SearchNb=$db->search_count($_SESSION['SerieTV']->getTxtLike(),
                 $txtSearch,
                 $_SESSION['SerieTV']->getTxtRecommandation());
-            $affichage->affichage_serie2($req, $SearchNb, $_SESSION['SerieTV']->getMediaObject());
+            $affichage->affichage_serie($req, $SearchNb, $_SESSION['SerieTV']->getMediaObject(), true);
         } ?>
     </body>
 </html>

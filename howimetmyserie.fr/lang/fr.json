@@ -5,6 +5,13 @@
         "slogan": "Vos séries fondées sur vos affinités."
     },
     
+    "menu":{
+        "serieTV": "Séries TV",
+        "recommandation": "Recommandation",
+        "tags_titre": "En manque d'inspiration ?",
+        "placeholder": "Que recherchez-vous dans une série ?"
+    },
+    
     "serie":{
         "title": "SERIES TV",
         "input_search": "Entrez une série ..."

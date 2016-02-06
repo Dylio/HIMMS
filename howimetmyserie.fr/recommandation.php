@@ -34,10 +34,10 @@ $str = lang::getlang(); ?>
                 $_SESSION['SerieTV']->getTxtRecommandation(),
                 $_SESSION['SerieTV']->getTxtOrder(),
                 20); 
-            $affichage->affichage_serie($req, null, $_SESSION['SerieTV']->getMediaObject());
+            $affichage->affichage_serie($req, null, $_SESSION['SerieTV']->getMediaObject(), true);
         }else{
             $req=$db->serie_top_coeur(20);
-            $affichage->affichage_serie($req, null, $_SESSION['SerieTV']->getMediaObject());
+            $affichage->affichage_serie($req, null, $_SESSION['SerieTV']->getMediaObject(), null);
         } ?>
         </body>
 </html>

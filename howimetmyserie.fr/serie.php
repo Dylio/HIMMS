@@ -39,7 +39,7 @@ $str = lang::getlang(); ?>
         $dataNb = $db->serie_count($_SESSION['SerieTV']->getTxtLike(),
                 $_SESSION['SerieTV']->getTxtRecommandation());
         
-        $affichage->affichage_serie($req, $dataNb, $_SESSION['SerieTV']->getMediaObject());
+        $affichage->affichage_serie($req, $dataNb, $_SESSION['SerieTV']->getMediaObject(), true);
         ?>
     </body>
 </html>

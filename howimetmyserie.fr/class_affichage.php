@@ -36,45 +36,29 @@ class class_affichage{
             $i = 1;                                   // $i numéro actuel de l'affiche de la série TV
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
-                if($j === $aleaImage and substr($file, -4) == ".jpg"){      // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    // renvoie la $aleaImage fond d'écran
-                    return "style='background: url(./css/fond/$file) no-repeat center fixed !important; background-size: 100% 100% !important;'";
+                if($i === $aleaImage and substr($file, -4) == ".jpg"){      // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
+                    return "style='background: url(./css/fond/$file) no-repeat center fixed !important; "
+                            . "background-size: 100% 100% !important;'";   // renvoie la $aleaImage fond d'écran
                 }
                 if(substr($file, -4) == ".jpg"){
-                    $j++;
+                    $i++;
                 }
             }
             closedir($dir);
         }
     }
     
+    // Renvoie l'adresse relatif d'une image aléatoire de la série TV
+    // OUT : adresse relatif d'une image aléatoire de la série TV
     function alea_Image($titreSerie){
-        $dirname = '.\Affiche\\'.$titreSerie;
-        if(file_exists($dirname) ){
-            $j = 0;
-            $dir = opendir($dirname);
-            while($file = readdir($dir)) {
-                if(substr($file, -4) == ".png"){
-                    $j++;
-                }
-            }
-            closedir($dir);
-            $nbImage = rand(1, $j);
-            $j = 1;
-            $dir = opendir($dirname);
-            while($file = readdir($dir)) {
-                if($j === $nbImage and substr($file, -4) == ".png"){
-                    return 'Affiche/'.$titreSerie.'/'.$file;
-                }
-                if(substr($file, -4) == ".png"){
-                    $j++;
-                }
-            }
-            closedir($dir);
-        }
+        return class_media_object::alea_image($titreSerie);
     }       
     
-    public function affichage_serie($req, $dataNb, $media){
+    // Affiche toutes les séries TV resultant d'une requete
+    // IN : $req requete
+    // IN : $dataNb nombre d'éléments à afficher
+    // IN : $media style d'objet
+    public function affichage_serie($req, $dataNb, $media, $warning){
         echo '<div class="SerieContainerIner">';
         $i = 0;
         $media_object = new class_media_object($this->_db, $this->_str);
@@ -84,126 +68,99 @@ class class_affichage{
            $i++;
         }
         echo '</div>';
-        $this->serie_warning($i, $dataNb);
-    }       
-    
-    public function affichage_serie_detail($req, $dataNb, $media){
-        echo '<div class="SerieContainerIner">';
-        $i = 0;
-        $media_object = new class_media_object($this->_db, $this->_str);
-        while($data = $req->fetch()){
-           $media_object->newSerieDetail($data);
-           $media_object->media_object($media);
-           $i++;
-        }
-        echo '</div>';
-        $this->serie_warning($i, $dataNb);
-    }
-    
-    public function affichage_serie2($req, $dataNb, $media){
-        echo '<div class="SerieContainerIner">';
-        $i = 0;
-        $media_object = new class_media_object($this->_db, $this->_str);
-        while($data = $req->fetch()){
-           $media_object->newSerieDetail($data);
-           $media_object->media_object($media);
-           $i++;
-        }
-        echo '</div>';
-        $this->search_warning($i, $dataNb);
-    }
-
-    private function search_warning($i, $nb){
-        if($i == 0 && $nb != 0){ 
+        // message si aucun élément en fonction du théorique et du réél
+        if($warning == true){
+            if($i == 0 && $nb != 0){    // message si aucun élément réél mais plusieur éléments théoriques : filtre actuel
             echo "<div class='alert alert-warning SerieSearchMessAlert'>"
                 . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée avec les filtres actuels !"
             . "</div>"; 
+            } else if($i == 0 && $nb == 0){   // message si aucun élément réél et théorique : aucun résultat
+                echo "<div class='alert alert-warning SerieSearchMessAlert'>"
+                    . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée ..."
+                . "</div>";
+            }
         }
-        if($i == 0 && $nb == 0){
-            echo "<div class='alert alert-warning SerieSearchMessAlert'>"
-                . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée ..."
-            . "</div>";
-        } 
-    }
-
-    private function serie_warning($i, $nb){
-        if($i == 0 && $nb == 0 ){ 
-            echo "<div class='alert alert-warning SerieSearchMessAlert'>"
-                . "Oups !<br/>Vous n'avez pas encore aimer de série.<br/>Revenez nous voir quand vous aurez fait votre choix !"
-            . "</div>"; 
-        }
-        if($i == 0 && $nb == 0 ){
-            echo "<div class='alert alert-warning SerieSearchMessAlert'>"
-                . "Wouah !<br/>Félicitation,vous avez aimez toutes nos séries !<br/>Nous sommes actuellement en train d'en rajouter.<br/>Revenez jeter un coup d'oeil de temps en temps."
-            . "</div>";
-        }
-        if($i == 0 && $nb != 0){
-            echo "<div class='alert alert-warning SerieSearchMessAlert'>"
-                . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée..."
-            . "</div>";
-        } 
     }
     
+    // Gestion des évenements quand un utilisateur change d'état une série TV
     public function like_recommandation(){
+        // Gestion et Affichage un message d'alerte lorsqu'une série TV devient non recommandé ou pas par l'utilisateur
         if(isset($_POST['Like'])){
             if($this->_db->serie_like_exist($_POST['Serie']) == 0){
                 $this->_db->serie_like_insert($_POST['Serie']);
-                echo '<div class="alert alert-success" id="info" role="alert"><span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries favorites !<br/></div>';
+                echo '<div class="alert alert-success" id="info" role="alert">'
+                    . '<span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries favorites !<br/>'
+                . '</div>';
             }else{
                 $this->_db->serie_like_delete($_POST['Serie']);
-                echo '<div class="alert alert-danger" id="info" role="alert"><span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries favorites !<br/></div>';
+                echo '<div class="alert alert-danger" id="info" role="alert">'
+                    . '<span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries favorites !<br/>'
+                . '</div>';
             }
         }
 
+        // Gestion et Affichage un message d'alerte lorsqu'une série TV devient non recommandé ou pas par l'utilisateur
         if(isset($_POST['Recommandation'])){
             if($this->_db->serie_nonRecommandation_exist($_POST['Serie']) == 0){
                 $this->_db->serie_nonRecommandation_insert($_POST['Serie']);
-                echo '<div class="alert alert-danger" id="info" role="alert"><span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries de recommandation !<br/></div>';
+                echo '<div class="alert alert-danger" id="info" role="alert">'
+                    . '<span class="glyphicon glyphicon-remove"></span>'
+                    . 'La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries de recommandation !<br/>'
+                . '</div>';
             }else{
                 $this->_db->serie_nonRecommandation_delete($_POST['Serie']);
-                echo '<div class="alert alert-success" id="info" role="alert"><span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries de recommandation !<br/></div>';
+                echo '<div class="alert alert-success" id="info" role="alert">'
+                    . '<span class="glyphicon glyphicon-ok"></span>'
+                    . 'La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries de recommandation !<br/>'
+                . '</div>';
             }   
         }
         
+        // les messages restent afficher pendant 3,5 secondes
         echo '<script type="text/javascript">
             setTimeout( function(){
                 document.getElementById("info").style.display = "none"; }, 3500);
         </script>';
     }
     
+    // Affiche un carouselle à 3 items : recommandation / top like / top recommandation
+    // IN : $item1 affichage de l'item recommandation
+    // IN : $item1 affichage de l'item top like
+    // IN : $item1 affichage de l'item top recommandation
     public function carouselle($item1, $item2, $item3){ ?>
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="6000" style="height: 380px;">
             <div class="carousel-inner" role="listbox" style="width:72%; margin-left: auto; margin-right : auto;">
-                <?php if($item1){ ?>
+                <?php if($item1){ // affichage de l'item recommandation ?>
                     <div class="item active">
                        <div class='IndexCarou'><a href='Recommandation.php'>VOUS POURRIEZ AIMER</a></div> 
                        <div class="SerieContainerIner" style="width: 100%;">
                        <?php
                        $req1=$this->_db->recommandation( null, " having count(nr.num_serie) = 0 ", 'rand()', 3);
-                       $this->affichage_serie($req1, null, 'MediaObjectCaseG2');
+                       $this->affichage_serie($req1, null, 'MediaObjectCaseG2', null);
                        ?>
                       </div>
                     </div>
                 <?php }
-                if($item2){ ?>
+                if($item2){ // affichage de l'item top like ?>
                     <div class="item <?php if(!$item1){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-heart"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
                       <?php $req1=$this->_db->serie_top_coeur(9);
-                      $this->affichage_serie($req1, null, 'MediaObjectCaseP2'); ?>
+                      $this->affichage_serie($req1, null, 'MediaObjectCaseP2', null); ?>
                      </div>
                     </div>
                 <?php }
-                if($item3){ ?>
+                if($item3){ // affichage de l'item top recommandation ?>
                     <div class="item <?php if(!$item1 && !$item2){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-eye-open"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
                       <?php $req2=$this->_db->serie_top_recommandation(9);
-                      $this->affichage_serie($req2, null, 'MediaObjectCaseP2'); ?>
+                      $this->affichage_serie($req2, null, 'MediaObjectCaseP2', null); ?>
                      </div>
                     </div>
                 <?php } ?>
             </div> 
+            <!-- Indicateurs -->
             <ol class="carousel-indicators">
                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
               <?php if(($item1 && $item2) or ($item2 && $item3) or ($item1 && $item3)){ ?>
@@ -224,7 +181,8 @@ class class_affichage{
             </a>
         </div>
     <?php }
-        
+    
+    // affichage du menu haut
     public function menu_top(){
         ob_start(); ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -245,22 +203,26 @@ class class_affichage{
                         <li class="dropdown">
                             <form class="navbar-form" role="search" action="Search.php" method="GET">
                                 <div class="input-group">
-                                    <input type="text" class="form-control menu_search" placeholder="Que recherchez-vous dans une série ?" name="mc" required>
+                                    <!-- moteur de recherche -->
+                                    <input type="text" class="form-control menu_search" placeholder="<?php echo $this->_str['menu']['placeholder']; ?>" name="mc" required>
                                     <div class="input-group-btn">
+                                        <!-- bouton de recherche -->
                                         <button type="submit" class="btn btn-default menu_btn_search" name="btn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                        <!-- suggestion de mots-clés pour une recherche de séries TV basé sur les mots-clés recherchés par les autres utilisateurs -->
                                         <button data-toggle="dropdown" class="btn btn-default menu_btn_search" role="button">
                                         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span></button>
                                         <ul class="dropdown-menu menu_tags_motsCles" role="menu" >
-                                            <?php $linkpdo = Db::getInstance();
-                                            $reqNbT = $linkpdo->query("SELECT sum(nbChercher) from interesser group by num_motcle order by sum(nbChercher) desc limit 1;");
-                                            $dataNbT = $reqNbT->fetch();
-                                            $req = $linkpdo->query("SELECT m.motcle, sum(i.nbChercher) from motcle m, interesser i where m.num_motcle = i.num_motcle group by m.motcle ORDER BY RAND() LIMIT 150;");
+                                            <div class="menu_tags_titre"><?php echo $this->_str['menu']['tags_titre']; ?></div>
+                                            <?php $nb = $this->_db->interesser_motcle_count();
+                                            $req = $this->_db->interesser_motcle();
                                             while($data = $req->fetch()){
-                                                $r = rand(1,255);
-                                                $g = rand(1,255);
-                                                $b = rand(1,255);
-                                                echo " <a href='Search.php?mc=".$data['0']."' style='color:rgb($r,$g,$b)'>"
-                                                    . "<FONT size='".($data['1']*$dataNbT['0']/$dataNbT['0']).";'>"
+                                                // couleur aléatoire pour chaques mots
+                                                $r = rand(1,200);
+                                                $g = rand(1,200);
+                                                $b = rand(1,200);
+                                                echo " <a href='Search.php?mc=".$data['0']."' style='color:rgb($r,$g,$b);'>"
+                                                    // la taille du mot-clé dépend du nombre d'utilisateur qui ont cherché ce mot 
+                                                    . "<FONT size='".($data['1']*$nb/$nb).";'>"
                                                         .$data['0']
                                                     . '</font>'
                                                 . '</a> ';
@@ -270,11 +232,13 @@ class class_affichage{
                                 </div>
                             </form>
                         </li>
+                        <!-- item recommandation -->
                         <li class="dropdown">
-                            <a href="recommandation.php">Recommandation</a>
+                            <a href="recommandation.php"><?php echo $this->_str['menu']['recommandation']; ?></a>
                         </li>
+                        <!-- item séries TV -->
                         <li class="dropdown">
-                            <a href="serie.php">Séries TV</a>
+                            <a href="serie.php"><?php echo $this->_str['menu']['serieTV']; ?></a>
                         </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -282,11 +246,14 @@ class class_affichage{
         </nav>
     <?php }
     
+    // affichage du menu bas
     public function menu_bottom(){ ?>
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <span class="ItemMenuBas" style="color:whitesmoke" >@2015 howimetmyserie</span>
+                    <span class="ItemMenuBas" style="color:whitesmoke; position: relative; display: block; padding-top: 5px !important;" >
+                        @2015 howimetmyserie
+                    </span>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-nav2 navbar-right">

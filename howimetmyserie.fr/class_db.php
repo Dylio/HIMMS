@@ -276,6 +276,31 @@ class class_db {
                         . "and num_serie='$serie';");
     }
     
+    // requete : selectionne 150 mots-clés que les utilisateurs ont recherché
+    // OUT : 150 mots-clés que les utilisateurs ont recherché
+    public function interesser_motcle(){
+        return $this->_db->query("SELECT m.motcle, count(i.nbChercher) "
+                            . "from motcle m, interesser i "
+                            . "where m.num_motcle = i.num_motcle "
+                            . "group by m.motcle "
+                            . "ORDER BY RAND() "
+                            . "LIMIT 150;");
+    }
+    
+    // requete : compte le nombre total de mots-clés que les utilisateurs ont recherché
+    // OUT : nombre total de mots-clés que les utilisateurs ont recherché
+    public function interesser_motcle_count(){
+        $req = $this->_db->query("SELECT count(nbChercher) "
+                                . "from interesser "
+                                . "group by num_motcle "
+                                . "order by sum(nbChercher) "
+                                . "desc limit 1;");
+        $data = $req->fetch();
+        return $data['0'];
+    }
+    
+                                            
+    
     // requete : insert dans la table "contact" le message de l'utilisateur
     // IN : $pseudo pseudo de l'utilisateur
     // IN : $email email de l'uitlisateur
