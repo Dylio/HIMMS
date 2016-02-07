@@ -58,6 +58,7 @@ class class_affichage{
     // IN : $req requete
     // IN : $dataNb nombre d'éléments à afficher
     // IN : $media style d'objet
+    // IN : $warning boolean true si gestion des message si non résultat
     public function affichage_serie($req, $dataNb, $media, $warning){
         echo '<div class="SerieContainerIner">';
         $i = 0;
@@ -70,11 +71,11 @@ class class_affichage{
         echo '</div>';
         // message si aucun élément en fonction du théorique et du réél
         if($warning == true){
-            if($i == 0 && $nb != 0){    // message si aucun élément réél mais plusieur éléments théoriques : filtre actuel
+            if($i == 0 && $i != 0){    // message si aucun élément réél mais plusieur éléments théoriques : filtre actuel
             echo "<div class='alert alert-warning SerieSearchMessAlert'>"
                 . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée avec les filtres actuels !"
             . "</div>"; 
-            } else if($i == 0 && $nb == 0){   // message si aucun élément réél et théorique : aucun résultat
+            } else if($i == 0 && $i == 0){   // message si aucun élément réél et théorique : aucun résultat
                 echo "<div class='alert alert-warning SerieSearchMessAlert'>"
                     . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée ..."
                 . "</div>";
@@ -201,6 +202,7 @@ class class_affichage{
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-left">
                         <li class="dropdown">
+                            <!-- Système de recherche -->
                             <form class="navbar-form" role="search" action="Search.php" method="GET">
                                 <div class="input-group">
                                     <!-- moteur de recherche -->
@@ -251,31 +253,45 @@ class class_affichage{
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <span class="ItemMenuBas" style="color:whitesmoke; position: relative; display: block; padding-top: 5px !important;" >
+                    <span class="ItemMenuBas">
                         @2015 howimetmyserie
                     </span>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-nav2 navbar-right">
+                        <!-- item Contact : toggle -->
                         <li class="dropdown">
-                            <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal">Contact</a>
+                            <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal">
+                                <?php echo $this->_str['menu']['contact']; ?>
+                            </a>
                         </li>
+                        <!-- item recommandation
+                        affiche si le questionnaire n'a pas déjà été complété par l'utilisateur -->
                         <?php if($this->_db->questionnaire_exist() == 0){ ?>
                             <li class="dropdown">
-                                <a href="donnervotreavis.php" class="ItemMenuBas">Donnez votre avis sur le site</a>
+                                <a href="donnervotreavis.php" class="ItemMenuBas">
+                                    <?php echo $this->_str['menu']['avis']; ?>
+                                </a>
                             </li>
                         <?php } ?>
+                        <!-- item CGU -->
                         <li class="dropdown">
-                            <a href="cgu.php" class="ItemMenuBas">CGU</a>
+                            <a href="cgu.php" class="ItemMenuBas">
+                                <?php echo $this->_str['menu']['cgu']; ?>
+                            </a>
                         </li>
+                        <!-- item Plan du site : toggle -->
                         <li class="dropdown">
-                            <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal2">Plan du site</a>
+                            <a href="#" type="button" class="ItemMenuBas" data-toggle="modal" data-target="#exampleModal2">
+                                <?php echo $this->_str['menu']['plan_site']; ?>
+                            </a>
                         </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div>
         </nav>
 
+        <!-- toggle Contact  -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -283,40 +299,47 @@ class class_affichage{
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title NomPartie2" id="exampleModalLabel">Nouveau message</h4>
+                        <h4 class="modal-title NomPartie2" id="exampleModalLabel"><?php echo $this->_str['contact']['title']; ?></h4>
                     </div>
                     <form action="" method="POST">
                         <div class="modal-body">
+                            <!-- pseudo -->
                             <div class="form-group">
-                                <label for="recipient-name" class="control-label">Pseudo :</label>
+                                <label for="recipient-name" class="control-label"><?php echo $this->_str['contact']['pseudo']; ?></label>
                                 <input type="text" name="pseudo" class="form-control" id="recipient-name" maxlength="50" required>
                             </div>
+                            <!-- email -->
                             <div class="form-group">
-                                <label for="recipient-mail" class="control-label">E-Mail :</label>
+                                <label for="recipient-mail" class="control-label"><?php echo $this->_str['contact']['email']; ?></label>
                                 <input type="email" name="email" class="form-control" id="recipient-mail" maxlength="255" required>
                             </div>
+                            <!-- sujet -->
                             <div class="form-group">
-                                <label for="recipient-sujet" class="control-label">Sujet :</label>
+                                <label for="recipient-sujet" class="control-label"><?php echo $this->_str['contact']['sujet']; ?></label>
                                 <input type="text" name="Sujet" class="form-control" id="recipient-sujet" maxlength="255" required>
                             </div>
+                            <!-- message (taille max 2000 caractères) -->
                             <div class="form-group">
-                                <label for="message-text" class="control-label">Message :</label>
+                                <label for="message-text" class="control-label"><?php echo $this->_str['contact']['message']; ?></label>
                                 <textarea name="Message" class="form-control" id="message-text" maxlength="2000"></textarea>
                             </div>
                         </div>
+                        <!-- bouton valider et annuler -->
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-default" data-dismiss="modal"><?php echo $this->_str['contact']['annuler']; ?></button>
                             <input type="submit" name="Envoyer" value="Envoyer" class="btn btn-primary" />
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
-        <?php if(isset($_POST['Envoyer'])){
+        
+        <?php // Gestion des évènement lorsqu'un utilisateur veut envoyer un message
+        if(isset($_POST['Envoyer'])){
             $this->_db->user_contact($_POST['pseudo'], $_POST['email'], $_POST['Sujet'], $_POST['Message']);
         } ?>
 
+        <!-- toggle Plan du Site  -->
         <div class="modal fade bs-example-modal-lg" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -328,39 +351,25 @@ class class_affichage{
                     </div>
                     <form action="" method="POST">
                         <div class="modal-body" style="text-align: center;">
-                            <img style="margin-left:auto; margin-right:auto; width:850px; height: 500px" src="Page Aide.png">
+                            <img class="planSite_img" src="Page Aide.png">
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Modal title</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>One fine body&hellip;</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
     <?php }
     
+    // renvoie une chaîne texte entrée en paramètre sans characteres specials
+    // IN : $chaine chaîne texte
+    // OUT : chaîne texte sans characteres specials
     public static function no_special_character($chaine){
+        // Enlève tout les accents de la chaîne texte
         $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
         $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
         $chaine = utf8_encode(strtr(utf8_decode($chaine), utf8_decode($a), utf8_decode($b)));
         // Ecrit la chaîne de caractères en miniscule
         $chaine = strtolower($chaine);
-        // Supprime la ponctuation de la chaîne de caractères
+        // Supprime la ponctuation de la chaîne texte
         $carac = array('.' ,'!' ,'?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}');
         $chaine = str_replace ($carac, ' ', $chaine);
         $chaine = str_replace ('œ', 'oe', $chaine);
@@ -368,32 +377,38 @@ class class_affichage{
         return $chaine;
     }
     
-    public static function question_oui_non($nb, $question){
+    // affiche un questionnaire oui/non
+    // IN : $nb numéro de question
+    // IN : $question intitulé de la question
+    public function question_oui_non($nb, $question){
         echo "<div class='question'>$nb - $question :<br/>"
             ."<div class='cc-selector-2'>"
-                ."<span style='margin:20px'>"
+                ."<span class='btnQuestion'>"
                     ."<input type='radio' name='question$nb' id='question".$nb."_0' value='0' required />"
-                    ."<label class='drinkcard-cc BoNo' for='question".$nb."_0' data-toggle='tooltip' data-placement='left' title='Non !'></label>"
+                    ."<label class='drinkcard-cc BoNo' for='question".$nb."_0' data-toggle='tooltip' data-placement='left' title='".$this->_str['questionnaire']['reponse']['non']."'></label>"
                 ."</span>"
-                ."<span style='margin:20px'>"
+                ."<span class='btnQuestion'>"
                     ."<input type='radio' name='question$nb' id='question".$nb."_1' value='1' required />"
-                    ."<label class='drinkcard-cc BoOk' for='question".$nb."_1'  data-toggle='tooltip' data-placement='right' title='Oui !'></label>"
+                    ."<label class='drinkcard-cc BoOk' for='question".$nb."_1'  data-toggle='tooltip' data-placement='right' title='".$this->_str['questionnaire']['reponse']['oui']."'></label>"
                 ."</span>"
             ."</div>"
         ."</div>";
     }
-    public static function question_satisfaction($nb, $question){
+    // affiche un questionnaire Très Satisfait / Moyennement Satisfait / Non Satisfait
+    // IN : $nb numéro de question
+    // IN : $question intitulé de la question
+    public function question_satisfaction($nb, $question){
         echo "<div class='question'>$nb - $question<br/>"
             ."<div align='center'>"
                 ."<div class='btn-group' data-toggle='buttons'>"
-                    ."<label class='btn btn-primary' style='margin-bottom:20px'>"
-                        ."<input type='radio' name='question$nb' value='0' required> Non Satisfait"
+                    ."<label class='btn btn-primary btnQuestion'>"
+                        ."<input type='radio' name='question$nb' value='0' required>".$this->_str['questionnaire']['reponse']['satisfaction0']
                     ."</label>"
-                    ."<label class='btn btn-primary' style='margin-bottom:20px'>"
-                        ."<input type='radio' name='question$nb' value='1' required> Moyennement Satisfait"
+                    ."<label class='btn btn-primary btnQuestion'>"
+                        ."<input type='radio' name='question$nb' value='1' required>".$this->_str['questionnaire']['reponse']['satisfaction1']
                     ."</label>"
-                    ."<label class='btn btn-primary' style='margin-bottom:20px'>"
-                        ."<input type='radio' name='question$nb' value='2' required> Très Satisfait"
+                    ."<label class='btn btn-primary btnQuestion'>"
+                        ."<input type='radio' name='question$nb' value='2' required>".$this->_str['questionnaire']['reponse']['satisfaction2']
                     ."</label>"
                 ."</div>"
             ."</div>"

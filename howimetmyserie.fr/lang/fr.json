@@ -8,6 +8,10 @@
     "menu":{
         "serieTV": "Séries TV",
         "recommandation": "Recommandation",
+        "contact": "Contact",
+        "avis": "Donnez votre avis sur le site",
+        "cgu": "CGU",
+        "plan_site": "Plan du site",
         "tags_titre": "En manque d'inspiration ?",
         "placeholder": "Que recherchez-vous dans une série ?"
     },
@@ -95,7 +99,23 @@
         "5": "Je trouve que les résultats de recherche sont satifaisants",
         "6": "Je trouve que les recommandations qui m'ont été proposées ont été satisfaites",
         "7": "Je recommanderais ce site à un ami",
-        "commentaire": "Si vous souhaitez nous laisser un commentaire, c'est simple, c'est ici :"
+        "commentaire": "Si vous souhaitez nous laisser un commentaire, c'est simple, c'est ici :",
+        "reponse":{
+            "oui": "Oui !",
+            "non": "Non !",
+            "satisfaction0": "Non Satisfait",
+            "satisfaction1": "Moyennement Satisfait",
+            "satisfaction2": "Très Satisfait"
+        }
+    },
+    
+    "contact":{
+        "title": "Nouveau Message",
+        "pseudo": "Pseudo :",
+        "email": "E-Mail :",
+        "sujet": "Sujet :",
+        "message": "Message :",
+        "annuler": "Annuler"
     },
             
     "tooltip":{ 

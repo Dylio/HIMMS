@@ -1,3 +1,12 @@
+.btnQuestion{
+    margin-bottom:20px;
+}
+.planSite_img{
+    margin-left:auto;
+    margin-right:auto;
+    width:850px;
+    height:500px
+}
 .SearchInput{
     height: 40px !important;
     margin: 20px 0px !important;
@@ -153,6 +162,10 @@ html {
     padding: 15px;
 }
 .ItemMenuBas{
+   color:whitesmoke;
+   position: relative;
+   display: block;
+   padding-top: 5px !important;
    font-size: 14px;
    margin-left: 22px;
    margin-right: 22px;
