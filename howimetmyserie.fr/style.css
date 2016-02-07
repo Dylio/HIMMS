@@ -1,57 +1,13 @@
-.btnQuestion{
-    margin-bottom:20px;
-}
-.planSite_img{
-    margin-left:auto;
-    margin-right:auto;
-    width:850px;
-    height:500px
-}
-.SearchInput{
-    height: 40px !important;
-    margin: 20px 0px !important;
-}
-.RecommandationInput{
-    text-align:center;
-    font-family : "Guardians", sans-serif ;
-}
-.formLike{
-    text-align:center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30%;
-}
-.formSearch{
-    text-align:center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 35%;
-}
-.formMedia{
-    float: right;
-    margin-right: 100px;
-    margin-bottom : 0px !important;
-}
-.tri_group1{
-    float: left;
-    margin-left: 100px;
-    margin-bottom: 0px !important;
-}
-.tri_group2{
-    float: left;
-    margin-left: 25px;
-    margin-bottom: 0px !important;
-}
-
 /* POLICE */
 @font-face { font-family: "Coalition_v2"; src: url('./fonts/Coalition_v2.ttf') format('truetype'); }
 @font-face { font-family: "Guardians"; src: url('./fonts/Guardians.ttf') format('truetype'); }
+
 
 /* GENERAL */
 body{
     min-width: 1200px;
     max-width: 100%;
-    height: auto;
+    height: max-content;
     margin : 4.5% auto 1% auto;
     font-size:20px
 }
@@ -76,9 +32,9 @@ html {
 .NomPartie2{
     font-family : "Coalition_v2", sans-serif ;
     text-align: center;
-    font-size : 35px !important;
-    color : black;
-    text-shadow: #000000 1px 1px, #000000 -1px 1px, #000000 -1px -1px, #000000 1px -1px;
+    font-size : 25px !important;
+    color: #3B88C9 !important;
+    text-shadow: #000000 2px 2px, #000000 -2px 2px, #000000 -2px -2px, #000000 2px -2px;
 }
 
 
@@ -132,6 +88,7 @@ html {
     text-shadow: #000000 2px 2px, #000000 -2px 2px, #000000 -2px -2px, #000000 2px -2px;
 }
 
+
 /* MENU */
 .navTitre{
     font-family : "Coalition_v2", sans-serif ; 
@@ -176,6 +133,44 @@ html {
     height: 12px;
 }
 .navbar {min-height:27px !important;}
+
+
+/* Tri */
+.formLike{
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+.SearchInput{
+    height: 40px !important;
+    margin: 20px 0px !important;
+}
+.formSearch{
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35%;
+}
+.formMedia{
+    float: right;
+    margin-right: 100px;
+    margin-bottom : 0px !important;
+}
+.tri_group1{
+    float: left;
+    margin-left: 100px;
+    margin-bottom: 0px !important;
+}
+.tri_group2{
+    float: left;
+    margin-left: 25px;
+    margin-bottom: 0px !important;
+}
+.RecommandationInput{
+    text-align:center;
+    font-family : "Guardians", sans-serif ;
+}
 
 
 /* SERIES */
@@ -393,6 +388,7 @@ html {
     margin-right: 15px !important;
 }
 
+
 /* DETAIL */
 .TitreSerie{
     font-family : "Guardians", sans-serif ;
@@ -468,25 +464,22 @@ html {
     cursor:pointer;
     overflow: hidden;
 }
-.buttonDetailSerieR2 {
+.buttonTriR {
     font-size: 20px;
     color: red;
 }
-.buttonDetailSerieB2 {
+.buttonTriR:hover{
+    color : red;
+}
+.buttonTriB {
     font-size: 20px; 
     color: blue;
 }
-.buttonDetailSerieR2:hover{
-    color: red;
-}
-.buttonDetailSerieB2:hover{
-    color: blue;
-}
-.buttonDetailSerieN2{
+.buttonTriN{
     font-size: 20px; 
     color: black !important;    
 }
-.buttonDetailSerieW2{
+.buttonTriW{
     font-size: 20px; 
     color: white !important;    
 }
@@ -516,6 +509,9 @@ html {
     text-align:center;
     font-size: 20px;
 }
+.btnQuestion{
+    margin-bottom:20px;
+}
 .cc-selector-2 input{
     position:absolute;
     z-index:999;
@@ -543,4 +539,15 @@ html {
     -webkit-filter: none;
        -moz-filter: none;
             filter: none;
+}
+
+/* Plan du Site */
+.planSite_conener_img{
+    text-align: center;
+}
+.planSite_img{
+    margin-left:auto;
+    margin-right:auto;
+    width:850px;
+    height:500px;
 }

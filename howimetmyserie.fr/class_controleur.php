@@ -92,15 +92,11 @@ class class_controleur {
 
     // permet d'afficher les différents éléments permettant l'interaction avec l'utilisateur sans zone texte
     // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
+    // IN : $recommandation_exist 1 si recommandation ou 0 si top série
     public function vue_tri2($placeholder){
-        $this->like();          // choix : aimé/tous/non aimé
-        echo "<form action='' method='POST'>"
-            . "<div class='input-group formSearch'>"
-                . "<input type='text' name='search' class='form-control SearchInput RecommandationInput' value='$placeholder' disabled>"
-            . "</div>"
-         . "</form><br/>";
-        $this->order();         // choix : ordre d'appartition
-        $this->media();         // choix : style d'objet abstrait pour la visualisation des séries TV
+            $this->like();          // choix : aimé/tous/non aimé
+            $this->order();         // choix : ordre d'appartition
+            $this->media();         // choix : style d'objet abstrait pour la visualisation des séries TV  
     }       
 
     // afficher l'élément graphique permettant la recherche de séries TV via une entrée texte 
@@ -161,9 +157,9 @@ class class_controleur {
             // avec un tooltip à gauche
             .'<button type="submit" name="List_like" data-toggle="tooltip" data-placement="left" title="'.$this->_str['tooltip']['like']['like'].'"';
                 if($this->_Like == 'like'){
-                    echo "class='btn btn-success buttonDetailSerieR2' disabled>";
+                    echo "class='btn btn-success buttonTriR' disabled>";
                 }else{
-                    echo "class='btn btn-info buttonDetailSerieR2'>";
+                    echo "class='btn btn-info buttonTriR'>";
                 }
                 echo "<span class='glyphicon glyphicon-heart'></span>"
             ."</button> "
@@ -171,9 +167,9 @@ class class_controleur {
             // avec un tooltip en haut
             ."<button type='submit' name='List_all' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['like']['all']."'";
                 if($this->_Like == 'all'){
-                    echo "class='btn btn-success buttonDetailSerieW2' disabled>";
+                    echo "class='btn btn-success buttonTriW' disabled>";
                 }else{
-                    echo "class='btn btn-info buttonDetailSerieW2'>";
+                    echo "class='btn btn-info buttonTriW'>";
                 }
                 echo "Tous"
             ."</button> "
@@ -181,9 +177,9 @@ class class_controleur {
             // avec un tooltip à droite
             .'<button type="submit" name="List_unlike" data-toggle="tooltip" data-placement="right" title="'.$this->_str['tooltip']['like']['unlike'].'"';
                 if($this->_Like == 'unlike'){
-                    echo "class='btn btn-success buttonDetailSerieN2' disabled>";
+                    echo "class='btn btn-success buttonTriN' disabled>";
                 }else{
-                    echo "class='btn btn-info buttonDetailSerieN2'>";
+                    echo "class='btn btn-info buttonTriN'>";
                 }
                 echo "<span class='glyphicon glyphicon-heart-empty'></span>"
             ."</button>"

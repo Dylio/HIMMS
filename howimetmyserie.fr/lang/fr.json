@@ -34,7 +34,8 @@
     
     "recommendation":{
         "title": "RECOMMANDATION",
-        "input_search": "vos serie selon vos gout !"
+        "input_search": "Vos séries TV selon vos goûts !",
+        "input_search_no_recommandation": "Aucun goût n'a encore été exprimé par vous.<br/>Nous vous proposons alors un TOP 20 SERIES TV selon les autres utilisateurs !"
     },
     
     "search":{
@@ -107,6 +108,10 @@
             "satisfaction1": "Moyennement Satisfait",
             "satisfaction2": "Très Satisfait"
         }
+    },
+    
+    "plan_site":{
+        "title": "Plan du Site"
     },
     
     "contact":{

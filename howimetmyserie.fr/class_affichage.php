@@ -37,8 +37,11 @@ class class_affichage{
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($i === $aleaImage and substr($file, -4) == ".jpg"){      // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "style='background: url(./css/fond/$file) no-repeat center fixed !important; "
-                            . "background-size: 100% 100% !important;'";   // renvoie la $aleaImage fond d'écran
+                    return "style='background: url(./css/fond/$file); "
+                            . "background-size: 100% 100%;"
+                            . "background-position: center center;
+                                background-repeat: no-repeat; 
+                                background-attachment: fixed'";   // renvoie la $aleaImage fond d'écran
                 }
                 if(substr($file, -4) == ".jpg"){
                     $i++;
@@ -207,7 +210,7 @@ class class_affichage{
                                 <div class="input-group">
                                     <!-- moteur de recherche -->
                                     <input type="text" class="form-control menu_search" placeholder="<?php echo $this->_str['menu']['placeholder']; ?>" name="mc" required>
-                                    <div class="input-group-btn">
+                                    <div class="input-group-btn" style="display: inline !important;">
                                         <!-- bouton de recherche -->
                                         <button type="submit" class="btn btn-default menu_btn_search" name="btn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                                         <!-- suggestion de mots-clés pour une recherche de séries TV basé sur les mots-clés recherchés par les autres utilisateurs -->
@@ -218,7 +221,7 @@ class class_affichage{
                                             <?php $nb = $this->_db->interesser_motcle_count();
                                             $req = $this->_db->interesser_motcle();
                                             while($data = $req->fetch()){
-                                                // couleur aléatoire pour chaques mots
+                                                // couleur aléatoire pour chaques mots-clés
                                                 $r = rand(1,200);
                                                 $g = rand(1,200);
                                                 $b = rand(1,200);
@@ -347,10 +350,10 @@ class class_affichage{
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title NomPartie2" id="exampleModalLabel">Plan du Site</h4>
+                        <h4 class="modal-title NomPartie2" id="exampleModalLabel"><?php echo $this->_str['plan_site']['title']; ?></h4>
                     </div>
                     <form action="" method="POST">
-                        <div class="modal-body" style="text-align: center;">
+                        <div class="modal-body planSite_conener_img">
                             <img class="planSite_img" src="Page Aide.png">
                         </div>
                     </form>
