@@ -35,7 +35,6 @@ $str = lang::getlang(); ?>
         $affichage->like_recommandation();
         // affichage des composants servant au tri des séries TV
         $_SESSION['SerieTV']->vue_tri($str['serie']['input_search'], false);
-        
         // selection séries TV selon les choix de tri de l'utilisateur
         $req= $db->serie($_SESSION['SerieTV']->getTxtSearch(), 
                 $_SESSION['SerieTV']->getTxtLike(),

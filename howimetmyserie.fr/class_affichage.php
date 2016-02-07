@@ -37,11 +37,7 @@ class class_affichage{
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($i === $aleaImage and substr($file, -4) == ".jpg"){      // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "style='background: url(./css/fond/$file); "
-                            . "background-size: 100% 100%;"
-                            . "background-position: center center;
-                                background-repeat: no-repeat; 
-                                background-attachment: fixed'";   // renvoie la $aleaImage fond d'écran
+                    return "style='background: url(./css/fond/$file);'"; // renvoie la $aleaImage fond d'écran
                 }
                 if(substr($file, -4) == ".jpg"){
                     $i++;

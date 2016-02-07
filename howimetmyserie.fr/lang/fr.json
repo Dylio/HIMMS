@@ -16,6 +16,16 @@
         "placeholder": "Que recherchez-vous dans une série ?"
     },
     
+    "index_first":{
+        "bienvenu": "Bienvenu sur ",
+        "recommandation": "Votre site de recommandation de séries TV.",
+        "sensibilite": "Certaines séries TV sont susceptibles de heurter la sensibilité, leur accés sont limités :",
+        "option_1": "Je confirme avoir au moins 18 ans et avoir lu et accepter les conditions générales du site.",
+        "option_2": "Je confirme avoir 17 ans ou moins et avoir lu et accepter les conditions générales du site.",
+        "utilisation": "En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de cookies et de sessions pour vous proposer des séries adaptées à vos centres d'intérêts et réaliser des statistiques de visites.",
+        "bouton": "Accéder à How I Met My Serie"
+    },
+    
     "serie":{
         "title": "SERIES TV",
         "input_search": "Entrez une série ..."
@@ -32,7 +42,7 @@
         "Recommandation": "Si vous aimez cette série, vous pourriez aimer ..."
     },
     
-    "recommendation":{
+    "recommandation":{
         "title": "RECOMMANDATION",
         "input_search": "Vos séries TV selon vos goûts !",
         "input_search_no_recommandation": "Aucun goût n'a encore été exprimé par vous.<br/>Nous vous proposons alors un TOP 20 SERIES TV selon les autres utilisateurs !"

@@ -26,8 +26,10 @@ $str = lang::getlang(); ?>
         ?>
     </head>
     
-    <body style='background: url("<?php echo $affichage->alea_Image($data['titre']); ?>") no-repeat center fixed; background-size: 100% 100% !important'>
-        <?php $affichage->like_recommandation();
+    <body style='background: url("<?php echo $affichage->alea_Image($data['titre']); ?>")'>
+        <?php 
+        // gestion de l'évènement séries TV aimé ou recommandé et son contraire
+        $affichage->like_recommandation();
         $req=$db->une_serie($_GET['num_serie']);    // sectionne les détail de la série TV
         $affichage->affichage_serie($req, null, 'MediaObjectDetail', null); ?>
     </body>
