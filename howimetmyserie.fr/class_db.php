@@ -35,14 +35,15 @@ class class_db {
     
     // requete : insertion du nouveau utilisateur dans la base de données
     private function user_insert(){
-        $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, date_inscription) "
-                        . "values('$this->_user', 1, now());");
+        $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, date_inscription, date_derniere_visite) "
+                        . "values('$this->_user', 1, now(), now());");
     }
     
     // requete : mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
     private function user_update(){
         $this->_db->query("UPDATE utilisateur "
                         . "set nbVisite = nbVisite + 1 "
+                        . "and date_derniere_visite = now() "
                         . "where num_user = '$this->_user' ;");
     }
     
@@ -161,12 +162,11 @@ class class_db {
     // IN : $num_serie numéro unique de la série TV
     // OUT : requete de selection des séries TV ressemblant à la série TV
     public function recommandation_serie($num_serie){
-        return $reqRec = $this->_db->query("SELECT s.* "
+        return $this->_db->query("SELECT s.* "
                 . "FROM appartenir a join $this->_serie s on s.num_serie = a.num_serie "
-                . "WHERE exists(select num_serie "
+                . "WHERE a.num_motcle in (select num_motcle "
                             . "from appartenir "
-                            . "where num_motcle = a.num_motcle "
-                            . "and num_serie = '$num_serie') "
+                            . "where num_serie = '$num_serie') "
                 . "group by s.num_serie "
                 . "ORDER BY count(*) DESC "
                 . "limit 3 OFFSET 1;");

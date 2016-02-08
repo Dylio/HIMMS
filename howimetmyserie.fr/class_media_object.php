@@ -245,15 +245,14 @@ class class_media_object {
                     echo $this->_str['serie_detail']['Nationalité']."<span class='Serie_Detail_txt'>$this->_nationalite</span><br/>"
                     .$this->_str['serie_detail']['Genre']."<span class='Serie_Detail_txt'>$this->_genre</span><br/>"
                     .$this->_str['serie_detail']['Format']."<span class='Serie_Detail_txt'>$this->_format</span>"
-                ."</div>"
-                ."<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
+                ."</div>";
+                echo "<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
                     ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
                      echo '<div class="SerieContainerIner">';
                     $req = $this->_db->recommandation_serie($this->_serie);
-                    $media_object = new class_media_object($this->_db, $this->_str);
                     while($data = $req->fetch()){
-                       $media_object->newSerieDetail($data);
-                       $media_object->media_object("MediaObjectCaseG2");
+                       $this->newSerieDetail($data);
+                       $this->media_object("MediaObjectCaseG2");
                     }
                     echo '</div>';
                 echo "</div>";

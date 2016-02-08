@@ -2,7 +2,7 @@
 // Cette classe permet la gestion des événements de synchronisation pour mettre à jour les données affichées. 
 // Il reçoit tous les événements de l'utilisateur.
 class class_controleur {
-    private  $_TxtSearch;           // texte d'une recherche des séries TV spécifiques
+    private  $_TxtSearch;           // texte d'une partie de requete SQL permettant une recherche de séries TV spécifiques
     private  $_Like;                // recherche des series TV aimé ou non
     private  $_Order;               // ordre de restitution des valeurs
     private  $_Recommandation;      // recherche des séries TV dont l'utilisateur souhaite être recommander ou non
