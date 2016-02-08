@@ -1,4 +1,9 @@
-<?php // constantes textuelles du site web
+<?php 
+if($this->_db->questionnaire_exist() == 1){
+    header("Location:index.php");
+    exit;
+}
+// constantes textuelles du site web
 require_once 'lang.php';
 $str = lang::getlang(); ?>
 <!DOCTYPE html>
@@ -47,7 +52,7 @@ $str = lang::getlang(); ?>
             </div>
         </form>
         <?php if(isset($_POST['valider'])){
-            $bd->questionnaire($_POST['question1'],
+            $db->questionnaire($_POST['question1'],
                                 $_POST['question2'],
                                 $_POST['question3'],
                                 $_POST['question4'],

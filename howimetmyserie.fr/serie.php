@@ -15,7 +15,7 @@ $str = lang::getlang(); ?>
         <script type="text/javascript"> $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         })</script>
-        <?php // création et gestion des classes permettant l'affichage et le fonctionnement des évènements
+        <?php 
             require_once 'class_db.php';            // base de données
             require_once 'class_affichage.php';     // affichage global
             require_once 'class_controleur.php';    // afficahge et gestion des controleurs
