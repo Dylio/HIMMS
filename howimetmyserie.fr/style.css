@@ -421,7 +421,7 @@ html {
     color : #007493;
 }
 .SerieDetailContainer{
-    background-color: rgba(97, 225, 150, 0.70) !important;
+    background-color: rgba(125, 135, 125, 0.70) !important;
     width : 100%;
     margin-left: auto;
     margin-right: auto;
@@ -566,4 +566,10 @@ html {
     margin-right:auto;
     width:850px;
     height:500px;
+}
+
+/* Admin */
+.panel_texte{
+    font-size: 13px;
+    line-height:2;
 }
