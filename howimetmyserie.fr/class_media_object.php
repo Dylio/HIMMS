@@ -17,7 +17,7 @@ class class_media_object {
     // Constructeur de la classe class_media_object
     // IN : $db instance vers la base de données
     // IN : $str constantes textuelles du site web
-    public function __construct($db, $str){
+    public function __construct($db){
         $this->_str = $str;
         $this->_db = $db;
     }
@@ -161,8 +161,6 @@ class class_media_object {
     // Créer sous différents styles d'objets abstraits la construction graphique de la séries TV
     // IN : $object la forme de restitution de la séries TV
     public function media_object($object){
-        ob_flush();
-        flush();
         switch ($object) {
             case "MediaObjectList" : // sous forme de liste
                 echo "<div class='thumbnail SerieListContainerSerie'>" // conteneur de l'affiche de la serie TV
@@ -247,12 +245,12 @@ class class_media_object {
                     .$this->_str['serie_detail']['Format']."<span class='Serie_Detail_txt'>$this->_format</span>"
                 ."</div>";
                 echo "<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
-                    ."<p style='text-align: center'>".$this->_str['serie_detail']['Recommandation']."</p>";
+                    ."<div style='text-align: center; font-size:25px;!important'>".$this->_str['serie_detail']['Recommandation']."</div>";
                      echo '<div class="SerieContainerIner">';
                     $req = $this->_db->recommandation_serie($this->_serie);
                     while($data = $req->fetch()){
                        $this->newSerieDetail($data);
-                       $this->media_object("MediaObjectCaseG2");
+                       $this->media_object("MediaObjectCaseP2");
                     }
                     echo '</div>';
                 echo "</div>";
