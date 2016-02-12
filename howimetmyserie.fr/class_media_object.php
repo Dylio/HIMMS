@@ -17,7 +17,7 @@ class class_media_object {
     // Constructeur de la classe class_media_object
     // IN : $db instance vers la base de données
     // IN : $str constantes textuelles du site web
-    public function __construct($db){
+    public function __construct($db, $str){
         $this->_str = $str;
         $this->_db = $db;
     }
