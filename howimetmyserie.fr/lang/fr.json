@@ -109,14 +109,14 @@
         "4": "Je trouve les differentes fonctions de ce site bien intégrées",
         "5": "Je trouve que les résultats de recherche sont satifaisants",
         "6": "Je trouve que les recommandations qui m'ont été proposées ont été satisfaites",
-        "7": "Je recommanderais ce site à un ami",
+        "7": "Je recommanderais ce site a un ami",
         "commentaire": "Si vous souhaitez nous laisser un commentaire, c'est simple, c'est ici :",
         "reponse":{
             "oui": "Oui !",
             "non": "Non !",
             "satisfaction0": "Non Satisfait",
             "satisfaction1": "Moyennement Satisfait",
-            "satisfaction2": "Très Satisfait"
+            "satisfaction2": "Satisfait"
         }
     },
     

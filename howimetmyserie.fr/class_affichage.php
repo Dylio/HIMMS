@@ -404,10 +404,10 @@ class class_affichage{
                         ."<input type='radio' name='question$nb' value='0' required>".$this->_str['questionnaire']['reponse']['satisfaction0']
                     ."</label>"
                     ."<label class='btn btn-primary btnQuestion'>"
-                        ."<input type='radio' name='question$nb' value='0.5' required>".$this->_str['questionnaire']['reponse']['satisfaction1']
+                        ."<input type='radio' name='question$nb' value='1' required>".$this->_str['questionnaire']['reponse']['satisfaction1']
                     ."</label>"
                     ."<label class='btn btn-primary btnQuestion'>"
-                        ."<input type='radio' name='question$nb' value='1' required>".$this->_str['questionnaire']['reponse']['satisfaction2']
+                        ."<input type='radio' name='question$nb' value='2' required>".$this->_str['questionnaire']['reponse']['satisfaction2']
                     ."</label>"
                 ."</div>"
             ."</div>"
