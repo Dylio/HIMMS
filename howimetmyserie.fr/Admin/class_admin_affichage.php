@@ -30,10 +30,10 @@ class class_admin_affichage{
                 . "<ul class='dropdown-menu'>"
                     ."<li role='presentation' ";
                     if($i == 2){ echo "class='active'"; }
-                    echo "><a href='visiteur.php?annee=".date('Y')."'>Les Visites</a></li>"
+                    echo "><a href='stat_visiteur.php?annee=".date('Y')."'>Les Visites</a></li>"
                     ."<li role='presentation' ";
                     if($i == 3){ echo "class='active'"; }
-                    echo "><a href='resultatQuestionnaire.php'>Les Avis</a></li>"
+                    echo "><a href='stat_avis.php'>Les Avis</a></li>"
                 . "</ul>"
             . "</li>"
             . "<li role='presentation' ";
