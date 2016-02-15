@@ -1,5 +1,7 @@
 <?php 
-if($this->_db->questionnaire_exist() == 1){
+require_once 'class_db.php';            // base de données
+$db = new class_db(false);
+if($db->questionnaire_exist() == 1){
     header("Location:index.php");
     exit;
 }
@@ -21,9 +23,7 @@ $str = lang::getlang(); ?>
             $('[data-toggle="tooltip"]').tooltip();
         })</script>
         <?php // création et gestion des classes permettant l'affichage et le fonctionnement des évènements
-            require_once 'class_db.php';            // base de données
             require_once 'class_affichage.php';     // affichage global
-            $db = new class_db(false);
             $affichage = new class_affichage($db, $str);
         ?>
     </head>
