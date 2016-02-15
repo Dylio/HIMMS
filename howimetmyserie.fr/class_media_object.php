@@ -261,7 +261,7 @@ class class_media_object {
     // Renvoie l'adresse relatif d'une image aléatoire de la série TV
     // OUT : adresse relatif d'une image aléatoire de la série TV
     public static function alea_image($titreSerie){
-        $dirname = "./Affiche/$titreSerie";       // adresse relatif de la série TV
+        $dirname = "./Affiche_1/$titreSerie";       // adresse relatif de la série TV
         if(file_exists($dirname) ){                 // vérification que le dossier existe
             $j = 0;                                 // $j nombre d'affiche de la série TV
             $dir = opendir($dirname);       
@@ -276,7 +276,7 @@ class class_media_object {
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "Affiche/$titreSerie/".$file;              // renvoie la $aleaImage affiche de série TV
+                    return "Affiche_1/$titreSerie/".$file;              // renvoie la $aleaImage affiche de série TV
                 }
                 if(substr($file, -4) == ".png"){
                     $i++;
