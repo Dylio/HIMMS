@@ -23,7 +23,7 @@ class class_db {
         }
         session_start(); // demarre la session
         $restriction = $this->restriction();
-        if($restriction == -1 && $pageIndexFirst == false){ // vérification si l'utilisateur a déjà annoncer sa majorité ou non pour la restriction 
+        if($restriction == -1 && $pageIndexFirst == false){ // vérification si l'utilisateur a déjà annoncer sa majorité ou non pour la restriction
             header("Location:index_First.php");
         }
         if($restriction == 1){ // restriction : selectionne la table serietp (tout public)
@@ -58,7 +58,7 @@ class class_db {
     public function restriction(){
         $req = $this->_db->query("Select restriction "
                                 . "from utilisateur "
-                                . "where num_user = '$this->_user';");
+                                . "where num_user like '$this->_user';");
         $data = $req->fetch();
         return $data['0'];
     }

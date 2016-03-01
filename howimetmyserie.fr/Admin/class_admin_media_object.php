@@ -1,7 +1,7 @@
 <?php
 // Cette classe permet de restituer sous différents styles d'objets abstraits la construction graphique d'une
 // séries TV via divers types de composants qui présentent son affiche et le contenu textuel.
-class class_media_object {
+class class_admin_media_object {
     private  $_serie;           // numéro de la série
     private  $_titre;           // titre de la série
     private  $_date;            // date de début et de fin de la série
@@ -64,10 +64,10 @@ class class_media_object {
     // IN : $object la forme de restitution de la séries TV
     public function media_object(){
         echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
-            ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
-                ."<img class='media-object SerieCasePImg' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+            ."<a href='./serie_detail.php?opt=0&num_serie=$this->_serie' class='media-left media-middle'>"
+                ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
             ."</a>"
-            ."<div class='media-body SerieCasePTxt'>"; // conteneur de la description de la serie TV
+            ."<div class='media-body SerieCaseP2Txt'>"; // conteneur de la description de la serie TV
                 echo $this->serie_titre("SerieCasePTitre");
                 echo $this->serie_date("SerieCasePDate");
             echo '</div>'

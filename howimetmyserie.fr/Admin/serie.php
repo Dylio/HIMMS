@@ -20,9 +20,7 @@ $str = lang::getlang(); ?>
     </head>
     
     <body>
-        <?php 
-        $affichage->affichage_site($str['site']['name']);
-        $affichage->affichage_menu(1); ?>
+        <?php $affichage->affichage_menu(1); ?>
         <p class='NomPartie'><small>MODIFICATION DES SERIES TV</small></p><br/>
         <?php $req=$db->serie(null, null, null, 'titre asc');
         $affichage->affichage_serie($req);

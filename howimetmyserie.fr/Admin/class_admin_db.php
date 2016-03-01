@@ -123,4 +123,56 @@ class class_admin_db {
         $data = $req->fetch();
         return $data;
     }
+    
+    public function update_serie($num_serie, $titre, $dateD, $dateF, $nationalite, $créateurs, $acteurs, $genre, $format, $nbSaison, $nbEpisode, $classification){
+        $this->_db->query("UPDATE serie "
+                . "SET titre='$titre', "
+                . "dateD='$dateD', "
+                . "dateF='$dateF', "
+                . "nationalite='$nationalite', "
+                . "créateurs='$créateurs', "
+                . "acteurs='$acteurs', "
+                . "genre='$genre', "
+                . "format='$format', "
+                . "nbSaison='$nbSaison', "
+                . "nbEpisode='$nbEpisode', "
+                . "classification='$classification' "
+                . "WHERE num_serie='$num_serie';");
+    }   
+    
+    public function motexclu(){
+        return $this->_db->query("SELECT * "
+                                . "from exclusion;");
+    }
+    
+    public function motcle($num_serie){
+        return $this->_db->query("SELECT m.num_motcle, m.motcle, a.occurrence "
+                                . "from motcle m, appartenir a "
+                                . "where m.num_motcle = a.num_motcle "
+                                . "and a.num_serie = '$num_serie' "
+                                . "order by m.motcle;");
+    }
+    
+    public function delete_motcle($num_serie, $num_motcle){
+        $this->_db->query("DELETE FROM appartenir "
+                        . "where num_motcle = '$num_motcle' "
+                        . "and num_serie = '$num_serie';");
+    }
+    
+    public function serie_SRT($num_serie){
+        return $this->_db->query("SELECT num_serie, saison, episode, sum(vf), sum(vo) "
+                                . "from("
+                                    . "select num_serie, saison, episode, 1 as vf, 0 as vo "
+                                    . "from soustitre "
+                                    . "where num_serie = '$num_serie' "
+                                    . "and version = 'VF' "
+                                . "UNION ALL "
+                                    . "select num_serie, saison, episode, 0 as vf, 1 as vo "
+                                    . "from soustitre "
+                                    . "where num_serie = '$num_serie' "
+                                    . "and version = 'VO' "
+                                . ") s1 "
+                                . "group by num_serie, saison, episode "
+                                . "order by 1 asc, 2 asc, 3 asc;");
+    }
 }

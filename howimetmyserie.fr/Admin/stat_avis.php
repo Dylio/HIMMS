@@ -22,8 +22,7 @@ $str = lang::getlang(); ?>
     </head>
  
     <body>
-        <?php $affichage->affichage_site($str['site']['name']);
-        $affichage->affichage_menu(3); ?> 
+        <?php $affichage->affichage_menu(3); ?> 
         <p class='NomPartie'><small>LES AVIS DES UTILISATEURS</small></p><br/>
         Nombre d'utilisateur ayant remplit le questionnaire : <b><?php echo $db->questionnaire_nb_user(); ?></b><br/><br/>
             <!-- panel contents -->

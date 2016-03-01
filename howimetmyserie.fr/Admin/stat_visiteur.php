@@ -22,9 +22,7 @@ $str = lang::getlang(); ?>
     </head>
  
     <body>
-        <?php $affichage->affichage_site($str['site']['name']);
-        $affichage->affichage_menu(2);
-        ?>
+        <?php $affichage->affichage_menu(2); ?>
         <p class='NomPartie'><small>LES VISITES</small></p><br/>
         <table class="table  table-striped table-responsive table-condensed" style="margin-left:25%; margin-left:25%; width: 50%;">
             <tr>

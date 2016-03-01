@@ -23,6 +23,9 @@ html {
     text-align: center;
     font-size : 55px !important;
     color: #3B88C9 !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    line-height: 1.6;
     text-shadow: #000000 2px 2px, #000000 -2px 2px, #000000 -2px -2px, #000000 2px -2px;
 }
 .MCRecherche{
@@ -37,6 +40,18 @@ html {
     font-family : "Coalition_v2", sans-serif ;
     text-align: center;
     font-size : 25px !important;
+    color: #3B88C9 !important;
+    text-shadow: #000000 2px 2px, #000000 -2px 2px, #000000 -2px -2px, #000000 2px -2px;
+}
+.NomPartie3{
+    font-family : "Coalition_v2", sans-serif ;
+    text-align: center;
+    font-size : 40px !important;
+    color: #3B88C9 !important;
+}
+.NomPartie4{
+    font-family : "Coalition_v2", sans-serif ;
+    font-size : 45px !important;
     color: #3B88C9 !important;
     text-shadow: #000000 2px 2px, #000000 -2px 2px, #000000 -2px -2px, #000000 2px -2px;
 }

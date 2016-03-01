@@ -22,7 +22,6 @@ $str = lang::getlang(); ?>
     </head>
  
     <body>
-        <?php $affichage->affichage_site($str['site']['name']);
-        $affichage->affichage_menu(null); ?>
+        <?php $affichage->affichage_menu(null); ?>
     </body>
 </html>
