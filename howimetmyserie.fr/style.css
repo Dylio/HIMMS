@@ -1,7 +1,7 @@
 /* POLICE */
 @font-face { font-family: "Coalition_v2"; src: url('./fonts/Coalition_v2.ttf') format('truetype'); }
 @font-face { font-family: "Guardians"; src: url('./fonts/Guardians.ttf') format('truetype'); }
-
+@font-face { font-family: "Display"; src: url('./fonts/DS-DIGII.ttf') format('truetype'); }
 
 /* GENERAL */
 body{
@@ -54,6 +54,10 @@ html {
     font-size : 45px !important;
     color: #3B88C9 !important;
     text-shadow: #000000 2px 2px, #000000 -2px 2px, #000000 -2px -2px, #000000 2px -2px;
+}
+.Compteur{
+    font-family : "Display", sans-serif ;
+    font-size : 35px !important;
 }
 
 

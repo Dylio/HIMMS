@@ -22,8 +22,8 @@ $str = lang::getlang(); ?>
     </head>
  
     <body>
-        <?php $affichage->affichage_menu(2); ?>
-        <p class='NomPartie'><small>LES VISITES</small></p><br/>
+        <?php $affichage->affichage_menu(2);
+        $affichage->affichage_site('LES VISITES'); ?>
         <table class="table  table-striped table-responsive table-condensed" style="margin-left:25%; margin-left:25%; width: 50%;">
             <tr>
                 <th colspan="2" class="alert-info" style="text-align:center;">
@@ -32,18 +32,13 @@ $str = lang::getlang(); ?>
             </tr>
             <tr>
                 <td class="alert-info" style="width :70%">Total Membre Actif :</td>
-                <td style="width :30%; text-align: center;"><?php echo $db->nb_user_actif(); ?></td>
+                <td class="Compteur" style="width :30%; text-align: center;">0<?php echo $db->nb_user_actif(); ?></td>
             </tr>
             <tr>
                 <td class="alert-info" style="width :70%">Total Utilisateur :</td>
-                <td style="width :30%; text-align: center;"><?php echo $db->date_nb_user()[0]; ?></td>
+                <td class="Compteur" style="width :30%; text-align: center;">0<?php echo $db->date_nb_user()[0]; ?></td>
             </tr>
         </table>
-        <a href='graph1.php' style='margin-left:33%; margin-right:33%;'>
-            <img src='graph1.php' style='width:34%;' >
-        </a>
-        <br/>
-        <br/>
         <br/>
         <div class="dropdown" style='width:300px; margin-left:auto;margin-right:auto;'>
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -56,7 +51,7 @@ $str = lang::getlang(); ?>
                     echo "<li role='presentation'";
                     if($annee==$_GET['annee']){ echo "class='active'"; }
                     echo ">"
-                        . "<a href='visiteur.php?annee=$annee'>"
+                        . "<a href='stat_visiteur.php?annee=$annee'>"
                             . "Statistique pour l'année $annee"
                         . "</a>"
                     . "</li>";

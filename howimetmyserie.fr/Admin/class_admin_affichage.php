@@ -13,12 +13,12 @@ class class_admin_affichage{
     }
     
     public function affichage_site($partie){
-        echo "<div class='jumbotron SerieDetailContainer'><p class='NomPartie'>$partie</p></div>";
+        echo "<p class='NomPartie3'>$partie</p>";
     }
     
     public function affichage_menu($i){
         echo "<p class='navbar-text' style='margin-top: -12px !important;'>"
-            . "<span class='NomPartie'> <a href='../index.php'>HIMMS</a> </span>"
+            . "<span class='NomPartie'> <a href='./index.php'>HIMMS</a> </span>"
             . "<ul class='nav nav-tabs nav-pills nav-justified'>"
                 . "<li role='presentation' ";
                     if($i == 1){ echo "class='active'"; }
@@ -28,7 +28,7 @@ class class_admin_affichage{
                     if($i == 2 or $i == 3){ echo "active"; }
                     echo "'>"
                     . "<a class='dropdown-toggle' data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false'>"
-                      . "Vos Statistiques</span></a>"
+                      . "Mes Statistiques</span></a>"
                     . "<ul class='dropdown-menu'>"
                         ."<li role='presentation' ";
                         if($i == 2){ echo "class='active'"; }
@@ -40,7 +40,7 @@ class class_admin_affichage{
                 . "</li>"
                 . "<li role='presentation' ";
                     if($i == 4){ echo "class='active'"; }
-                    echo "><a href=''>Mes Messages <span class='glyphicon glyphicon-comment'></a>"
+                    echo "><a href='messages.php'>Mes Messages <span class='badge'>".$this->_db->messagerie_nonlu()."</span></a>"
                 . "</li>"
             . "</ul>"
         . "</p>";
@@ -72,5 +72,34 @@ class class_admin_affichage{
                $media_object->media_object();
             }
         echo '</div>';
+    }
+    
+    public function message_lu(){
+        if(isset($_POST['lu'])){
+            if($_POST['lu'] == 0){
+                $this->_db->update_messagerie_lu(1, $_POST['num_user'], $_POST['dateContact']);
+            }else{
+                $this->_db->update_messagerie_lu(0, $_POST['num_user'], $_POST['dateContact']);
+                
+            }
+        }
+    }
+    
+    // renvoie une chaîne texte entrée en paramètre sans characteres specials
+    // IN : $chaine chaîne texte
+    // OUT : chaîne texte sans characteres specials
+    public static function no_special_character($chaine){
+        // Enlève tout les accents de la chaîne texte
+        $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
+        $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
+        $chaine = utf8_encode(strtr(utf8_decode($chaine), utf8_decode($a), utf8_decode($b)));
+        // Ecrit la chaîne de caractères en miniscule
+        $chaine = strtolower($chaine);
+        // Supprime la ponctuation de la chaîne texte
+        $carac = array('.' ,'!' ,'?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}');
+        $chaine = str_replace ($carac, ' ', $chaine);
+        $chaine = str_replace ('œ', 'oe', $chaine);
+        $chaine=trim($chaine);
+        return $chaine;
     }
 }

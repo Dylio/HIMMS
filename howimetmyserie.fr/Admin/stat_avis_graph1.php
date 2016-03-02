@@ -71,7 +71,7 @@ array_push($js, 'Total');
 //Chemin vers le police à utiliser
 $font_file = './arial.ttf';
 $largeur=750;
-$hauteur=450;
+$hauteur=550;
 $absis=130;
 $courbe=imagecreatetruecolor($largeur, $hauteur);
 //Générer un tableau de couleurs
@@ -108,7 +108,7 @@ imageline($courbe, 50,$hauteur-$absis,50,20, $noir);
 
 $absis+=10;
 
-$nbOrdonne=20;
+$nbOrdonne=10;
 //Calculer les échelles suivants les abscisses et ordonnées
 $echelleX=($largeur-50-((count($js)*10)))/$i;
 $echelleY=($hauteur-$absis-20)/$nbOrdonne;

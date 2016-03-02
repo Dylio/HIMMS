@@ -16,13 +16,19 @@ $str = lang::getlang(); ?>
             require_once 'class_admin_affichage.php';     // affichage global
             $db = new class_admin_db();     // base de données 
             $affichage = new class_admin_affichage($db, $str);
+            require_once 'class_admin_controleur.php';    // afficahge et gestion des controleurs
+            // garde en mémoire pour la session actuel les préférences visuelles de l'utilisateur
+            if(!isset($_SESSION['Admin_SerieTV'])){
+                $_SESSION['Admin_SerieTV'] = new class_admin_controleur($str);
+            }
         ?>
     </head>
     
     <body>
-        <?php $affichage->affichage_menu(1); ?>
-        <p class='NomPartie'><small>MODIFICATION DES SERIES TV</small></p><br/>
-        <?php $req=$db->serie(null, null, null, 'titre asc');
+        <?php $affichage->affichage_menu(1);
+        $affichage->affichage_site('MODIFICATION DES SERIES TV');
+        $_SESSION['Admin_SerieTV']->vue_tri($str['serie']['input_search']);
+        $req=$db->serie($_SESSION['Admin_SerieTV']->getTxtSearch(), $_SESSION['Admin_SerieTV']->getTxtOrder());
         $affichage->affichage_serie($req);
         ?>
     </body>

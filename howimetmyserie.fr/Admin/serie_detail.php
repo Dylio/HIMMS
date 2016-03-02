@@ -30,8 +30,8 @@ $str = lang::getlang(); ?>
         $affichage->affichage_menu(1);
         $opt = $_GET['opt'];
         $data = $db->une_serie($_GET['num_serie']);    // sectionne les détail de la série TV 
+        $affichage->affichage_site('Modification de la série tv : <br/>'.$data['titre']);
         
-        echo "<p class='NomPartie3'>Modification de la série tv : <br/>".$data['titre']."</p>";
         $affichage->affichage_menu_serie($opt, $_GET['num_serie']);
         if($opt == 1){ ?>
             <form action="" method="POST" style="width:71%; float:right;">
@@ -210,8 +210,22 @@ $str = lang::getlang(); ?>
                 <?php } ?> 
             </table>
         <?php } 
-        
-        if($opt == 4){ ?>
+        if($opt == 4){ 
+            if(isset($_POST['btn3pro'])){?>
+                <div class="alert alert-warning alert-dismissible" role="alert" style="width:71%; float:right; text-align:center;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Attention !</strong> Etes-vous sûr de vouloir supprimer le mot-clé "<?php echo $_POST['mc']; ?>" de la liste ?
+                    <form method="POST">
+                        <button class="btn-danger" name="btn3" value="<?php echo $_POST['btn3pro']; ?>">
+                            Valider
+                        </button>
+                        <button class="btn-default" class="close" data-dismiss="alert" aria-label="Close">
+                            Annuler
+                        </button>
+                    </form>
+                </div>
+            <?php ob_flush();
+            } ?>
             <!-- Table -->
             <table class="table  table-striped table-responsive table-condensed" style="width:71%; float:right; text-align:center;">
                 <tr>
@@ -225,7 +239,14 @@ $str = lang::getlang(); ?>
                 <tr>
                     <td><?php echo $dataMC['motcle']; ?></td>
                     <td><?php echo $dataMC['occurrence']; ?></td>
-                    <td><form method="POST"><button class="btn-warning" name="btn3" value="<?php echo $dataMC['num_motcle']; ?>"><span class="glyphicon glyphicon-remove"></span></button></form></td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" value="<?php echo $dataMC['motcle'];?>" name="mc"/>
+                            <button class="btn-danger" name="btn3pro" value="<?php echo $dataMC['num_motcle']; ?>">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 <?php } ?> 
             </table>

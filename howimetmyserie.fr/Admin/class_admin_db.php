@@ -16,12 +16,11 @@ class class_admin_db {
     // IN : $TxtRecommandation recherche des séries TV dont l'utilisateur souhaite être recommander ou non
     // IN : $TxtOrder ordre de restitution des valeurs
     // OUT : requete de selection des séries TV
-    public function serie($TxtSearch, $TxtLike, $TxtRecommandation, $TxtOrder){
+    public function serie($TxtSearch, $TxtOrder){
         return $this->_db->query("SELECT s.num_serie, s.titre, s.dateD, s.dateF "
                                 . "from serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
-                                . "where 1 $TxtSearch $TxtLike "
+                                . "where 1 $TxtSearch "
                                 . "group by s.num_serie "
-                                . "$TxtRecommandation "
                                 . "order by $TxtOrder");
     }
     
@@ -104,6 +103,27 @@ class class_admin_db {
                                 . "where question_date is not null "
                                 . "and question_commentaire is not null "
                                 . "order by question_date desc;");
+    }
+  
+    public function messagerie() { 
+        return $this->_db->query("Select * "
+                                . "from contact "
+                                . "order by dateContact desc;");
+    }
+  
+    public function messagerie_nonlu() { 
+        $req = $this->_db->query("Select count(*) "
+                                . "from contact "
+                                . "where lu = 0 ;");
+        $data = $req->fetch();
+        return $data['0'];
+    }
+  
+    public function update_messagerie_lu($num, $num_user, $dateContact) { 
+        return $this->_db->query("Update contact "
+                                . "set lu = $num "
+                                . "where num_user = '$num_user' "
+                                . "and dateContact = '$dateContact';");
     }
     
     public function questionnaire_resultat() { 

@@ -22,33 +22,30 @@ $str = lang::getlang(); ?>
     </head>
  
     <body>
-        <?php $affichage->affichage_menu(3); ?> 
-        <p class='NomPartie'><small>LES AVIS DES UTILISATEURS</small></p><br/>
-        Nombre d'utilisateur ayant remplit le questionnaire : <b><?php echo $db->questionnaire_nb_user(); ?></b><br/><br/>
-            <!-- panel contents -->
-        <div class="panel panel-info">
-            <!-- Default panel contents -->
-            <div class="panel-heading" style="text-align:center">Satisfaction Générale du Site</div>
-            <a href='stat_avis_graph1.php' style='margin-left:15%; margin-right:15%;'>
-                <img src='stat_avis_graph1.php' style='width:70%;' >
-            </a>
-            <br/><br/>
-            
-            <div class="panel-heading" style="text-align:center">Fonctionnalités Principales du Site</div>
-            <a href='stat_avis_graph2.php' style='margin-left:15%; margin-right:15%;'>
-                <img src='stat_avis_graph2.php' style='width:70%;' >
-            </a>
-            <br/><br/>
-            
-            <!-- Table -->
-            <table class="table  table-striped table-responsive table-condensed">
-                <tr>
-                    <th class="alert-info">Date</th>
-                    <th class="alert-info">Commentaire</th>
-                </tr>
+        <?php $affichage->affichage_menu(3); 
+        $affichage->affichage_site('LES AVIS DES UTILISATEURS'); ?>
+        <div style="float:left">Nombre d'utilisateur ayant remplit le questionnaire : </div>
+            <div class="Compteur" style="float:left; margin-left: 10px; margin-top: -10px;">0<?php echo $db->questionnaire_nb_user(); ?></div>
+        <p style="clear: both"></p>
+        <a href='stat_avis_graph1.php' style='margin-left:0.5%; margin-right:0.5%;'>
+            <img src='stat_avis_graph1.php' style='width:48.5%;'>
+        </a>
+        <a href='stat_avis_graph2.php' style='margin-left:0.5%; margin-right:0.5%;'>
+            <img src='stat_avis_graph2.php' style='width:48.5%;'>
+        </a>
+        <br/><br/>
+
+        <table class="table table-striped table-responsive table-condensed" style="overflow:auto; width:90%; margin: auto;">
+            <tr>
+                <th class="alert-info" style="width:112px;">Date</th>
+                <th class="alert-info">Commentaire</th>
+            </tr>
+        </table>
+        <div style="overflow:auto; width:90%; height:300px; margin: auto;">
+            <table class="table table-striped table-responsive table-condensed">
                 <?php $req = $db->questionnaire_commentaire(); 
                 while($data = $req->fetch()){ ?> 
-                <tr>
+                <tr STYLE='font-size: 15px;'>
                     <td><?php echo date("d/m/Y", strtotime($data['question_date'])); ?></td>
                     <td><?php echo $data['question_commentaire']; ?></td>
                 </tr>

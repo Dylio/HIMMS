@@ -35,8 +35,7 @@ $couleur=array();
 $red=0;
 $blue=0;
 $green=0;
-for($n=0;$n<count($element);$n++)
-{
+for($n=0;$n<count($element);$n++){
     $x = $n%3;
     switch ($x){
         case(0):
