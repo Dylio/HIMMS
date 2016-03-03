@@ -92,7 +92,7 @@ class class_admin_media_object {
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "../Affiche/$titreSerie/".$file;              // renvoie la $aleaImage affiche de série TV
+                    return "../Affiche/$titreSerie/$file";              // renvoie la $aleaImage affiche de série TV
                 }
                 if(substr($file, -4) == ".png"){
                     $i++;

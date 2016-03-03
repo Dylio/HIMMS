@@ -27,11 +27,14 @@ $str = lang::getlang(); ?>
         if(isset($_POST['btn3'])){
             $db->delete_motcle($_GET['num_serie'], $_POST['btn3']);
         }
+        if(isset($_POST['btn4'])){
+            $db->optimiser_appartenir($_GET['num_serie']);
+        }
         $affichage->affichage_menu(1);
         $opt = $_GET['opt'];
         $data = $db->une_serie($_GET['num_serie']);    // sectionne les détail de la série TV 
         $affichage->affichage_site('Modification de la série tv : <br/>'.$data['titre']);
-        
+        $titre = $data['titre'];
         $affichage->affichage_menu_serie($opt, $_GET['num_serie']);
         if($opt == 1){ ?>
             <form action="" method="POST" style="width:71%; float:right;">
@@ -70,127 +73,120 @@ $str = lang::getlang(); ?>
                         </div><br/><br/>
                 </fieldset>
             </form>
-        <?php }
-        
-        if($opt == 2){ ?>
-            <!-- Création d'un formulaire pour selectionner la série et le fichier srt (sous-titre) -->
-            <form action="" method="post" style="width:71%; float:right;">
-                <!-- Récupération de toute les titres des séries -->
-                <?php $req = $db->serie(null, null, null, "titre asc"); ?>
-                <fieldset class="fieldset">
-                    <legend class="titre">Ajouter un nouveau sous-titre :</legend>
+        <?php }else if($opt == 2){ ?>
+            <div style="width:71%; float:right;">
+                <!-- Création d'un formulaire pour selectionner la série et le fichier srt (sous-titre) -->
+                <form action="" method="post" enctype="multipart/form-data">
+                    <!-- Récupération de toute les titres des séries -->
+                    <?php $req = $db->serie(null, null, null, "titre asc"); ?>
+                    <fieldset class="fieldset">
+                        <legend class="titre">Ajouter un nouveau sous-titre :</legend>
 
-                    <!-- Création d'une entrée de fichier de type .srt -->
-                    <label for="s" style="width: 20%" class="txt">Sous-Titre :</label>
-                        <input type="file" style="width: 70%" name="s" id="s" accept='.srt' required>
-                    <label for="Saison" style="width: 20%">Saison : </label>
-                        <input type="number" name="Saison" value="<?php if(isset($_POST['Saison'])) { echo $_POST['Saison']; } ?>" required><br />
-                    <label for="Episode" style="width: 20%">Episode : </label>
-                        <input type="number" name="Episode" required><br />
-                    <label for="Saison" style="width: 20%">Version : </label>
-                    <select name="Version" required>
-                        <option <?php if(!isset($_POST['Version'])) { echo "selected"; } ?>"></option>
-                        <option value="VF" <?php if(isset($_POST['Version']) and 'VF' == $_POST['Version']) { echo "selected"; } ?> >VF</option>
-                        <option value="VO" <?php if(isset($_POST['Version']) and 'VO' == $_POST['Version']) { echo "selected"; } ?> >VO</option>		
-                    </select><br />			
+                        <!-- Création d'une entrée de fichier de type .srt -->
+                        <label for="sfile" style="width: 20%" class="txt">Sous-Titre :</label>
+                            <input type="file" style="width: 70%" name="fichier" accept='.srt' required>
+                        <label for="Saison" style="width: 20%">Saison : </label>
+                            <input type="number" name="Saison" value="<?php if(isset($_POST['Saison'])) { echo $_POST['Saison']; } ?>" required><br />
+                        <label for="Episode" style="width: 20%">Episode : </label>
+                            <input type="number" name="Episode" required><br />
+                        <label for="Saison" style="width: 20%">Version : </label>
+                        <select name="Version" required>
+                            <option <?php if(!isset($_POST['Version'])) { echo "selected"; } ?>"></option>
+                            <option value="VF" <?php if(isset($_POST['Version']) and 'VF' == $_POST['Version']) { echo "selected"; } ?> >VF</option>
+                            <option value="VO" <?php if(isset($_POST['Version']) and 'VO' == $_POST['Version']) { echo "selected"; } ?> >VO</option>		
+                        </select><br />			
+                        
+                        <!-- Création d'un bouton pour valider le formulaire --><br/><br/>
+                        <div style='margin-left: auto; margin-right:auto;width:400px;'>
+                            <input type="submit" value="Ajouter le sous-titre." name="btn2" class="btn btn-primary btn-lg" >
+                        </div>	
+                    </fieldset>
+                </form><br/>
+                <?php
+                // Execute la procédure de récupération des mots-clé dés que l'utilisateur appuye sur le bouton
+                if(isset($_POST['btn2'])){
+                    //Exclusion
+                    $MotExclu = array();
+                    $req = $db->motexclu();
+                    while ($dataMCE = $req->fetch()){
+                        array_push($MotExclu, $dataMCE['libelle']);
+                    }
+                    $idS = $_GET['num_serie'];
+                    $saison = $_POST['Saison'];
+                    $episode = $_POST['Episode'];
+                    $version = $_POST['Version'];
 
-                    <!-- Création d'un bouton pour valider le formulaire --><br/><br/>
-                    <div style='margin-left: auto; margin-right:auto;width:400px;'>
-                        <input type="submit" value="Ajouter le sous-titre." name="btn2" class="btn btn-primary btn-lg" >
-                    </div><br/><br/>	
-                </fieldset>
-            </form><br />
-            <?php
-            // Execute la procédure de récupération des mots-clé dés que l'utilisateur appuye sur le bouton
-            if(isset($_POST['btn2'])){
-                //Exclusion
-                $MotExclu = array();
-                $req = $db->motexclu();
-                while ($data = $req->fetch()){
-                    array_push($MotExclu, $data['libelle']);
-                }
-                $idS = $_GET['num_serie'];
-                $Saison = $_POST['Saison'];
-                $Episode = $_POST['Episode'];
-                $Version = $_POST['Version'];
-
-                $reqST = $linkpdo->query("SELECT count(*) FROM SousTitre where num_serie = '$idS' and saison = '$Saison' and Episode = '$Episode' and Version = '$Version';");
-                $dataST = $reqST->fetch();
-                //Verification si le sous-titre n'a pas déjà été inséré pour cette série, cette saison et cet épisode
-                if($dataST['0'] == 0){
-                    // Préparation des requêtes SQL
-                    $req1 = $linkpdo->prepare("SELECT count(*), num_motcle from MotCle where motcle = :mc group by num_motcle;");
-                    $req2 = $linkpdo->prepare("SELECT occurrence from Appartenir where num_motcle = :idMC and num_serie = :idS;");
-                    $ins1 = $linkpdo->prepare("Insert into MotCle values(:idMC, :mc);");
-                    $ins2 = $linkpdo->prepare("Insert into Appartenir values(:idMC, :idS, :occ, 1);");
-                    $up1 = $linkpdo->prepare("Update Appartenir set occurrence = occurrence + :occ, nbEp = nbEp + 1 where num_serie = :idS and num_motcle = :idMC;");
-
-                    // Récupération de l'ID de la série selectionnée dans le formulaire
-                    $reqS = $linkpdo->query("SELECT * FROM serie where num_serie = '$idS';");
-                    $dataS = $reqS->fetch();
-                    // Tableau contenant chaque ligne du fichier srt
-                    $lines = file($_FILES['s']['tmp_name']);
-                    // Pour chaque ligne du fichier srt ... ($i numéro de ligne)
-                    foreach ($lines as $i => $lineContent){
-                        // Exécute pour supprimmer ou modifier les différents caractères spéciaux
-                        $lineContent = no_special_character($lineContent);
-                        // Tableau contenant chaque mot 
-                        $lineContent = explode(" ", $lineContent);
-                        // Pour chaque mot ...
-                        foreach ($lineContent as $linetxt){
-                            // Si le texte n'est pas vide 
-                            // ou n'est pas un caractère numérique 
-                            // ou n'est pas un mot clé representatif (selon une liste) 
-                            if(!in_array($linetxt, $MotExclu)){
-                                if($linetxt != "" && $linetxt != " " && $linetxt != "-" && !ctype_digit(substr($linetxt, 0, 1))){
-                                    // Si le mot clé existe dans le tableau incrémenté la valeur associé
-                                    if(isset($tab[$linetxt])){
-                                        $tab[$linetxt]++;
-                                    }else{
-                                        // Sinon crée le mot clé et y associé la valeur 1
-                                        $tab[$linetxt] = 1;
+                    //Verification si le sous-titre n'a pas déjà été inséré pour cette série, cette saison et cet épisode
+                    if($db->srt_exist($idS, $saison, $episode, $version) == 0){
+                        // Tableau contenant chaque ligne du fichier srt
+                        $lines = file($_FILES['fichier']['tmp_name']);
+                        // Pour chaque ligne du fichier srt ... ($i numéro de ligne)
+                        foreach ($lines as $i => $lineContent){
+                            // Exécute pour supprimmer ou modifier les différents caractères spéciaux
+                            $lineContent = class_admin_affichage::no_special_character($lineContent);
+                            // Tableau contenant chaque mot 
+                            $lineContent = explode(" ", $lineContent);
+                            // Pour chaque mot ...
+                            foreach ($lineContent as $linetxt){
+                                // Si le texte n'est pas vide 
+                                // ou n'est pas un caractère numérique 
+                                // ou n'est pas un mot clé representatif (selon une liste) 
+                                if(!in_array($linetxt, $MotExclu)){
+                                    if($linetxt != "" && $linetxt != " " && $linetxt != "-" && !ctype_digit(substr($linetxt, 0, 1))){
+                                        // Si le mot clé existe dans le tableau incrémenté la valeur associé
+                                        if(isset($tab[$linetxt])){
+                                            $tab[$linetxt]++;
+                                        }else{
+                                            // Sinon crée le mot clé et y associé la valeur 1
+                                            $tab[$linetxt] = 1;
+                                        }
                                     }
                                 }
                             }
                         }
-                        flush();
-                        ob_flush();
-                }
-                // Pour chaque mot du tableau
-                foreach ($tab as $mc => $occ){
-                    flush();
-                    ob_flush();
-                    //Requete SQL vérifiant si le mot clé existe dans la BDD
-                        $req1->execute(array('mc' => $mc));
-                        $data1 = $req1->fetch();
-                        // Si il existe pas, création du mot clé et de l'association avec une occurence de $occ
-                        if($data1['0'] == 0){
-                            // Création d'une ID (Génère un identifiant unique basé sur la date et heure courante en microsecondes.)
-                            $idMC = uniqid(rand(), true);
-                            // Insertion dans la BDD
-                            $ins1->execute(array('idMC' => $idMC, 'mc' => $mc));
-                            $ins2->execute(array('idMC' => $idMC, 'idS' => $idS, 'occ' => $occ));
-                        }else{				
-                            $idMC = $data1['1'];
-                            $req2->execute(array('idMC' => $idMC, 'idS' => $idS ));
-                            $data2 = $req2->fetch();
-                            if($data2['0'] > '0'){
-                                // Si il existe, ajout de l'occurence à l'occurence existante
-                                $up1->execute(array('idMC' => $idMC, 'idS' => $idS, 'occ' => $occ));
-                            }else{
-                                // Sinon création de l'association avec une occurence de $occ
-                                $ins2->execute(array('idMC' => $idMC, 'idS' => $idS, 'occ' => $occ));
+                        // Pour chaque mot du tableau
+                        foreach ($tab as $mc => $occ){
+                            //Requete SQL vérifiant si le mot clé existe dans la BDD
+                            $data1 = $db->motcle_exist($mc);
+                            // Si il existe pas, création du mot clé et de l'association avec une occurence de $occ
+                            if($data1['0'] == 0){
+                                // Création d'une ID (Génère un identifiant unique basé sur la date et heure courante en microsecondes.)
+                                $idMC = uniqid(rand(), true);
+                                // Insertion dans la BDD
+                                $db->motcle_insert($idMC, $mc);
+                                $db->appartenir_insert($idMC, $idS, $occ);
+                            }else{	
+                                $idMC = $data1['1'];
+                                if($db->motcle_occ($idMC, $idS) > '0'){
+                                    // Si il existe, ajout de l'occurence à l'occurence existante
+                                    $db->update_appartenir($idMC, $idS, $occ);
+                                }else{
+                                    // Sinon création de l'association avec une occurence de $occ
+                                    $db->appartenir_insert($idMC, $idS, $occ);
+                                }
                             }
-                        }
-                    }
-                    $linkpdo->query("Insert into SousTitre values('$idS', '$Saison', '$Episode', '$Version');");
-                } else {
-                        echo "<b style='color:red'>Erreur : Ce sous-titre a déjà été inséré.</b>";
+                        } ?>
+                        <div class="alert alert-success alert-dismissible" role="alert" style="width:100%; float:right; text-align:center;">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Succès !</strong> Les nouveaux mots-clés a bien été inserés  dans la base de données.<br/>
+                            N'oubliez pas d'optimiser les mots-clés de cette série tv via la page "Listes des mots-clés" quand tous les sous-titres ont été insérés.<br/>
+                            Détail des mots :<br/>
+                            <ul style='text-align: left;'>
+                            <?php ksort($tab);
+                            foreach ($tab as $mc => $occ){
+                                echo '<li>'.$mc.' ('.$occ.')</li>';
+                            } ?></ul>
+                        </div>
+                        <?php $db->insert_srt($idS, $saison, $episode, $version);
+                    } else { ?>
+                        <div class="alert alert-warning alert-dismissible" role="alert" style="width:100%; float:right; text-align:center;">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Attention !</strong> Ce sous-titre a déjà été inséré dans la base de données !
+                        </div>
+                    <?php }
                 }
-            }
-        }
-        
-        if($opt == 3){ ?>
+            ?></div><?php
+        }else if($opt == 3){ ?>
             <!-- Table -->
             <table class="table  table-striped table-responsive table-condensed" style="width:71%; float:right; text-align:center;">
                 <tr>
@@ -209,8 +205,28 @@ $str = lang::getlang(); ?>
                 </tr>
                 <?php } ?> 
             </table>
-        <?php } 
-        if($opt == 4){ 
+        <?php }elseif($opt == 4){ ?>
+            <?php if(isset($_POST['btn4pro'])){?>
+                <div class="alert alert-warning alert-dismissible" role="alert" style="width:71%; float:right; text-align:center;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Attention !</strong> Etes-vous sûr de vouloir obtimiser cette liste de mots-clés ?<br/>
+                    Ce traitement supprimera tout les mots-clés non pertinent de cette liste.
+                    <form method="POST">
+                        <button class="btn-danger" name="btn4">
+                            Valider
+                        </button>
+                        <button class="btn-default" class="close" data-dismiss="alert" aria-label="Close">
+                            Annuler
+                        </button>
+                    </form>
+                </div>
+            <?php }else{ ?>
+                <form action="" method="post" style="float:right;">
+                    <fieldset class="fieldset">
+                            <input type="submit" value="Optimisation des mots-clés." name="btn4pro" class="btn btn-primary btn-lg" >
+                    </fieldset>
+                </form><br/><br/>
+            <?php }
             if(isset($_POST['btn3pro'])){?>
                 <div class="alert alert-warning alert-dismissible" role="alert" style="width:71%; float:right; text-align:center;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

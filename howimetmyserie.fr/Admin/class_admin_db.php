@@ -105,9 +105,10 @@ class class_admin_db {
                                 . "order by question_date desc;");
     }
   
-    public function messagerie() { 
+    public function messagerie($j) { 
         return $this->_db->query("Select * "
                                 . "from contact "
+                                . "where lu = $j "
                                 . "order by dateContact desc;");
     }
   
@@ -145,7 +146,7 @@ class class_admin_db {
     }
     
     public function update_serie($num_serie, $titre, $dateD, $dateF, $nationalite, $créateurs, $acteurs, $genre, $format, $nbSaison, $nbEpisode, $classification){
-        $this->_db->query("UPDATE serie "
+        return $this->_db->query("UPDATE serie "
                 . "SET titre='$titre', "
                 . "dateD='$dateD', "
                 . "dateF='$dateF', "
@@ -195,4 +196,74 @@ class class_admin_db {
                                 . "group by num_serie, saison, episode "
                                 . "order by 1 asc, 2 asc, 3 asc;");
     }
+    
+    public function srt_exist($idS, $saison, $episode, $version){
+        $req = $this->_db->query("SELECT count(*) "
+                                . "FROM SousTitre "
+                                . "where num_serie = '$idS' "
+                                . "and saison = '$saison' "
+                                . "and episode = '$episode' "
+                                . "and version = '$version';");
+        $data = $req->fetch();
+        return $data['0'];
+    }
+    
+    public function insert_srt($idS, $saison, $episode, $version){
+        return $this->_db->query("Insert into SousTitre "
+                            . "values('$idS', '$saison', '$episode', '$version');");
+    }
+    
+    public function motcle_exist($motcle){
+        $req = $this->_db->query("SELECT count(*), num_motcle "
+                                . "from MotCle "
+                                . "where motcle = '$motcle' "
+                                . "group by num_motcle;");
+        $data = $req->fetch();
+        return $data;
+    }
+    
+    
+    public function motcle_insert($idMC, $mc){
+        return $this->_db->query("Insert into MotCle "
+                                . "values('$idMC', '$mc');");
+    }
+    
+    public function appartenir_insert($idMC, $idS, $occ){
+        return $this->_db->query("Insert into Appartenir "
+                                . "values('$idMC', '$idS', $occ);");
+    }
+    
+    public function motcle_occ($idMC, $idS){
+        $req = $this->_db->query("SELECT occurrence "
+                                . "from Appartenir "
+                                . "where num_motcle = '$idMC' "
+                                . "and num_serie = '$idS';");
+        $data = $req->fetch();
+        return $data['0'];
+    }
+    
+    public function update_appartenir($occ, $idMC, $idS){
+        return $this->_db->query("Update Appartenir "
+                                . "set occurrence = occurrence + $occ, "
+                                . "where num_serie = '$idS' "
+                                . "and num_motcle = '$idMC';");
+    }
+    
+    public function optimiser_appartenir($idS){
+        $this->_db->query("delete from appartenir "
+                        . "where num_serie = '$idS' "
+                        . "and occurrence/3 >= (select count(*) "
+                                            . "from soustitre "
+                                            . "where num_serie='$idS'"
+                                            . "and version='VF');");
+        $this->_db->query("delete from appartenir "
+                        . "where num_serie = '$idS' "
+                        . "and num_motcle in (select num_motcle "
+                                            . "from motcle "
+                                            . "where motcle in (select libelle "
+                                                                . "from exclusion ));");
+        
+    }
+    
+    
 }

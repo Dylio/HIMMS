@@ -5,7 +5,7 @@
 
 /* GENERAL */
 body{
-    min-width: 1200px;
+    min-width: 1250px;
     max-width: 100%;
     height: max-content;
     margin : 4.5% auto 1% auto;
@@ -593,4 +593,11 @@ html {
 .panel_texte{
     font-size: 15px;
     line-height:2;
+}
+
+.formMessage{
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }

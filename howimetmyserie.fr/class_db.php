@@ -301,15 +301,14 @@ class class_db {
         return $data['0'];
     }
     
-                                            
-    
     // requete : insert dans la table "contact" le message de l'utilisateur
     // IN : $pseudo pseudo de l'utilisateur
     // IN : $email email de l'uitlisateur
     // IN : $sujet sujet du message
     // IN : $texte texte du message
     public function user_contact($pseudo, $email, $sujet, $texte){
-        $this->_db->query("INSERT INTO contact values('$this->_user', 'now()','$pseudo','$email','$sujet','$texte', false);");
+        $date = date("Y-m-d h:m:s");
+        $this->_db->query("INSERT INTO contact values('$this->_user', '$date','$pseudo','$email','$sujet','$texte', false);");
     }
     
     // requete : mise à jour des données de l'utilisateur avec les reponse du questionnaire
