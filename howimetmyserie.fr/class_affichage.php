@@ -358,24 +358,6 @@ class class_affichage{
         </div>
     <?php }
     
-    // renvoie une chaîne texte entrée en paramètre sans characteres specials
-    // IN : $chaine chaîne texte
-    // OUT : chaîne texte sans characteres specials
-    public static function no_special_character($chaine){
-        // Enlève tout les accents de la chaîne texte
-        $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
-        $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
-        $chaine = utf8_encode(strtr(utf8_decode($chaine), utf8_decode($a), utf8_decode($b)));
-        // Ecrit la chaîne de caractères en miniscule
-        $chaine = strtolower($chaine);
-        // Supprime la ponctuation de la chaîne texte
-        $carac = array('.' ,'!' ,'?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}');
-        $chaine = str_replace ($carac, ' ', $chaine);
-        $chaine = str_replace ('œ', 'oe', $chaine);
-        $chaine=trim($chaine);
-        return $chaine;
-    }
-    
     // affiche un questionnaire oui/non
     // IN : $nb numéro de question
     // IN : $question intitulé de la question
@@ -413,13 +395,6 @@ class class_affichage{
             ."</div>"
         ."</div>";
     }
-    
-    
-    
-    
-    
-    
-    
 
     // permet d'afficher les différents éléments permettant l'interaction avec l'utilisateur
     // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
@@ -434,11 +409,12 @@ class class_affichage{
     // permet d'afficher les différents éléments permettant l'interaction avec l'utilisateur sans zone texte
     // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
     // IN : $recommandation_exist 1 si recommandation ou 0 si top série
-    public function vue_tri2(){
-        $this->like();          // choix : aimé/tous/non aimé
-        $this->order();         // choix : ordre d'appartition
-        $this->media();         // choix : style d'objet abstrait pour la visualisation des séries TV  
-    }     
+    public function vue_tri2($like, $order, $recommandation, $media){
+        $this->like($like);                                          // choix : aimé/tous/non aimé
+        echo "<br/>";
+        $this->order($order, $recommandation);                              // choix : ordre d'appartition
+        $this->media($media);                              // choix : style d'objet abstrait pour la visualisation des séries TV
+    }
     
     // afficher l'élément graphique permettant à l'utilisateur de l'ordre d'apparition des séries TV
     private function order($order, $recommandation){

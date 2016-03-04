@@ -86,22 +86,4 @@ class class_admin_affichage{
             }
         }
     }
-    
-    // renvoie une chaîne texte entrée en paramètre sans characteres specials
-    // IN : $chaine chaîne texte
-    // OUT : chaîne texte sans characteres specials
-    public static function no_special_character($chaine){
-        // Enlève tout les accents de la chaîne texte
-        $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
-        $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
-        $chaine = utf8_encode(strtr(utf8_decode($chaine), utf8_decode($a), utf8_decode($b)));
-        // Ecrit la chaîne de caractères en miniscule
-        $chaine = strtolower($chaine);
-        // Supprime la ponctuation de la chaîne texte
-        $carac = array('.' ,'!' ,'?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}');
-        $chaine = str_replace ($carac, ' ', $chaine);
-        $chaine = str_replace ('œ', 'oe', $chaine);
-        $chaine=trim($chaine);
-        return $chaine;
-    }
 }

@@ -18,9 +18,9 @@ $str = lang::getlang(); ?>
             }
             require_once 'class_admin_db.php';            // base de données
             require_once 'class_admin_affichage.php';     // affichage global
+            require_once 'class_admin_controleur.php';    // afficahge et gestion des controleurs
             $db = new class_admin_db();     // base de données 
             $affichage = new class_admin_affichage($db, $str);
-            require_once 'class_admin_controleur.php';    // afficahge et gestion des controleurs
             // garde en mémoire pour la session actuel les préférences visuelles de l'utilisateur
             if(!isset($_SESSION['Admin_SerieTV'])){
                 $_SESSION['Admin_SerieTV'] = new class_admin_controleur($str);

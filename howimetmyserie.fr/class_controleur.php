@@ -37,7 +37,7 @@ class class_controleur {
         if(isset($_POST['ok'])){
            require_once 'class_affichage.php';
            // enlève les caractères spécials 
-           $this->_TxtSearch = $this->no_special_character($_POST['search']);
+           $this->_TxtSearch = class_controleur::no_special_character($_POST['search']);
         }
         if(isset($_POST['empty'])){
            // réinitialisation de la zone texte 
@@ -184,7 +184,7 @@ class class_controleur {
     // renvoie une chaîne texte entrée en paramètre sans characteres specials
     // IN : $chaine chaîne texte
     // OUT : chaîne texte sans characteres specials
-    private function no_special_character($chaine){
+    private static function no_special_character($chaine){
         // Enlève tout les accents de la chaîne texte
         $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
         $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';

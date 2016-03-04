@@ -6,24 +6,7 @@ $str = lang::getlang(); ?>
     <head>
         <title><?php echo $str['site']['name2']; ?></title>	
         <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-        <!-- Importation des scripts et des stylesheet -->
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-        <!-- gestion des tooltips -->
-        <script type="text/javascript"> $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        })</script>
-        <?php // création et gestion des classes permettant l'affichage et le fonctionnement des évènements
-            require_once 'class_db.php';            // base de données
-            require_once 'class_affichage.php';     // affichage global
-            require_once 'class_controleur.php';    // afficahge et gestion des controleurs
-            $db = new class_db(false);
-            $affichage = new class_affichage($db, $str);
-            $req=$db->une_serie($_GET['num_serie']);
-            $data = $req->fetch(); 
-        ?>
+        <?php include_once 'incl_import.php'; ?>
     </head>
     
     <body style='background: url("<?php echo $affichage->alea_Image($data['titre']); ?>")'>

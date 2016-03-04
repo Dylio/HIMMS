@@ -54,9 +54,8 @@ class class_admin_controleur {
     // IN : $valueEmpty 1 si la valeur dans la zone de texte doit être garder en mémoire sinon 0
     private function search($placeholder){
         if(isset($_POST['ok'])){
-           require_once 'class_admin_affichage.php';
            // enlève les caractères spécials 
-           $this->_TxtSearch = class_admin_affichage::no_special_character($_POST['search']);
+           $this->_TxtSearch = class_admin_controleur::no_special_character($_POST['search']);
         }
         if(isset($_POST['empty'])){
            // réinitialisation de la zone texte 
@@ -147,5 +146,23 @@ class class_admin_controleur {
                 ."</button>"
             ."</div>"
         ."</form>";
+    }
+    
+    // renvoie une chaîne texte entrée en paramètre sans characteres specials
+    // IN : $chaine chaîne texte
+    // OUT : chaîne texte sans characteres specials
+    public static function no_special_character($chaine){
+        // Enlève tout les accents de la chaîne texte
+        $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
+        $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
+        $chaine = utf8_encode(strtr(utf8_decode($chaine), utf8_decode($a), utf8_decode($b)));
+        // Ecrit la chaîne de caractères en miniscule
+        $chaine = strtolower($chaine);
+        // Supprime la ponctuation de la chaîne texte
+        $carac = array('.' ,'!' ,'?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}');
+        $chaine = str_replace ($carac, ' ', $chaine);
+        $chaine = str_replace ('œ', 'oe', $chaine);
+        $chaine=trim($chaine);
+        return $chaine;
     }
 }
