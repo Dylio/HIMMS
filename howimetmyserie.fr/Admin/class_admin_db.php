@@ -265,5 +265,12 @@ class class_admin_db {
         
     }
     
-    
+    public function admin($user, $mdp){
+        $req = $this->_db->query("SELECT count(*) "
+                                . "from admin "
+                                . "where num_admin = '$user' "
+                                . "and mdp = password('$mdp');");
+        $data = $req->fetch();
+        return $data[0];
+    }
 }

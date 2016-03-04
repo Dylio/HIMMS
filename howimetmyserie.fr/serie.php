@@ -33,8 +33,16 @@ $str = lang::getlang(); ?>
         $affichage->affichage_titrePartie($str['serie']['title']);
         // gestion de l'évènement séries TV aimé ou recommandé et son contraire
         $affichage->like_recommandation();
+        $_SESSION['SerieTV']->controleur();
+        
         // affichage des composants servant au tri des séries TV
-        $_SESSION['SerieTV']->vue_tri($str['serie']['input_search'], false);
+        $affichage->vue_tri($_SESSION['SerieTV']->getLike(),
+                $_SESSION['SerieTV']->getOrder(),
+                $_SESSION['SerieTV']->getRecommandation(),
+                $_SESSION['SerieTV']->getMediaObject(),
+                $str['serie']['input_search'],
+                $_SESSION['SerieTV']->getSearch());
+        
         // selection séries TV selon les choix de tri de l'utilisateur
         $req= $db->serie($_SESSION['SerieTV']->getTxtSearch(), 
                 $_SESSION['SerieTV']->getTxtLike(),

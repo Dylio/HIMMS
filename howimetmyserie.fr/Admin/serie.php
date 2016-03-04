@@ -12,6 +12,10 @@ $str = lang::getlang(); ?>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../style.css" rel="stylesheet">
         <?php 
+            session_start();
+            if(!isset($_SESSION['admin'])){
+                header('Location:index_1.php');
+            }
             require_once 'class_admin_db.php';            // base de données
             require_once 'class_admin_affichage.php';     // affichage global
             $db = new class_admin_db();     // base de données 

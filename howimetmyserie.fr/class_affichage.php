@@ -413,4 +413,212 @@ class class_affichage{
             ."</div>"
         ."</div>";
     }
+    
+    
+    
+    
+    
+    
+    
+
+    // permet d'afficher les différents éléments permettant l'interaction avec l'utilisateur
+    // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
+    // IN : $valueEmpty 1 si la valeur dans la zone de texte doit être garder en mémoire sinon 0
+    public function vue_tri($like, $order, $recommandation, $media, $placeholder, $value){
+        $this->like($like);                                          // choix : aimé/tous/non aimé
+        $this->search($placeholder, $value).'<br/>';       // recherche ciblé
+        $this->order($order, $recommandation);                              // choix : ordre d'appartition
+        $this->media($media);                              // choix : style d'objet abstrait pour la visualisation des séries TV
+    }
+
+    // permet d'afficher les différents éléments permettant l'interaction avec l'utilisateur sans zone texte
+    // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
+    // IN : $recommandation_exist 1 si recommandation ou 0 si top série
+    public function vue_tri2(){
+        $this->like();          // choix : aimé/tous/non aimé
+        $this->order();         // choix : ordre d'appartition
+        $this->media();         // choix : style d'objet abstrait pour la visualisation des séries TV  
+    }     
+    
+    // afficher l'élément graphique permettant à l'utilisateur de l'ordre d'apparition des séries TV
+    private function order($order, $recommandation){
+        // bouton correspondant à l'option : voir les séries TV dont l'utilisateur veut être recommandé
+        // avec un tooltip en haut
+        echo "<form action='' method='POST'>"
+            ."<div class='thumbnail tri_group1'>"
+                ."<button type='submit' ";
+                    if($recommandation == true){
+                        echo 'name="nonRecommandationF" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="'.$this->_str['tooltip']['interest']['off'].'">';
+                    }else{
+                        echo 'name="nonRecommandationT" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="'.$this->_str['tooltip']['interest']['on'].'">';
+                    }
+                    echo "<span class='glyphicon glyphicon-eye-open'></span>"
+                ."</button>"
+            ."</div>"
+           
+            // 5 boutons correspondant aux différents possibilité de tri des séries TV
+            // Le bouton de l'option selectionné est d'une couleur verte et non selectionnable 
+            // (exception : option aléatoire reste selectionnable)
+            // Les autres boutons sont d'une couleur bleu et selectionnable         
+            ."<div class='thumbnail tri_group2'>"
+                ."<span>Titre : </span> "
+                // option tri par titre croissant puis par date de début croissant
+                // avec un tooltip en haut
+                ."<button type='submit' name='sort1' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['sort']['sort1']."'";
+                    if($order == "sort1"){
+                        echo "class='btn btn-success' disabled>";
+                    }else{
+                        echo "class='btn btn-info'>";
+                    }
+                    echo '<span class="glyphicon glyphicon-menu-up"></span>'
+                ."</button> "
+                // option tri par titre décroissant puis par date de début croissant
+                // avec un tooltip en haut
+                ."<button type='submit' name='sort2' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['sort']['sort2']."'";
+                    if($order == "sort2"){
+                        echo 'class="btn btn-success" disabled>';
+                    }else{
+                        echo 'class="btn btn-info">';
+                    }
+                    echo "<span class='glyphicon glyphicon-menu-down'></span>"
+                ."</button> "
+                // option tri aléatoire
+                // avec un tooltip en haut
+                ."<button type='submit' name='sortRand' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['sort']['sortRand']."'";
+                    if($order == "sortRand"){
+                        echo 'class="btn btn-success">';
+                    }else{ 
+                        echo 'class="btn btn-info">';
+                    }
+                    echo "<span class='glyphicon glyphicon-random'></span>"
+                ."</button>"
+            ."</div>" 
+            ."<div class='thumbnail tri_group2'>"
+                ."<span>Date : </span>"
+                // option tri par date de début croissant puis par titre croissant
+                // avec un tooltip en haut
+                ."<button type='submit' name='sort3' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['sort']['sort3']."'";
+                    if($order == "sort3"){
+                        echo "class='btn btn-success' disabled>";
+                    }else{
+                        echo "class='btn btn-info'>";
+                    }
+                    echo "<span class='glyphicon glyphicon-menu-up'></span>"
+                ."</button> "
+                // option tri par date de début croissant puis par titre décroissant
+                // avec un tooltip en haut
+                ."<button type='submit' name='sort4' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['sort']['sort4']."'";
+                    if($order == "sort4"){
+                        echo "class='btn btn-success' disabled>";
+                    }else{
+                        echo "class='btn btn-info'>";
+                    }
+                    echo "<span class='glyphicon glyphicon-menu-down'></span>"
+                ."</button>"
+            ."</div>"
+        ."</form>";
+    }
+    
+    // afficher l'élément graphique permettant à l'utilisateur de choisir de voir 
+    // les séries TV qui sont aimées, non aimées ou les deux
+    private function like($like){
+        // Trois boutons correspondant aux 3 options (aimé / tous / non aimé)
+        // Le bouton de l'option selectionné est d'une couleur verte et non selectionnable
+        // Les autres boutons sont d'une couleur bleu et selectionnable
+        echo "<form action='' method='POST' class='formLike'>"
+            // bouton séries TV que l'utilisateur aime
+            // avec un tooltip à gauche
+            .'<button type="submit" name="List_like" data-toggle="tooltip" data-placement="left" title="'.$this->_str['tooltip']['like']['like'].'"';
+                if($like == 'like'){
+                    echo "class='btn btn-success buttonTriR' disabled>";
+                }else{
+                    echo "class='btn btn-info buttonTriR'>";
+                }
+                echo "<span class='glyphicon glyphicon-heart'></span>"
+            ."</button> "
+            // bouton toutes les séries TV
+            // avec un tooltip en haut
+            ."<button type='submit' name='List_all' data-toggle='tooltip' data-placement='top' title='".$this->_str['tooltip']['like']['all']."'";
+                if($like == 'all'){
+                    echo "class='btn btn-success buttonTriW' disabled>";
+                }else{
+                    echo "class='btn btn-info buttonTriW'>";
+                }
+                echo "Tous"
+            ."</button> "
+            // bouton séries TV que l'utilisateur n'aime pas encore
+            // avec un tooltip à droite
+            .'<button type="submit" name="List_unlike" data-toggle="tooltip" data-placement="right" title="'.$this->_str['tooltip']['like']['unlike'].'"';
+                if($like == 'unlike'){
+                    echo "class='btn btn-success buttonTriN' disabled>";
+                }else{
+                    echo "class='btn btn-info buttonTriN'>";
+                }
+                echo "<span class='glyphicon glyphicon-heart-empty'></span>"
+            ."</button>"
+        ."</form>";
+    }
+    
+    // afficher l'élément graphique permettant la recherche de séries TV via une entrée texte 
+    // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
+    // IN : $valueEmpty 1 si la valeur dans la zone de texte doit être garder en mémoire sinon 0
+    private function search($value, $placeholder){
+        echo "<form action='' method='POST'>"
+            ."<div class='input-group formSearch'>"
+                ."<input type='text' name='search' class='form-control SearchInput' value='$value'placeholder='$placeholder'>"
+                ."<div class='input-group-btn'>"
+                     // bouton de recherche
+                    // avec un tooltip en bas
+                    ."<button type='submit' name='ok' class='btn btn-default SearchInput' value='true' data-toggle='tooltip' data-placement='bottom' title='".$this->_str['tooltip']['search']."'>"
+                        ."<span class='glyphicon glyphicon-search'></span>"
+                    ."</button>"
+                     // bouton de réinitialisation de la zone texte
+                     // avec un tooltip en bas
+                    ."<button type='submit' name='empty' class='btn btn-default SearchInput' data-toggle='tooltip' data-placement='bottom' title='".$this->_str['tooltip']['reset']."'>"
+                        ."<span class='glyphicon glyphicon-remove'></span>"
+                    ."</button>"
+                ."</div>"
+            ."</div>"
+        ."</form>";
+    }
+    
+    // afficher l'élément graphique permettant à l'utilisateur de choisir le style d'objet abstrait 
+    // pour la visualisation des séries TV
+    private function media($media){        
+        // Trois boutons correspondant aux 3 options (grande case / petite case / liste détaillé)
+        // Le bouton de l'option selectionné est d'une couleur verte et non selectionnable
+        // Les autres boutons sont d'une couleur bleu et selectionnable
+        echo "<form action='' method='POST' class='thumbnail formMedia'>"
+            // bouton grande case
+            // avec un tooltip en haut
+            .'<button type="submit" name="MediaObjectCaseG" data-toggle="tooltip" data-placement="top" title="'.$this->_str['tooltip']['MediaObject']['CaseG'].'"';
+                if($media == "MediaObjectCaseG"){
+                    echo 'class="btn btn-success buttonDetailSerieW2" disabled>';
+                }else{
+                    echo 'class="btn btn-info buttonDetailSerieW2">';
+                }
+                echo "<span class='glyphicon glyphicon-th-large'></span>"
+            ."</button> "
+            // bouton petite case
+            // avec un tooltip en haut
+            .'<button type="submit" name="MediaObjectCaseP" data-toggle="tooltip" data-placement="top" title="'.$this->_str['tooltip']['MediaObject']['CaseP'].'"';
+                if($media == "MediaObjectCaseP"){
+                    echo 'class="btn btn-success buttonDetailSerieW2" disabled>';
+                }else{
+                    echo 'class="btn btn-info buttonDetailSerieW2">';
+                }
+                echo "<span class='glyphicon glyphicon-th'></span>"
+            ."</button> "
+            // bouton liste détaillé
+            // avec un tooltip en haut
+            .'<button type="submit" name="MediaObjectList" data-toggle="tooltip" data-placement="top" title="'.$this->_str['tooltip']['MediaObject']['CaseList'].'"';
+                if($media == "MediaObjectList"){
+                    echo 'class="btn btn-success buttonDetailSerieW2" disabled>';
+                }else{
+                    echo 'class="btn btn-info buttonDetailSerieW2">';
+                }
+                echo "<span class='glyphicon glyphicon-list'></span>"
+            ."</button>"
+        ."</form>";
+    }
 }

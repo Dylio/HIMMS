@@ -42,10 +42,12 @@ class class_admin_affichage{
                     if($i == 4){ echo "class='active'"; }
                     echo "><a href='messages.php'>Mes Messages <span class='badge'>".$this->_db->messagerie_nonlu()."</span></a>"
                 . "</li>"
+                . "<li role='presentation'>"
+                        . "<a href='index_1.php'><span class='glyphicon glyphicon-off'></span></a>"
+                . "</li>"
             . "</ul>"
         . "</p>";
     }
-    
     public function affichage_menu_serie($i, $num_serie){
         echo "<ul class='nav nav-pills nav-stacked' style='float:left; width:25%;'>"
             . "<li role='presentation' ";
