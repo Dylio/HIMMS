@@ -601,3 +601,35 @@ html {
     margin-right: auto;
     width: 50%;
 }
+
+.tab_messagerie{
+    overflow:auto;
+    width:90%;
+    margin:auto;
+}
+
+.tab_titre_1{
+    font-size:25px;
+    width:3%;
+}
+
+.tab_titre_2{
+    font-size:25px;
+    width:27%;
+}
+
+.tab_titre_3{
+    font-size:25px;
+    width:50%;
+}
+
+.tab_titre_4{
+    font-size:25px;
+    width:15%;
+}
+
+.tab_titre_5{
+    font-size:25px;
+    width:5%;
+    text-align:right;
+}

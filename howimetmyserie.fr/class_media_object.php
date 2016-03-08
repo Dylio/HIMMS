@@ -165,7 +165,7 @@ class class_media_object {
             case "MediaObjectList" : // sous forme de liste
                 echo "<div class='thumbnail SerieListContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
-                        ."<img class='media-object SerieListImg' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieListImg' src='".$this->alea_image($this->_serie)."' alt='".$this->_titre."'>"
                    ."</a>"
                    ."<div class='media-body'>"; // conteneur de la description de la serie TV
                         echo $this->serie_titre("SerieListTitre");
@@ -184,7 +184,7 @@ class class_media_object {
             case "MediaObjectCaseP" : // sous forme de petite case (1er forme)
                 echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
-                        ."<img class='media-object SerieCasePImg' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCasePImg' src='".$this->alea_image($this->_serie)."' alt='".$this->_titre."'>"
                     ."</a>"
                     ."<div class='media-body SerieCasePTxt'>"; // conteneur de la description de la serie TV
                         echo $this->serie_like_recommandation("SerieCasePButton");
@@ -196,7 +196,7 @@ class class_media_object {
             case "MediaObjectCaseP2" : // sous forme de petite case (2eme forme)
                 echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
-                        ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image($this->_serie)."' alt='".$this->_titre."'>"
                     ."</a>"
                     ."<div class='media-body SerieCaseP2Txt'>"; //  conteneur de la description de la serie TV
                         echo $this->serie_like_recommandation("SerieCasePButton");
@@ -208,7 +208,7 @@ class class_media_object {
             case "MediaObjectCaseG" : // sous forme de grande case (1er forme)
                 echo "<div class='thumbnail SerieCaseGContainerSerie'>" // conteneur de l'affiche de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_serie'>"
-                        ."<img class='media-object SerieCaseGImg' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCaseGImg' src='".$this->alea_image($this->_serie)."' alt='".$this->_titre."'>"
                     . "</a>"
                     ."<div class='caption'>"; //  conteneur de la description de la serie TV
                        echo $this->serie_like_recommandation("SerieCaseGButton");    
@@ -220,10 +220,10 @@ class class_media_object {
             case "MediaObjectCaseG2" : // sous forme de grande case (2eme forme)
                 echo "<div class='thumbnail SerieCaseG2ContainerSerie'>" // conteneur de la description de la serie TV
                     ."<a href='./Serie_Detail.php?num_serie=$this->_serie'>"
-                        ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                        ."<img class='media-object SerieCaseG2Img' src='".$this->alea_image($this->_serie)."' alt='".$this->_titre."'>"
                     . "</a>"
                     ."<div class='caption'>"; // conteneur du texte de la serie TV
-                        echo $this->serie_like_recommandation("SerieCaseGButton");    
+                        echo $this->serie_like_recommandation("SerieCaseGButton");
                         echo $this->serie_titre("SerieCaseGTitre");
                         echo $this->serie_date("SerieCaseGDate");
                     echo '</div>'
@@ -260,10 +260,10 @@ class class_media_object {
     
     // Renvoie l'adresse relatif d'une image aléatoire de la série TV
     // OUT : adresse relatif d'une image aléatoire de la série TV
-    public static function alea_image($titreSerie){
-        $dirname = "./Affiche_1/$titreSerie";       // adresse relatif de la série TV
+    public static function alea_image($num_Serie){
+        $dirname = "./Affiche_1/$num_Serie";       // adresse relatif de la série TV
         if(file_exists($dirname) ){                 // vérification que le dossier existe
-            $j = 0;                                 // $j nombre d'affiche de la série TV
+            $j = 0;                        // $j nombre d'affiche de la série TV
             $dir = opendir($dirname);       
             while($file = readdir($dir)) {          // compte le nombre d'affiche de la série TV
                 if(substr($file, -4) == ".png"){    // les affiches doivent être tous sous format .png
@@ -276,7 +276,7 @@ class class_media_object {
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "Affiche_1/$titreSerie/".$file;              // renvoie la $aleaImage affiche de série TV
+                    return "Affiche_1/$num_Serie/".$file;              // renvoie la $aleaImage affiche de série TV
                 }
                 if(substr($file, -4) == ".png"){
                     $i++;

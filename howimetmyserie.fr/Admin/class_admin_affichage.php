@@ -75,6 +75,82 @@ class class_admin_affichage{
             }
         echo '</div>';
     }
+
+    public function affichage_messagerie(){
+        if(isset($_POST['opt_lu'])){
+            $j=$_POST['opt_lu'];
+        }else{
+            $j=0;
+        }
+        echo "<form action='' method='POST' class='formMessage'>"
+            .'<button type="submit" name="opt_lu" value=1 ';
+                if($j==1){
+                    echo "class='btn btn-success buttonTriW' disabled>";
+                }else{
+                    echo "class='btn btn-info buttonTriW'>";
+                }
+                echo "Archive"
+            ."</button> "
+            .'<button type="submit" name="opt_lu" value=0 ';
+                if($j == 0){
+                    echo "class='btn btn-success buttonTriW' disabled>";
+                }else{
+                    echo "class='btn btn-info buttonTriW'>";
+                }
+                echo "Boite de réception"
+            ."</button>"   
+        . "</form><br/>";  
+        $req = $this->_db->messagerie($j);
+        echo "<table class='table table-striped table-responsive table-condensed tab_messagerie'>"
+            . "<tr>"
+                . "<th class='alert-info tab_col_1'></th>"
+                . "<th class='alert-info tab_col_2'>De</th>"
+                . "<th class='alert-info tab_col_3'>Sujet</th>"
+                . "<th class='alert-info tab_col_4'>Date</th>"
+                . "<th class='alert-info tab_col_5'></th>"
+            . "</tr>";
+            $i = 0;
+            while($data = $req->fetch()){ 
+                $i++;
+                echo "<tr class='collapsed' role='button' data-toggle='collapse' data-parent='#accordion' href='#$i' aria-expanded='false' aria-controls='collapseTwo'>"
+                    . "<th class='tab_col_1'>";
+                        if($data['lu'] == 0){
+                            echo '<span class="glyphicon glyphicon-edit" style="color:red;"/>';
+                        }else{
+                            echo '<span class="glyphicon glyphicon-check" style="color:green;"/>';
+                        }
+                    echo "</th>"
+                    . "<th class='tab_col_2'>".$data['pseudo']."</th>"
+                    . "<th class='tab_col_3'>".$data['sujet']."</th>"
+                    . "<th class='tab_col_4'>".date('d/m/Y',strtotime($data['dateContact']))."</th>"
+                    . "<th class='tab_col_5'><span class='glyphicon glyphicon-zoom-in'></span></th>"
+                . "</tr>"
+                . "<tr id='$i' class='panel-collapse collapse'>"
+                    . "<td colspan=5>"
+                        . "<form method='POST'>"
+                            . "<input type='hidden' name='num_user' value='".$data['num_user']."'>"
+                            . "<input type='hidden' name='dateContact' value='".$data['dateContact']."'>";
+                            if(isset($_POST['opt_lu'])){
+                                echo '<input type="hidden" name="opt_lu" value='.$_POST['opt_lu'].' >';
+                            }
+                            if($data['lu'] == 0){
+                                echo "<button type='submit' class='btn' name='lu' value='0' style='float:right; color:red;'>"
+                                    . 'Marqué comme lu'
+                                . '</button>';
+                            }else{
+                                echo "<button type='submit' class='btn' name='lu' value='1' style='float:right; color:green;'>"
+                                    . "Marqué comme non lu"
+                                . "</button>";
+                            }
+                        echo "</form>"
+                        . "Adresse Email : <a href='mailto:".$data['email']."?subject=HIMMS - ".$data['sujet']."'>".$data['email']."</a><br/>"
+                        . "Sujet : ".$data['sujet']."<br/>"
+                        . "Message : ".$data['texte']
+                    . "</td>"
+                . "</tr>";
+            }
+        echo "</table>";
+    }
     
     public function message_lu(){
         if(isset($_POST['lu'])){

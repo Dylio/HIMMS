@@ -9,7 +9,7 @@ $str = lang::getlang(); ?>
         <?php include_once 'incl_import.php'; ?>
     </head>
     
-    <body style='background: url("<?php echo $affichage->alea_Image($data['titre']); ?>")'>
+    <body style='background: url("<?php echo $affichage->alea_Image($_GET['num_serie']); ?>")'>
         <?php 
         // gestion de l'évènement séries TV aimé ou recommandé et son contraire
         $affichage->like_recommandation();

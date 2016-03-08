@@ -65,7 +65,7 @@ class class_admin_media_object {
     public function media_object(){
         echo "<div class='thumbnail SerieCasePContainerSerie'>" // conteneur de l'affiche de la serie TV
             ."<a href='./serie_detail.php?opt=0&num_serie=$this->_serie' class='media-left media-middle'>"
-                ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image($this->_titre)."' alt='".$this->_titre."'>"
+                ."<img class='media-object SerieCaseP2Img' src='".$this->alea_image($this->_serie)."' alt='".$this->_titre."'>"
             ."</a>"
             ."<div class='media-body SerieCaseP2Txt'>"; // conteneur de la description de la serie TV
                 echo $this->serie_titre("SerieCasePTitre");

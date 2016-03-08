@@ -1,10 +1,4 @@
 <?php 
-require_once 'class_db.php';            // base de données
-$db = new class_db(false);
-if($db->questionnaire_exist() == 1){
-    header("Location:index.php");
-    exit;
-}
 // constantes textuelles du site web
 require_once 'lang.php';
 $str = lang::getlang(); ?>
@@ -13,7 +7,11 @@ $str = lang::getlang(); ?>
     <head>
         <title><?php echo $str['site']['name2']; ?></title>	
         <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-        <?php include_once 'incl_import.php'; ?>
+        <?php include_once 'incl_import.php'; 
+        if($db->questionnaire_exist() == 1){
+            header("Location:index.php");
+            exit;
+        }?>
     </head>
     
     <body style='background: url(css/cgu.png) no-repeat center fixed; background-size: 100% 100%; min-width: 100%;'>
@@ -22,7 +20,7 @@ $str = lang::getlang(); ?>
 
         <form action="" method="POST">
             <div  class="jumbotron SerieDetailContainer2"> 
-                <?php $i = 1;
+                <?php $i = 1;                
                 echo "<p class='question_entete'>".$str['questionnaire']['texte']."</p><br/>";
                 $affichage->question_oui_non($i++, $str['questionnaire']['1']);
                 $affichage->question_oui_non($i++, $str['questionnaire']['2']);
