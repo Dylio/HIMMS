@@ -164,10 +164,10 @@ class class_media_object {
         switch ($object) {
             case "MediaObjectList" : // sous forme de liste
                 echo "<div class='thumbnail SerieListContainerSerie'>" // conteneur de l'affiche de la serie TV
-                    ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle'>"
+                    ."<a href='./Serie_Detail.php?num_serie=$this->_serie' class='media-left media-middle' style='width:35%; float:left;'>"
                         ."<img class='media-object SerieListImg' src='".$this->alea_image($this->_serie)."' alt='".$this->_titre."'>"
                    ."</a>"
-                   ."<div class='media-body'>"; // conteneur de la description de la serie TV
+                   ."<div class='media-body' style='width:62%; float:right;'>"; // conteneur de la description de la serie TV
                         echo $this->serie_titre("SerieListTitre");
                         echo $this->serie_like_recommandation("SerieListButton");
                         echo $this->_str['serie_detail']['Production']."<span class='Serie_Detail_txt'>LP PROD</span><br/>"
@@ -277,6 +277,34 @@ class class_media_object {
             while($file = readdir($dir)) {
                 if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
                     return "Affiche_1/$num_Serie/".$file;              // renvoie la $aleaImage affiche de série TV
+                }
+                if(substr($file, -4) == ".png"){
+                    $i++;
+                }
+            }
+            closedir($dir);
+        }
+    }
+    
+    // Renvoie l'adresse relatif d'une image aléatoire de la série TV
+    // OUT : adresse relatif d'une image aléatoire de la série TV
+    public static function alea_image2($num_Serie){
+        $dirname = "./Affiche/$num_Serie";       // adresse relatif de la série TV
+        if(file_exists($dirname) ){                 // vérification que le dossier existe
+            $j = 0;                        // $j nombre d'affiche de la série TV
+            $dir = opendir($dirname);       
+            while($file = readdir($dir)) {          // compte le nombre d'affiche de la série TV
+                if(substr($file, -4) == ".png"){    // les affiches doivent être tous sous format .png
+                    $j++;
+                }
+            }
+            closedir($dir);
+            $aleaImage = rand(1, $j);                 // $aleaImage un nombre aléatoire entre 1 et $j
+            $i = 1;                                   // $i numéro actuel de l'affiche de la série TV
+            $dir = opendir($dirname);
+            while($file = readdir($dir)) {
+                if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
+                    return "./Affiche/$num_Serie/".$file;              // renvoie la $aleaImage affiche de série TV
                 }
                 if(substr($file, -4) == ".png"){
                     $i++;

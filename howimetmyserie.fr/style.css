@@ -6,7 +6,6 @@
 /* GENERAL */
 body{
     min-width: 1250px;
-    max-width: 100%;
     height: max-content;
     margin : 4.5% auto 1% auto;
     font-size:20px;
@@ -320,19 +319,19 @@ html {
     color : black;
 }
 .SerieCasePImg{
-    width:120px !important;
+    width:100px !important;
     height:75px !important;  
 }
 .SerieCasePTxt{
-    width:160px;
+    width:175px;
     height:75px;   
 }
 .SerieCaseP2Img{
-    width:80px !important;
+    width:75px !important;
     height:70px !important;   
 }
 .SerieCaseP2Txt{
-    width:165px;
+    width:155px;
     height:70px;   
 }
 .SerieCasePButtonR {
@@ -414,13 +413,12 @@ html {
 .SerieListButtonClassification {
     width: 32px;
     height: 24px;
-    margin: 0px 20px 0px 20px;
+    margin: 0px 20px;
 }
 .SerieListImg{
-    width: 550px;
-    height: 335px !important;
-    margin-left: 15px !important;
-    margin-right: 15px !important;
+    width: 100%;
+    height: 300px !important;
+    margin: 5px 15px;
 }
 
 

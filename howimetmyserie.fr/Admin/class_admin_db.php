@@ -146,11 +146,11 @@ class class_admin_db {
     }
     
     public function update_serie($num_serie, $titre, $dateD, $dateF, $nationalite, $créateurs, $acteurs, $genre, $format, $nbSaison, $nbEpisode, $classification){
-        if($dateF == 0){ $dateF='= null'; }else{$dateF = '='.$dateF; }
+        if($dateF == 0){ $dateF=' null'; }else{$dateF = $dateF; }
         return $this->_db->query("UPDATE serie "
                 . "SET titre='$titre', "
                 . "dateD='$dateD', "
-                . "dateF '$dateF', "
+                . "dateF = '$dateF', "
                 . "nationalite='$nationalite', "
                 . "créateurs='$créateurs', "
                 . "acteurs='$acteurs', "

@@ -49,8 +49,8 @@ class class_affichage{
     
     // Renvoie l'adresse relatif d'une image aléatoire de la série TV
     // OUT : adresse relatif d'une image aléatoire de la série TV
-    function alea_Image($titreSerie){
-        return class_media_object::alea_image($titreSerie);
+    function alea_Image($num_serie){
+        return class_media_object::alea_image2($num_serie);
     }       
     
     // Affiche toutes les séries TV resultant d'une requete

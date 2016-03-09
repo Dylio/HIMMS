@@ -67,10 +67,10 @@ $str = lang::getlang(); ?>
                     <label for="classification" style="width: 20%">Classification : </label>
                         <select name="classification" style="width: 20%" required>
                             <option value="null">Tout Public</option>
-                            <option value="10" <?php if(isset($_POST['classification']) and  $_POST['classification'] == 10) { echo "selected"; } ?> >10</option>			
-                            <option value="12" <?php if(isset($_POST['classification']) and  $_POST['classification'] == 12) { echo "selected"; } ?> >12</option>			
-                            <option value="16" <?php if(isset($_POST['classification']) and  $_POST['classification'] == 16) { echo "selected"; } ?> >16</option>			
-                            <option value="18" <?php if(isset($_POST['classification']) and  $_POST['classification'] == 18) { echo "selected"; } ?> >18</option>			
+                            <option value="10" <?php if(isset($data['classification']) and  $data['classification'] == 10) { echo "selected"; } ?> >10</option>			
+                            <option value="12" <?php if(isset($data['classification']) and  $data['classification'] == 12) { echo "selected"; } ?> >12</option>			
+                            <option value="16" <?php if(isset($data['classification']) and  $data['classification'] == 16) { echo "selected"; } ?> >16</option>			
+                            <option value="18" <?php if(isset($data['classification']) and  $data['classification'] == 18) { echo "selected"; } ?> >18</option>			
                         </select><br/><br/>
                         <div style='margin-left: auto; margin-right:auto;width:400px;'>
                             <input type="submit" value="Modifier les détails." name="btn1" class="btn btn-primary btn-lg" >

@@ -28,7 +28,7 @@ $str = lang::getlang(); ?>
             require_once 'class_db.php';            // base de données
             require_once 'class_affichage.php';     // affichage global
             require_once 'class_controleur.php';    // afficahge et gestion des controleurs
-            $db = new class_db(false);
+            $db = new class_db(true);
             $affichage = new class_affichage($db, $str);
             // garde en mémoire pour la session actuel les préférences visuelles de l'utilisateur
             if(!isset($_SESSION['SerieTV'])){
