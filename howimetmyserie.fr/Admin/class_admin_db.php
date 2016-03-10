@@ -144,6 +144,13 @@ class class_admin_db {
         $data = $req->fetch();
         return $data;
     }
+    public function num_serie($titre){
+        $req = $this->_db->query("SELECT num_serie "
+                                . "from serie "
+                                . "where replace(UPPER(titre), ' ','') = replace(UPPER('$titre'),' ','');");
+        $data = $req->fetch();
+        return $data['0'];
+    }
     
     public function update_serie($num_serie, $titre, $dateD, $dateF, $nationalite, $créateurs, $acteurs, $genre, $format, $nbSaison, $nbEpisode, $classification){
         if($dateF == 0){ $dateF=' null'; }else{$dateF = $dateF; }
@@ -253,7 +260,7 @@ class class_admin_db {
     public function optimiser_appartenir($idS){
         $this->_db->query("delete from appartenir "
                         . "where num_serie = '$idS' "
-                        . "and occurrence/3 >= (select count(*) "
+                        . "and occurrence <= (select count(*)/4 "
                                             . "from soustitre "
                                             . "where num_serie='$idS'"
                                             . "and version='VF');");
@@ -264,6 +271,26 @@ class class_admin_db {
                                             . "where motcle in (select libelle "
                                                                 . "from exclusion ));");
         
+    }
+    
+    public function nb_episode($idS){
+        $req1 = $this->_db->query("select count(*)/3 "
+                        . "from soustitre "
+                        . "where num_serie='$idS'"
+                        . "and version='VF'");
+        $data1 = $req1->fetch();        
+        $req2 = $this->_db->query("select count(*)/3 "
+                        . "from soustitre "
+                        . "where num_serie='$idS'"
+                        . "and version='VO'");
+        $data2 = $req2->fetch();
+        return max(array($data1[0], $data2[0]));
+    }
+    
+    public function test_mc($mc){
+        $this->_db->query("select occurrence from appartenir a, motcle m "
+                        . "where a.num_motcle = a.num_motcle "
+                        . "and m.motcle = '$mc'");
     }
     
     public function admin($user, $mdp){

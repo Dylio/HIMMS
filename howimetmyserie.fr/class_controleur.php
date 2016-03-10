@@ -184,7 +184,7 @@ class class_controleur {
     // renvoie une chaîne texte entrée en paramètre sans characteres specials
     // IN : $chaine chaîne texte
     // OUT : chaîne texte sans characteres specials
-    private static function no_special_character($chaine){
+    public static function no_special_character($chaine){
         // Enlève tout les accents de la chaîne texte
         $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
         $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';

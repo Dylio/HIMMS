@@ -26,7 +26,7 @@ $str = lang::getlang(); ?>
     </head>
  
     <body>
-        <?php $affichage->affichage_menu(2);
+        <?php $affichage->affichage_menu(3);
         $affichage->affichage_site('LES VISITES'); ?>
         <table class="table  table-striped table-responsive table-condensed" style="margin-left:25%; margin-left:25%; width: 50%;">
             <tr>

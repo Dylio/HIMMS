@@ -151,7 +151,8 @@ class class_admin_controleur {
     // renvoie une chaîne texte entrée en paramètre sans characteres specials
     // IN : $chaine chaîne texte
     // OUT : chaîne texte sans characteres specials
-    private static function no_special_character($chaine){
+    public static function no_special_character($chaine){
+        $chaine = utf8_encode($chaine);
         // Enlève tout les accents de la chaîne texte
         $a = 'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
         $b = 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
@@ -159,9 +160,12 @@ class class_admin_controleur {
         // Ecrit la chaîne de caractères en miniscule
         $chaine = strtolower($chaine);
         // Supprime la ponctuation de la chaîne texte
-        $carac = array('.' ,'!' ,'?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}');
+        $carac = array('.' ,'!', '?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}', 1,2,3,4,5,6,7,8,9,0);
         $chaine = str_replace ($carac, ' ', $chaine);
         $chaine = str_replace ('œ', 'oe', $chaine);
+        $chaine=nl2br($chaine, true);
+        $chaine = str_replace ('<br />', ' ', $chaine);
+        $chaine = preg_replace('/\s{2,}/', ' ', $chaine);
         $chaine=trim($chaine);
         return $chaine;
     }

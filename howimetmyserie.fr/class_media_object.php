@@ -98,7 +98,7 @@ class class_media_object {
     // Renvoie le titre d'une série avec son style de representation
     // IN : $style style qui permet de décrire la representation du titre d'une série.
     private function serie_titre($style){
-        return "<div class='$style'><a href='./Serie_Detail.php?num_serie=$this->_serie'>$this->_titre</a></div>";
+        return "<div class='$style'><a href='./Serie_Detail.php?num_serie=$this->_serie' class='$style'>$this->_titre</a></div>";
     }
     
     // Renvoie les dates d'une série avec son style de représentation

@@ -24,22 +24,26 @@ class class_admin_affichage{
                     if($i == 1){ echo "class='active'"; }
                     echo "><a href='serie.php'>Mes Séries TV</a>"
                 . "</li>"
+                . "<li role='presentation' ";
+                    if($i == 2){ echo "class='active'"; }
+                    echo "><a href='serie_SRT.php'>Ajouter SRT</a>"
+                . "</li>"
                 . "<li role='presentation' class='dropdown ";
-                    if($i == 2 or $i == 3){ echo "active"; }
+                    if($i == 3 or $i == 4){ echo "active"; }
                     echo "'>"
                     . "<a class='dropdown-toggle' data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false'>"
                       . "Mes Statistiques</span></a>"
                     . "<ul class='dropdown-menu'>"
                         ."<li role='presentation' ";
-                        if($i == 2){ echo "class='active'"; }
+                        if($i == 3){ echo "class='active'"; }
                         echo "><a href='stat_visiteur.php?annee=".date('Y')."'>Les Visites</a></li>"
                         ."<li role='presentation' ";
-                        if($i == 3){ echo "class='active'"; }
+                        if($i == 4){ echo "class='active'"; }
                         echo "><a href='stat_avis.php'>Les Avis</a></li>"
                     . "</ul>"
                 . "</li>"
                 . "<li role='presentation' ";
-                    if($i == 4){ echo "class='active'"; }
+                    if($i == 5){ echo "class='active'"; }
                     echo "><a href='messages.php'>Mes Messages <span class='badge'>".$this->_db->messagerie_nonlu()."</span></a>"
                 . "</li>"
                 . "<li role='presentation'>"

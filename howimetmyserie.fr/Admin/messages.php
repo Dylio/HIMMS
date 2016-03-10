@@ -29,7 +29,7 @@ $str = lang::getlang(); ?>
     <body>
         <?php 
         $affichage->message_lu();
-        $affichage->affichage_menu(4);
+        $affichage->affichage_menu(5);
         $affichage->affichage_site('MES MESSAGES');?>
         <br/>
         <?php $affichage->affichage_messagerie(); ?>

@@ -26,7 +26,7 @@ $str = lang::getlang(); ?>
     </head>
  
     <body>
-        <?php $affichage->affichage_menu(3); 
+        <?php $affichage->affichage_menu(4); 
         $affichage->affichage_site('LES AVIS DES UTILISATEURS'); ?>
         <div style="float:left">Nombre d'utilisateur ayant remplit le questionnaire : </div>
             <div class="Compteur" style="float:left; margin-left: 10px; margin-top: -10px;">0<?php echo $db->questionnaire_nb_user(); ?></div>
