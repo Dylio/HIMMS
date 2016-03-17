@@ -71,7 +71,7 @@ class class_db {
     // OUT : requete de selection des séries TV
     public function serie($TxtSearch, $TxtLike, $TxtRecommandation, $TxtOrder){
         return $this->_db->query("SELECT s.* "
-                                . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
+                                . "from $this->_serie s left join (select * from nonrecommandation where num_user = '$this->_user') nr on s.num_serie = nr.num_serie "
                                 . "where 1 $TxtSearch $TxtLike "
                                 . "group by s.num_serie "
                                 . "$TxtRecommandation "
@@ -93,7 +93,7 @@ class class_db {
     // OUT : nombre de séries TV
     public function serie_count($TxtLike, $TxtRecommandation){
         $req = $this->_db->query("SELECT count(s.num_serie) "
-                                . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
+                                . "from $this->_serie s left join (select * from nonrecommandation where num_user = '$this->_user') nr on s.num_serie = nr.num_serie "
                                 . "where 1 $TxtLike "
                                 . "$TxtRecommandation ");
         return $data = $req->fetch();
@@ -131,7 +131,11 @@ class class_db {
     // OUT : requete de selection des séries TV recommandées
     public function recommandation($TxtLike, $TxtRecommandation, $TxtOrder, $limit){
          return $this->_db->query("SELECT s.* "
-                    . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
+                    . "from $this->_serie s left join "
+                        . "(select * "
+                        . "from nonrecommandation "
+                        . "where num_user = '$this->_user') nr "
+                        . "on s.num_serie = nr.num_serie "
                     . "where (s.num_serie in (SELECT r1.num_serie from (SELECT s.num_serie " 
                         . "from $this->_serie s "
                         . "join appartenir a "
@@ -209,7 +213,7 @@ class class_db {
     public function search($TxtLike, $TxtSearch, $TxtRecommandation, $TxtOrder){
         return $this->_db->query("SELECT s.* "
                                 . "from $this->_serie s "
-                                . "left join nonrecommandation nr "
+                                . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
                                     . "on s.num_serie = nr.num_serie "
                                 . "where 1 "
                                 . "$TxtLike "
@@ -226,7 +230,7 @@ class class_db {
     // OUT : nombre de séries TV
      public function search_count($TxtLike, $TxtSearch, $TxtRecommandation){
         $req = $this->_db->query("SELECT count(*) "
-                                . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
+                                . "from $this->_serie s left join (select * from nonrecommandation where num_user = '$this->_user') nr on s.num_serie = nr.num_serie "
                                 . "where 1 "
                                 . "$TxtLike "
                                 . "$TxtSearch "
@@ -347,5 +351,41 @@ class class_db {
                         . "and question_date is not null;");
         $data = $req->fetch();
         return $data['0'];
+    }
+    
+    public function motexclu(){
+        return $this->_db->query("SELECT * "
+                                . "from exclusion;");
+    }
+    
+    public function search_motcle($motcle){
+        $req = $this->_db->query("SELECT num_motcle "
+                                . "from motcle "
+                                . "where motcle = '$motcle';");
+        $data = $req->fetch();
+        return $data['0'];
+    }
+    
+    public function interesser_exist($motcle){
+        $req = $this->_db->query("SELECT count(*) "
+                                . "from interesser "
+                                . "where num_user = '$this->_user' "
+                                . "and num_motcle = '$motcle';");
+        $data = $req->fetch();
+        return $data['0'];
+    }
+    
+    public function interesser_insert($num_motcle){
+        $this->_db->query("Insert into interesser "
+                        . "values('$this->_user','$num_motcle', 1, now());");
+    }
+    
+    public function interesser_update($num_motcle){
+        $this->_db->query("UPDATE interesser "
+                        . "set nbChercher = nbChercher + 1, "
+                        . "DateDerniereSaisie = now() "
+                        . "where num_user = '$this->_user' "
+                        . "and DateDerniereSaisie <> now() "
+                        . "and  num_motcle = '$num_motcle';");
     }
 }

@@ -21,7 +21,8 @@ html {
     color: #3B88C9 !important;
     padding: 0px !important;
     margin: 0px !important;
-    line-height: 1.6;
+    line-height: 1.4;
+    font-weight: 400 !important;
 }
 .MCRecherche{
     text-align: center;
@@ -32,8 +33,9 @@ html {
 }
 .NomPartie2{
     text-align: center;
-    font-size : 25px !important;
+    font-size : 28px !important;
     color: #3B88C9 !important;
+    font-weight: 300 !important;
 }
 .NomPartie3{
     text-align: center;
@@ -70,7 +72,7 @@ html {
 }
 .IndexFirst_Txt{
     text-align: center;
-    font-size : 30px;
+    font-size : 28px;
     color: white;
 }
 .IndexFirst_TxtRadio{
@@ -209,8 +211,8 @@ html {
 
 /* CASE G*/
 .SerieCaseGTitre{
-    font-size : 23px;
-    font-weight:lighter;
+    font-size : 20px;
+    font-weight: 700;
     letter-spacing:0.1px;
     width: 90%;
     color: black !important;
@@ -281,7 +283,7 @@ html {
     color: black !important;
     text-decoration:none !important;
     font-size : 15px;
-    font-weight:lighter;
+    font-weight: 600;
     letter-spacing:0.1px;
     width: 90%;
 }
@@ -344,8 +346,8 @@ html {
 
 /* LIST */
 .SerieListTitre{
-    font-size : 35px;
-    font-weight:lighter;
+    font-size : 27px;
+    font-weight: 600;
     letter-spacing:0.1px;
     text-align: left;
     color: black !important;
@@ -410,9 +412,10 @@ html {
     margin-left : 30px;
     vertical-align:middle;
     float:left;
+    color : #1C4E6D;
 }
 .Serie_Detail_txt{
-    color : #007493;
+    color : #1C4E6D;
 }
 .SerieDetailContainer{
     background-color: rgba(200, 200, 200, 0.90) !important;

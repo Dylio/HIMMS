@@ -128,7 +128,7 @@ class class_affichage{
     // IN : $item1 affichage de l'item top like
     // IN : $item1 affichage de l'item top recommandation
     public function carouselle($item1, $item2, $item3){ ?>
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="6000" style="height: 380px;">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="4000" style="height: 380px;">
             <div class="carousel-inner" role="listbox" style="width:72%; margin-left: auto; margin-right : auto;">
                 <?php if($item1){ // affichage de l'item recommandation ?>
                     <div class="item active">

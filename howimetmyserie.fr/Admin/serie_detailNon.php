@@ -12,12 +12,14 @@ $str = lang::getlang(); ?>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../style.css" rel="stylesheet">
         <?php 
+        set_time_limit (0);
             session_start();
             if(!isset($_SESSION['admin'])){
                 header('Location:index_1.php');
             }
             require_once 'class_admin_db.php';            // base de données
             require_once 'class_admin_affichage.php';     // affichage global
+            require_once 'class_admin_controleur.php';    // afficahge et gestion des controleurs
             $db = new class_admin_db();     // base de données 
             $affichage = new class_admin_affichage($db, $str);
         ?>
@@ -88,17 +90,8 @@ $str = lang::getlang(); ?>
 
                         <!-- Création d'une entrée de fichier de type .srt -->
                         <label for="sfile" style="width: 20%" class="txt">Sous-Titre :</label>
-                            <input type="file" style="width: 70%" name="fichier" accept='.srt' required>
-                        <label for="Saison" style="width: 20%">Saison : </label>
-                            <input type="number" name="Saison" value="<?php if(isset($_POST['Saison'])) { echo $_POST['Saison']; } ?>" required><br />
-                        <label for="Episode" style="width: 20%">Episode : </label>
-                            <input type="number" name="Episode" required><br />
-                        <label for="Saison" style="width: 20%">Version : </label>
-                        <select name="Version" required>
-                            <option <?php if(!isset($_POST['Version'])) { echo "selected"; } ?>"></option>
-                            <option value="VF" <?php if(isset($_POST['Version']) and 'VF' == $_POST['Version']) { echo "selected"; } ?> >VF</option>
-                            <option value="VO" <?php if(isset($_POST['Version']) and 'VO' == $_POST['Version']) { echo "selected"; } ?> >VO</option>		
-                        </select><br />			
+                            <input type="file" style="width: 70%" name="fichier" accept='.zip' required >
+                        		
                         
                         <!-- Création d'un bouton pour valider le formulaire --><br/><br/>
                         <div style='margin-left: auto; margin-right:auto;width:400px;'>
@@ -111,84 +104,90 @@ $str = lang::getlang(); ?>
                 if(isset($_POST['btn2'])){
                     //Exclusion
                     $MotExclu = array();
+                    $tab = array();
+                    $TotalS=0;
                     $req = $db->motexclu();
                     while ($dataMCE = $req->fetch()){
                         array_push($MotExclu, $dataMCE['libelle']);
                     }
-                    $idS = $_GET['num_serie'];
-                    $saison = $_POST['Saison'];
-                    $episode = $_POST['Episode'];
-                    $version = $_POST['Version'];
-
-                    //Verification si le sous-titre n'a pas déjà été inséré pour cette série, cette saison et cet épisode
-                    if($db->srt_exist($idS, $saison, $episode, $version) == 0){
-                        // Tableau contenant chaque ligne du fichier srt
-                        $lines = file($_FILES['fichier']['tmp_name']);
-                        // Pour chaque ligne du fichier srt ... ($i numéro de ligne)
-                        foreach ($lines as $i => $lineContent){
-                            // Exécute pour supprimmer ou modifier les différents caractères spéciaux
-                            $lineContent = class_admin_affichage::no_special_character($lineContent);
-                            // Tableau contenant chaque mot 
-                            $lineContent = explode(" ", $lineContent);
-                            // Pour chaque mot ...
-                            foreach ($lineContent as $linetxt){
-                                // Si le texte n'est pas vide 
-                                // ou n'est pas un caractère numérique 
-                                // ou n'est pas un mot clé representatif (selon une liste) 
-                                if(!in_array($linetxt, $MotExclu)){
-                                    if($linetxt != "" && $linetxt != " " && $linetxt != "-" && !ctype_digit(substr($linetxt, 0, 1))){
-                                        // Si le mot clé existe dans le tableau incrémenté la valeur associé
-                                        if(isset($tab[$linetxt])){
-                                            $tab[$linetxt]++;
-                                        }else{
-                                            // Sinon crée le mot clé et y associé la valeur 1
-                                            $tab[$linetxt] = 1;
+                    $zip = zip_open($_FILES['fichier']['tmp_name']);
+                    if ($zip) {
+                        while ($zip_entry = zip_read($zip)) {
+                            if (zip_entry_open($zip, $zip_entry, "r")) {
+                                $file = zip_entry_name($zip_entry);
+                                $idS = $_GET['num_serie'];
+                                $saison = substr($file, -11, 2);
+                                $episode = substr($file, -8, 2);
+                                $version = substr($file, -6, 2);
+                                //Verification si le sous-titre n'a pas déjà été inséré pour cette série, cette saison et cet épisode
+                                if($db->srt_exist($idS, $saison, $episode, $version) == 0){
+                                    $lineContent = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+                                    // Exécute pour supprimmer ou modifier les différents caractères spéciaux
+                                    $lineContent = class_admin_controleur::no_special_character($lineContent);
+                                    // Tableau contenant chaque mot 
+                                    $lineContent = explode(" ", $lineContent);
+                                    // Pour chaque mot ...
+                                    foreach ($lineContent as $linetxt){
+                                        // Si le texte n'est pas vide 
+                                        // ou n'est pas un caractère numérique 
+                                        // ou n'est pas un mot clé representatif (selon une liste) 
+                                        if(!in_array($linetxt, $MotExclu, false)){
+                                            if($linetxt != '' && $linetxt !=  null && $linetxt != " " && $linetxt != "-" && !ctype_digit(substr($linetxt, 0, 1))){
+                                                // Si le mot clé existe dans le tableau incrémenté la valeur associé
+                                                if(array_key_exists($linetxt, $tab)){
+                                                    $tab[$linetxt]++;
+                                                }else{
+                                                    // Sinon crée le mot clé et y associé la valeur 1
+                                                    $tab[$linetxt] = 1;
+                                                }
+                                            }
                                         }
                                     }
-                                }
+                                    ?>
+                                    <div class="alert alert-success alert-dismissible" role="alert" style="width:100%; float:right; text-align:center;">
+                                        <strong>Succès !</strong> Traitement effectué : <?php echo 'Saison '.$saison.' - Episode '.$episode.' - Version '.$version; ?><br/>
+                                    </div>
+                                    <?php $db->insert_srt($idS, $saison, $episode, $version);
+                                    $TotalS ++;
+                                }else{?>
+                                    <div class="alert alert-warning alert-dismissible" role="alert" style="width:100%; float:right; text-align:center;">
+                                        <strong>Attention !</strong> Traitement impossible : <?php echo 'Saison '.$saison.' - Episode '.$episode.' - Version '.$version; ?><br/>
+                                    </div>
+                                <?php }
+                            zip_entry_close($zip_entry);
                             }
                         }
-                        // Pour chaque mot du tableau
-                        foreach ($tab as $mc => $occ){
-                            //Requete SQL vérifiant si le mot clé existe dans la BDD
-                            $data1 = $db->motcle_exist($mc);
-                            // Si il existe pas, création du mot clé et de l'association avec une occurence de $occ
-                            if($data1['0'] == 0){
-                                // Création d'une ID (Génère un identifiant unique basé sur la date et heure courante en microsecondes.)
-                                $idMC = uniqid(rand(), true);
-                                // Insertion dans la BDD
-                                $db->motcle_insert($idMC, $mc);
+                    }
+                    $nbEpisode = $TotalS + $db->nb_episode($idS);
+                    foreach ($tab as $mc => $occ){
+                        if($nbEpisode/4 > $db->test_mc($mc)+$occ){
+                            unset($tab[$mc]);
+                        }
+                    }
+                    zip_close($zip);
+                    foreach ($tab as $mc => $occ){
+                        //Requete SQL vérifiant si le mot clé existe dans la BDD
+                        $data1 = $db->motcle_exist($mc);
+                        // Si il existe pas, création du mot clé et de l'association avec une occurence de $occ
+                        if($data1['0'] == 0){
+                            // Création d'une ID (Génère un identifiant unique basé sur la date et heure courante en microsecondes.)
+                            $idMC = uniqid(rand(), true);
+                            // Insertion dans la BDD
+                            $db->motcle_insert($idMC, $mc);
+                            $db->appartenir_insert($idMC, $idS, $occ);
+                        }else{	
+                            $idMC = $data1['1'];
+                            if($db->motcle_occ($idMC, $idS) > '0'){
+                                // Si il existe, ajout de l'occurence à l'occurence existante
+                                $db->update_appartenir($idMC, $idS, $occ);
+                            }else{
+                                // Sinon création de l'association avec une occurence de $occ
                                 $db->appartenir_insert($idMC, $idS, $occ);
-                            }else{	
-                                $idMC = $data1['1'];
-                                if($db->motcle_occ($idMC, $idS) > '0'){
-                                    // Si il existe, ajout de l'occurence à l'occurence existante
-                                    $db->update_appartenir($idMC, $idS, $occ);
-                                }else{
-                                    // Sinon création de l'association avec une occurence de $occ
-                                    $db->appartenir_insert($idMC, $idS, $occ);
-                                }
                             }
-                        } ?>
-                        <div class="alert alert-success alert-dismissible" role="alert" style="width:100%; float:right; text-align:center;">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Succès !</strong> Les nouveaux mots-clés a bien été inserés  dans la base de données.<br/>
-                            N'oubliez pas d'optimiser les mots-clés de cette série tv via la page "Listes des mots-clés" quand tous les sous-titres ont été insérés.<br/>
-                            Détail des mots :<br/>
-                            <ul style='text-align: left;'>
-                            <?php ksort($tab);
-                            foreach ($tab as $mc => $occ){
-                                echo '<li>'.$mc.' ('.$occ.')</li>';
-                            } ?></ul>
-                        </div>
-                        <?php $db->insert_srt($idS, $saison, $episode, $version);
-                    } else { ?>
-                        <div class="alert alert-warning alert-dismissible" role="alert" style="width:100%; float:right; text-align:center;">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Attention !</strong> Ce sous-titre a déjà été inséré dans la base de données !
-                        </div>
-                    <?php }
+                        }
+                    }
                 }
+            $db->optimiser_appartenir($_GET['num_serie']);
             ?></div><?php
         }else if($opt == 3){ ?>
             <!-- Table -->

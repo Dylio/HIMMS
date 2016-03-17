@@ -50,8 +50,8 @@ $str = lang::getlang(); ?>
                 <?php $req = $db->questionnaire_commentaire(); 
                 while($data = $req->fetch()){ ?> 
                 <tr STYLE='font-size: 15px;'>
-                    <td><?php echo date("d/m/Y", strtotime($data['question_date'])); ?></td>
-                    <td><?php echo $data['question_commentaire']; ?></td>
+                    <td style="width:112px;"><?php echo date("d/m/Y", strtotime($data['question_date'])); ?></td>
+                    <td style="text-align: left;"><?php echo $data['question_commentaire']; ?></td>
                 </tr>
                 <?php } ?> 
             </table>

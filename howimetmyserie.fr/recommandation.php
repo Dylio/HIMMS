@@ -12,7 +12,7 @@ $str = lang::getlang(); ?>
     <body <?php echo $affichage->alea_Image_Fond(); ?> >    <!-- Affichage image aléatoire -->
         <?php // vérification que l'utilisateur a déjà exprimer ses goûts 
         if($db->recommandation_exist()== 1){
-            $affichage->affichage_titrePartie($str['recommandation']['title'].'<br/><span class="NomPartie2">'.$str['recommandation']['input_search']."</span>");
+            $affichage->affichage_titrePartie($str['recommandation']['title'].'<p class="NomPartie2">'.$str['recommandation']['input_search']."</p>");
             $affichage->like_recommandation();
             // affichage des composants servant au tri des séries TV
             $_SESSION['SerieTV']->controleur();

@@ -137,7 +137,7 @@ $str = lang::getlang(); ?>
                 $nbEpisode = $TotalS + $db->nb_episode($idS);
                 foreach ($tab as $serie){
                     foreach ($serie as $mc => $occ){
-                        if($nbEpisode/6 >= $db->test_mc($mc)+$occ){
+                        if($nbEpisode/4 > $db->test_mc($mc)+$occ){
                             unset($serie[$mc]);
                         }else{
                             $i ++;
