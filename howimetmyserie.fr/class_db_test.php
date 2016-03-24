@@ -120,6 +120,7 @@ class class_db_test {
             $this->test_up("Recommandation : like et recherche", $this->test_recommandation());
             $this->test_up("Recommandation : série tv", $this->test_recommandation_serie());
         echo "</table>";
+        $this->setDown();
     }
 
     
