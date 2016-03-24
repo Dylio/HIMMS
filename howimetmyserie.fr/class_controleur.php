@@ -8,19 +8,16 @@ class class_controleur {
     private  $_Recommandation;      // recherche des séries TV dont l'utilisateur souhaite être recommander ou non
     private  $_MediaObject;         // styles d'objets abstraits pour la visualisation des séries TV
     private  $_user;                // numéro unique identifiant un utilisateur
-    private  $_str;                 // constantes textuelles du site web
     
     // Constructeur de la classe class_controleur
     // IN : $user numéro unique identifiant un utilisateur
-    // IN : $str constantes textuelles du site web
-    public function __construct($user, $str){
+    public function __construct($user){
         $this->_TxtSearch = '';                     // aucune recherche spécifique par défaut
         $this->_Like = 'all';                       // recherche par défaut de toutes les series TV (aime ou non)
         $this->_Order = 'sort1';                    // ordre de restitution des valeurs par défaut : titre croissant
         $this->_Recommandation = false;             // recherche par défaut de toutes les series TV (recommander ou non)
         $this->_MediaObject = "MediaObjectCaseG";   // styles d'objets abstraits pour la visualisation des séries TV par défaut : sous forme de grande case
         $this->_user = $user;
-        $this->_str = $str;
     }    
     
     public function controleur(){
@@ -198,4 +195,28 @@ class class_controleur {
         $chaine=trim($chaine);
         return $chaine;
     }
+
+    public static function search_mc($db, $mc){
+        $mc = class_controleur::no_special_character($mc);
+        $mc = explode(" ", $mc);
+        $txtSearch  = '';
+        $motExclu = array();
+        $reqME = $db->motexclu();
+        while ($dataMCE = $reqME->fetch()){
+            array_push($motExclu, $dataMCE['libelle']);
+        }
+        foreach ($mc as $linetxt){
+            if(!in_array($linetxt, $motExclu, true)){
+                $id_motcle = $db->search_motcle($linetxt);
+                if($db->interesser_nbChercher($id_motcle) == 0){
+                    $db->interesser_insert($id_motcle);
+                }else{
+                    $db->interesser_update($id_motcle);
+                }
+                $txtSearch = $txtSearch." and s.num_serie in ( select num_serie from appartenir where num_motcle = '$id_motcle' )";
+            }
+        } 
+        return $txtSearch;
+    }
+    
 }

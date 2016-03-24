@@ -1,12 +1,4 @@
-<?php if(isset($_POST['btn'])){
-    require_once 'connectBDD.php';
-    $linkpdo = Db::getInstance();
-    $num_user = $_COOKIE['himms_log'];
-    // mise à jour de la restriction pour l'utilisateur
-    $linkpdo->query("UPDATE utilisateur set restriction = ".$_POST['blankRadio']."  where num_user = '$num_user'");
-    header("Location:index.php");
-    exit;
-}
+<?php
 // constantes textuelles du site web
 require_once 'lang.php';
 $str = lang::getlang(); ?>
@@ -26,9 +18,17 @@ $str = lang::getlang(); ?>
         })</script>
         <?php 
             require_once 'class_db.php';            // base de données
+            $db = new class_db();
+            $db->init(true);
+            if(isset($_POST['btn'])){
+                $num_user = $_COOKIE['himms_log'];
+                // mise à jour de la restriction pour l'utilisateur
+                $db->user_update_restriction($_POST['blankRadio']);
+                header("Location:index.php");
+                exit;
+            }
             require_once 'class_affichage.php';     // affichage global
             require_once 'class_controleur.php';    // afficahge et gestion des controleurs
-            $db = new class_db(true);
             $affichage = new class_affichage($db, $str);
             // garde en mémoire pour la session actuel les préférences visuelles de l'utilisateur
             if(!isset($_SESSION['SerieTV'])){

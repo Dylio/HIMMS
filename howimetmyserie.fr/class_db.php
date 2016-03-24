@@ -6,61 +6,79 @@ class class_db {
     private $_user;     // numero unique d'un utilisateur
      
     // Constructeur de la classe class_db
-    // IN : $pageIndexFirst boolean true si la page est IndexFirst sinon false
-    public function __construct($pageIndexFirst) {
+    public function __construct() {
         require_once 'connectBDD.php';              // connection à la bd 
         $this->_db = Db::getInstance();             // création de l'intance de connexion
+    }
+    
+    // Initialisation de la classe class_db
+    // IN : $pageIndexFirst boolean true si la page est IndexFirst sinon false
+    public function init($pageIndexFirst) {
         if(isset($_COOKIE['himms_log'])){                 // si un cookie contenant le numéro d'utilisateur existe
-            $this->_user = $_COOKIE['himms_log']; 
+            $this->setUser($_COOKIE['himms_log']); 
             if(!isset($_COOKIE['PHPSESSID'])){      // s'il n'y a pas déjà eu une création d'une session avant
                 setcookie('himms_log', $this->_user , time() + 365*24*3600, null, null, false, true);     // mise à jour du cookie : rajout un an à sa durée 
-                $this->user_update();       // mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
+                $this->user_update_visite();       // mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
             }
         }else{  // si un cookie contenant le numéro d'utilisateur n'existe pas encore et donc est un nouveau utilisateur
-            $this->_user = uniqid(rand(), true);    // création d'un numéro d'utilisateur aléatoire unique
+            $this->setUser(uniqid(rand(), true));    // création d'un numéro d'utilisateur aléatoire unique
             setcookie('himms_log', $this->_user , time() + 365*24*3600, null, null, false, true); // création d'un cookie contenant le numéro d'utilisateur
             $this->user_insert();           // insertion du nouveau utilisateur dans la base de données
         }
         session_start(); // demarre la session
-        $restriction = $this->restriction();
-        if($restriction == -1 && $pageIndexFirst == false){ // vérification si l'utilisateur a déjà annoncer sa majorité ou non pour la restriction
-            header("Location:index_First.php");
-        }
-        if($restriction == 1){ // restriction : selectionne la table serietp (tout public)
-            $this->_serie = 'serietp';
-        }else if($restriction == 0){ // aucune restriction : selectionne la table serie
-            $this->_serie = 'serie';
-        }
+        $this->restriction($pageIndexFirst);
     }
-    
+        
     // requete : insertion du nouveau utilisateur dans la base de données
-    private function user_insert(){
+    public function user_insert(){
         $this->_db->query("INSERT INTO utilisateur(num_user, nbVisite, date_inscription, date_derniere_visite) "
                         . "values('$this->_user', 1, now(), now());");
     }
     
     // requete : mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
-    private function user_update(){
+    public function user_update_visite(){
         $this->_db->query("UPDATE utilisateur "
-                        . "set nbVisite = nbVisite + 1 "
-                        . "and date_derniere_visite = now() "
+                        . "set nbVisite = nbVisite + 1, "
+                        . "date_derniere_visite = now() "
                         . "where num_user = '$this->_user' ;");
     }
     
-    // renvoie le numéro unique de l'utilisateur
-    // OUT : numéro unique de l'utilisateur
-    public function getUser(){
-        return $this->_user;
+    // change le numéro unique de l'utilisateur
+    // IN : numéro unique de l'utilisateur
+    public function setUser($user){
+        $this->_user = $user;
     }
     
-    // renvoie la valeur de la restriction pour l'utilisateur
-    // OUT : null si aucune valeur - 0 si aucune restriction - 1 si restriction
-    public function restriction(){
+    // change le numéro unique de l'utilisateur
+    // IN : numéro unique de l'utilisateur
+    public function getUser(){
+       return  $this->_user;
+    }
+    
+    public function restriction($pageIndexFirst){
         $req = $this->_db->query("Select restriction "
                                 . "from utilisateur "
-                                . "where num_user like '$this->_user';");
+                                . "where num_user = '$this->_user';");
         $data = $req->fetch();
-        return $data['0'];
+        if($data['0'] == -1 && $pageIndexFirst== false){ // vérification si l'utilisateur a déjà annoncer sa majorité ou non pour la restriction
+            header("Location:index_First.php");
+        }elseif($data['0'] == 1){ // restriction : selectionne la table serietp (tout public)
+            $this->_serie = 'serietp';
+        }else if($data['0'] == 0){ // aucune restriction : selectionne la table serie
+            $this->_serie = 'serie';
+        }        
+    }
+    
+    public function user_update_restriction($restriction){
+        $this->_db->query("UPDATE utilisateur "
+                        . "set restriction = $restriction "
+                        . "where num_user = '$this->_user'");   
+    }
+    
+    // change le numéro unique de l'utilisateur
+    // IN : numéro unique de l'utilisateur
+    public function getSerieRestriction(){
+        return $this->_serie;
     }
     
     // requete : selectionne toutes les séries TV selon plusieurs critères
@@ -93,10 +111,14 @@ class class_db {
     // OUT : nombre de séries TV
     public function serie_count($TxtLike, $TxtRecommandation){
         $req = $this->_db->query("SELECT count(s.num_serie) "
-                                . "from $this->_serie s left join (select * from nonrecommandation where num_user = '$this->_user') nr on s.num_serie = nr.num_serie "
+                                . "from $this->_serie s left join "
+                                    . "(select * "
+                                    . "from nonrecommandation "
+                                    . "where num_user = '$this->_user') nr "
+                                    . "on s.num_serie = nr.num_serie "
                                 . "where 1 $TxtLike "
                                 . "$TxtRecommandation ");
-        return $data = $req->fetch();
+        return $data['0'] = $req->fetch();
     }
     
     // requete : selectionne les séries TV les plus aimées par tous les utilisateurs
@@ -175,13 +197,15 @@ class class_db {
     // OUT : requete de selection des séries TV ressemblant à la série TV
     public function recommandation_serie($num_serie){
         return $this->_db->query("SELECT s.* "
-                . "FROM appartenir a join $this->_serie s on s.num_serie = a.num_serie "
-                . "WHERE a.num_motcle in (select num_motcle "
-                            . "from appartenir "
-                            . "where num_serie = '$num_serie') "
-                . "group by s.num_serie "
-                . "ORDER BY count(*) DESC "
-                . "limit 5 OFFSET 1;");
+                    . "FROM appartenir a join $this->_serie s "
+                        . "on s.num_serie = a.num_serie "
+                    . "WHERE a.num_motcle in (select num_motcle "
+                                . "from appartenir "
+                                . "where num_serie = '$num_serie') "
+                    . "and s.num_serie <> '$num_serie' "
+                    . "group by s.num_serie "
+                    . "ORDER BY count(*) DESC "
+                    . "limit 5;");
     }
     
     // requete : vérification si l'utilisateur a entré ses goûts (like ou recherche)
@@ -366,8 +390,8 @@ class class_db {
         return $data['0'];
     }
     
-    public function interesser_exist($motcle){
-        $req = $this->_db->query("SELECT count(*) "
+    public function interesser_nbChercher($motcle){
+        $req = $this->_db->query("SELECT nbChercher "
                                 . "from interesser "
                                 . "where num_user = '$this->_user' "
                                 . "and num_motcle = '$motcle';");
@@ -377,15 +401,15 @@ class class_db {
     
     public function interesser_insert($num_motcle){
         $this->_db->query("Insert into interesser "
-                        . "values('$this->_user','$num_motcle', 1, now());");
+                        . "values('$this->_user','$num_motcle', 1, DATE(NOW()));");
     }
     
     public function interesser_update($num_motcle){
         $this->_db->query("UPDATE interesser "
                         . "set nbChercher = nbChercher + 1, "
-                        . "DateDerniereSaisie = now() "
+                        . "DateDerniereSaisie = DATE(NOW()) "
                         . "where num_user = '$this->_user' "
-                        . "and DateDerniereSaisie <> now() "
-                        . "and  num_motcle = '$num_motcle';");
+                        . "and DateDerniereSaisie <> DATE(NOW()) "
+                        . "and num_motcle = '$num_motcle';");
     }
 }

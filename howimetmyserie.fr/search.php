@@ -26,25 +26,8 @@ $str = lang::getlang(); ?>
                     $_SESSION['SerieTV']->getMediaObject(),
                     null,
                     $str['search']['input_search']);
-            $mc = class_controleur::no_special_character($_GET['mc']);
-            $mc = explode(" ", $mc);
-            $txtSearch  = '';
-            $motExclu = array();
-            $reqME = $db->motexclu();
-            while ($dataMCE = $reqME->fetch()){
-                array_push($motExclu, $dataMCE['libelle']);
-            }
-            foreach ($mc as $linetxt){
-                if(!in_array($linetxt, $motExclu, false)){
-                    $id_motcle = $db->search_motcle($linetxt);
-                    if($db->interesser_exist($id_motcle) == 0){
-                        $db->interesser_insert($id_motcle);
-                    }else{
-                        $db->interesser_update($id_motcle);
-                    }
-                    $txtSearch = $txtSearch." and s.num_serie in ( select num_serie from appartenir where num_motcle = '$id_motcle' )";
-                }
-            }
+            $txtSearch = class_controleur::search_mc($db, $_GET['mc']);
+            
             $req=$db->search($_SESSION['SerieTV']->getTxtLike(),
                 $txtSearch,
                 $_SESSION['SerieTV']->getTxtRecommandation(),
