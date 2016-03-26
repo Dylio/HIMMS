@@ -133,7 +133,7 @@
         "annuler": "Annuler"
     },
             
-    "tooltip":{ 
+    "tooltip":{
         "search": "Recherchez !",
         "reset": "Réinitialiser la zone de recherche.",
         "like":{
@@ -156,6 +156,41 @@
         "interest":{
             "on":"Voir que les séries qui m'interesse",
             "off":"Voir toutes les séries"
+        }
+    },
+    
+    "admin":{
+        "detail_serie":{
+            "tab": {
+                "0": "Modification des détails :",
+                "1": "Titre : ",
+                "2": "Date de début : ",
+                "3": "Date de fin : ",
+                "4": "Nationalité : ",
+                "5": "Créateurs : ",
+                "6": "Acteurs : ",
+                "7": "Genre : ",
+                "8": "Format : ",
+                "9": "Nb Saison : ",
+                "10": "Nb Episode : ",
+                "11": "Classification : ",
+                "ok": "Modifier les détails."
+            },
+            "srt": {
+                "0": "Ajouter un nouveau sous-titre :",
+                "1": "Sous-Titre :",
+                "2": "Saison : ",
+                "3": "Episode : ",
+                "4": "Version : ",
+                "ok": "Ajouter le sous-titre."
+            }
+        },
+        "stat_visiteur":{
+            "title": "LES VISITES",
+            "stat": "Statistiques au ",
+            "stat2": "Statistique pour l'année ",
+            "total_membre": "Total Membre Actif :",
+            "total_utilisateur": "Total Utilisateur :"
         }
     }
 }

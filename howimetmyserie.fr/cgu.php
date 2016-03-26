@@ -6,17 +6,7 @@ $str = lang::getlang(); ?>
     <head>
         <title><?php echo $str['site']['name2']; ?></title>	
         <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-        <!-- Importation des scripts et des stylesheet -->
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-        <?php // création et gestion des classes permettant l'affichage et le fonctionnement des évènements
-            require_once 'class_db.php';
-            require_once 'class_affichage.php';
-            $db = new class_db(false);
-            $affichage = new class_affichage($db, $str);
-        ?>
+        <?php include_once 'incl_import.php'; ?>
     </head>
     
     <body style='background: url(css/cgu.png) no-repeat center fixed; background-size: 100% 100%;'>

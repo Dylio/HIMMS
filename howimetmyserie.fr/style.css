@@ -46,11 +46,21 @@ html {
     font-size : 45px !important;
     color: #3B88C9 !important;
 }
-.Compteur{
+
+
+.compteur_tab{
+    width: 50% !important;
+    margin: 0 auto;
+}
+.compteur_title{
+    width :70%;
+}
+.compteur_txt{
     font-family : "Display", sans-serif ;
     font-size : 35px !important;
+    width :30%;
+    text-align: center;
 }
-
 
 /* INDEX FIRST */
 .IndexFirstNomSite{
@@ -610,4 +620,26 @@ html {
     font-size:25px;
     width:5%;
     text-align:right;
+}
+
+.graphContainer{
+    margin-left:15%;
+    margin-right:15%;
+}
+.graph{
+    width:70%;
+}
+
+.detail_label{
+    width: 20%;
+}
+.detail_input{
+    width: 70%;
+}
+.detail_input_number{
+    width: 80px;
+}
+.detail_opt{
+    width:71%;
+    float:right;
 }

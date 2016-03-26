@@ -58,7 +58,7 @@ class class_affichage{
     // IN : $dataNb nombre d'éléments à afficher
     // IN : $media style d'objet
     // IN : $warning boolean true si gestion des message si non résultat
-    public function affichage_serie($req, $media, $warning){
+    public function affichage_serie($req, $dataNb, $media, $warning){
         echo '<div class="SerieContainerIner">';
         $i = 0;
         $media_object = new class_media_object($this->_db, $this->_str);
