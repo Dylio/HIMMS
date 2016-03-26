@@ -58,7 +58,7 @@ class class_affichage{
     // IN : $dataNb nombre d'éléments à afficher
     // IN : $media style d'objet
     // IN : $warning boolean true si gestion des message si non résultat
-    public function affichage_serie($req, $dataNb, $media, $warning){
+    public function affichage_serie($req, $media, $warning){
         echo '<div class="SerieContainerIner">';
         $i = 0;
         $media_object = new class_media_object($this->_db, $this->_str);
@@ -70,11 +70,11 @@ class class_affichage{
         echo '</div>';
         // message si aucun élément en fonction du théorique et du réél
         if($warning == true){
-            if($i == 0 && $i != 0){    // message si aucun élément réél mais plusieur éléments théoriques : filtre actuel
-            echo "<div class='alert alert-warning SerieSearchMessAlert'>"
-                . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée avec les filtres actuels !"
-            . "</div>"; 
-            } else if($i == 0 && $i == 0){   // message si aucun élément réél et théorique : aucun résultat
+            if($i == 0 && $dataNb != 0){    // message si aucun élément réél mais plusieur éléments théoriques : filtre actuel
+                echo "<div class='alert alert-warning SerieSearchMessAlert'>"
+                    . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée avec les filtres actuels !"
+                . "</div>"; 
+            } else if($i == 0 && $dataNb == 0){   // message si aucun élément réél et théorique : aucun résultat
                 echo "<div class='alert alert-warning SerieSearchMessAlert'>"
                     . "Oups !<br/>Aucun résultat pour cette recherche n'a été trouvée ..."
                 . "</div>";
@@ -115,7 +115,6 @@ class class_affichage{
                 . '</div>';
             }   
         }
-        
         // les messages restent afficher pendant 3,5 secondes
         echo '<script type="text/javascript">
             setTimeout( function(){
@@ -125,8 +124,8 @@ class class_affichage{
     
     // Affiche un carouselle à 3 items : recommandation / top like / top recommandation
     // IN : $item1 affichage de l'item recommandation
-    // IN : $item1 affichage de l'item top like
-    // IN : $item1 affichage de l'item top recommandation
+    // IN : $item2 affichage de l'item top like
+    // IN : $item3 affichage de l'item top recommandation
     public function carouselle($item1, $item2, $item3){ ?>
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="4000" style="height: 380px;">
             <div class="carousel-inner" role="listbox" style="width:72%; margin-left: auto; margin-right : auto;">
