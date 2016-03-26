@@ -622,12 +622,20 @@ html {
     text-align:right;
 }
 
-.graphContainer{
+.graphVisiteurContainer{
     margin-left:15%;
     margin-right:15%;
 }
-.graph{
+.graphVisiteur{
     width:70%;
+}
+
+.graphAvisContainer{
+    margin-left:0.5%;
+    margin-right:0.5%;
+}
+.graphAvis{
+    width:48.5%;
 }
 
 .detail_label{

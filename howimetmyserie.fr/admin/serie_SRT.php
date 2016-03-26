@@ -6,23 +6,7 @@ $str = lang::getlang(); ?>
     <head>
         <title><?php echo $str['site']['name2']; ?></title>	
         <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-        <!-- Importation des scripts et des stylesheet -->
-        <script src="../js/jquery.js"></script>
-        <script src="../js/bootstrap.min.js"></script>
-        <link href="../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../style.css" rel="stylesheet">
-        <?php 
-            set_time_limit (0);
-            session_start();
-            if(!isset($_SESSION['admin'])){
-                header('Location:index_1.php');
-            }
-            require_once 'class_admin_db.php';            // base de données
-            require_once 'class_admin_affichage.php';     // affichage global
-            require_once 'class_admin_controleur.php';    // afficahge et gestion des controleurs
-            $db = new class_admin_db();     // base de données 
-            $affichage = new class_admin_affichage($db, $str);
-        ?>
+        <?php include_once 'incl_import.php'; ?>
     </head>
     
     <body>

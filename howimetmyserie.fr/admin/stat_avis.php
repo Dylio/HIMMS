@@ -4,38 +4,22 @@ $str = lang::getlang(); ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>HIMMS - Administrateur</title>
-        
-        <!-- Importation des scripts et des stylesheet -->
-        <script src="../js/jquery.js"></script>
-        <script src="../js/bootstrap.min.js"></script>
-        <link href="../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../style.css" rel="stylesheet">
-        
-        <?php // création et gestion des classes permettant l'affichage et le fonctionnement des évènements
-            session_start();
-            if(!isset($_SESSION['admin'])){
-                header('Location:index_1.php');
-            }
-            require_once 'class_admin_db.php';
-            require_once 'class_admin_affichage.php';     // affichage global
-            $db = new class_admin_db();     // base de données 
-            $affichage = new class_admin_affichage($db, $str);
-        ?>
+        <title><?php echo $str['site']['name2']; ?></title>	
+        <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+        <?php include_once 'incl_import.php'; ?>
     </head>
  
     <body>
         <?php $affichage->affichage_menu(4); 
         $affichage->affichage_site('LES AVIS DES UTILISATEURS'); ?>
         <div style="float:left">Nombre d'utilisateur ayant remplit le questionnaire : </div>
-            <div class="Compteur" style="float:left; margin-left: 10px; margin-top: -10px;">0<?php echo $db->questionnaire_nb_user(); ?></div>
+            <div class="compteur_txt" style="float:left; margin-left: 10px; margin-top: -10px;">0<?php echo $db->questionnaire_nb_user(); ?></div>
         <p style="clear: both"></p>
-        <a href='stat_avis_graph1.php' style='margin-left:0.5%; margin-right:0.5%;'>
-            <img src='stat_avis_graph1.php' style='width:48.5%;'>
+        <a href='stat_avis_graph1.php' class='graphAvisContainer'>
+            <img src='stat_avis_graph1.php' class='graphAvis'>
         </a>
-        <a href='stat_avis_graph2.php' style='margin-left:0.5%; margin-right:0.5%;'>
-            <img src='stat_avis_graph2.php' style='width:48.5%;'>
+        <a href='stat_avis_graph2.php' class='graphAvisContainer'>
+            <img src='stat_avis_graph2.php' class='graphAvis'>
         </a>
         <br/><br/>
 

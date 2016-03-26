@@ -22,7 +22,7 @@ class class_admin_affichage{
             . "<ul class='nav nav-tabs nav-pills nav-justified'>"
                 . "<li role='presentation' ";
                     if($i == 1){ echo "class='active'"; }
-                    echo "><a href='serie.php'>Mes Séries TV</a>"
+                    echo "><a href='serie.php'>Mes Séries TV <span class='badge'>".$this->_db->nb_serie()."</span></a>"
                 . "</li>"
                 . "<li role='presentation' ";
                     if($i == 2){ echo "class='active'"; }
@@ -52,6 +52,7 @@ class class_admin_affichage{
             . "</ul>"
         . "</p>";
     }
+    
     public function affichage_menu_serie($i, $num_serie){
         echo "<ul class='nav nav-pills nav-stacked' style='float:left; width:25%;'>"
             . "<li role='presentation' ";

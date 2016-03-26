@@ -6,14 +6,12 @@ class class_admin_db {
     // Constructeur de la classe class_db
     // IN : $pageIndexFirst boolean true si la page est IndexFirst sinon false
     public function __construct() {
-        require_once 'connectBDD.php';              // connection à la bd 
+        require_once '../connectBDD.php';              // connection à la bd 
         $this->_db = Db::getInstance();             // création de l'intance de connexion
     }
     
     // requete : selectionne toutes les séries TV selon plusieurs critères
     // IN : $TxtSearch recherche des séries TV spécifiques
-    // IN : $TxtLike recherche des series TV like ou non
-    // IN : $TxtRecommandation recherche des séries TV dont l'utilisateur souhaite être recommander ou non
     // IN : $TxtOrder ordre de restitution des valeurs
     // OUT : requete de selection des séries TV
     public function serie($TxtSearch, $TxtOrder){
@@ -22,6 +20,13 @@ class class_admin_db {
                                 . "where 1 $TxtSearch "
                                 . "group by s.num_serie "
                                 . "order by $TxtOrder");
+    }
+    
+    public function nb_serie(){
+        $req = $this->_db->query("SELECT count(*) "
+                                . "from serie");
+        $data = $req->fetch();
+        return $data['0'];
     }
     
     public function date_nb_user() { 
@@ -144,6 +149,7 @@ class class_admin_db {
         $data = $req->fetch();
         return $data;
     }
+    
     public function num_serie($titre){
         $req = $this->_db->query("SELECT num_serie "
                                 . "from serie "
