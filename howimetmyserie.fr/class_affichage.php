@@ -2,17 +2,13 @@
 // Cette classe permet l'affichage les données.
 class class_affichage{
     private  $_str;             // constantes textuelles du site web
-    private  $_db;              // instance vers la base de données
     
     // Constructeur de la classe class_media_object
-    // IN : $db instance vers la base de données
     // IN : $str constantes textuelles du site web
-    public function __construct($db, $str){
+    public function __construct(){
         require_once 'class_media_object.php';
-        $this->_str = $str;
-        $this->_db = $db;
-        $this->menu_top();          // affichage du menu du haut
-        $this->menu_bottom();       // affichage du menu du bas 
+        require_once 'lang.php';
+        $this->_str = lang::getlang();
     }
     
     public function affichage_titrePartie($partie){
@@ -61,9 +57,8 @@ class class_affichage{
     public function affichage_serie($req, $dataNb, $media, $warning){
         echo '<div class="SerieContainerIner">';
         $i = 0;
-        $media_object = new class_media_object($this->_db, $this->_str);
         while($data = $req->fetch()){
-           $media_object->newSerieDetail($data);
+           $media_object = new class_media_object($data);
            $media_object->media_object($media);
            $i++;
         }
@@ -82,44 +77,20 @@ class class_affichage{
         }
     }
     
-    // Gestion des évenements quand un utilisateur change d'état une série TV
-    public function like_recommandation(){
-        // Gestion et Affichage un message d'alerte lorsqu'une série TV devient non recommandé ou pas par l'utilisateur
-        if(isset($_POST['Like'])){
-            if($this->_db->serie_like_exist($_POST['Serie']) == 0){
-                $this->_db->serie_like_insert($_POST['Serie']);
-                echo '<div class="alert alert-success" id="info" role="alert">'
-                    . '<span class="glyphicon glyphicon-ok"></span> La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries favorites !<br/>'
-                . '</div>';
-            }else{
-                $this->_db->serie_like_delete($_POST['Serie']);
-                echo '<div class="alert alert-danger" id="info" role="alert">'
-                    . '<span class="glyphicon glyphicon-remove"></span> La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries favorites !<br/>'
-                . '</div>';
-            }
-        }
-
-        // Gestion et Affichage un message d'alerte lorsqu'une série TV devient non recommandé ou pas par l'utilisateur
-        if(isset($_POST['Recommandation'])){
-            if($this->_db->serie_nonRecommandation_exist($_POST['Serie']) == 0){
-                $this->_db->serie_nonRecommandation_insert($_POST['Serie']);
-                echo '<div class="alert alert-danger" id="info" role="alert">'
-                    . '<span class="glyphicon glyphicon-remove"></span>'
-                    . 'La série "'.$_POST['TitreSerie'].'" n\'appartient plus à vos séries de recommandation !<br/>'
-                . '</div>';
-            }else{
-                $this->_db->serie_nonRecommandation_delete($_POST['Serie']);
-                echo '<div class="alert alert-success" id="info" role="alert">'
-                    . '<span class="glyphicon glyphicon-ok"></span>'
-                    . 'La série "'.$_POST['TitreSerie'].'" appartient maintenant à vos séries de recommandation !<br/>'
-                . '</div>';
-            }   
-        }
-        // les messages restent afficher pendant 3,5 secondes
-        echo '<script type="text/javascript">
-            setTimeout( function(){
-                document.getElementById("info").style.display = "none"; }, 3500);
-        </script>';
+    public function affichage_une_serie($data, $req){
+        echo '<div class="SerieContainerIner">';
+            $media_object = new class_media_object($data);
+            $media_object->media_object('MediaObjectDetail');
+            echo "<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
+                ."<div class='SerieDetailNomPartie'>".$this->_str['serie_detail']['Recommandation']."</div>"
+                .'<div class="SerieContainerIner">';
+                    while($data = $req->fetch()){
+                        $media_object = new class_media_object($data);
+                        $media_object->media_object("MediaObjectCaseP");
+                    }
+                echo '</div>';
+            echo "</div>";
+        echo '</div>';
     }
     
     // Affiche un carouselle à 3 items : recommandation / top like / top recommandation
@@ -129,32 +100,28 @@ class class_affichage{
     public function carouselle($item1, $item2, $item3){ ?>
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="4000" style="height: 380px;">
             <div class="carousel-inner" role="listbox" style="width:72%; margin-left: auto; margin-right : auto;">
-                <?php if($item1){ // affichage de l'item recommandation ?>
+                <?php if($item1 != false){ // affichage de l'item recommandation ?>
                     <div class="item active">
                        <div class='IndexCarou'><a href='Recommandation.php'>VOUS POURRIEZ AIMER</a></div> 
                        <div class="SerieContainerIner" style="width: 100%;">
-                       <?php
-                       $req1=$this->_db->recommandation( null, " having count(nr.num_serie) = 0 ", 'rand()', 3);
-                       $this->affichage_serie($req1, null, 'MediaObjectCaseG2', null);
+                       <?php $this->affichage_serie($item1, null, 'MediaObjectCaseG2', null);
                        ?>
                       </div>
                     </div>
                 <?php }
-                if($item2){ // affichage de l'item top like ?>
+                if($item2 != false){ // affichage de l'item top like ?>
                     <div class="item <?php if(!$item1){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-heart"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
-                      <?php $req1=$this->_db->serie_top_coeur(9);
-                      $this->affichage_serie($req1, null, 'MediaObjectCaseP2', null); ?>
+                      <?php $this->affichage_serie($item2, null, 'MediaObjectCaseP2', null); ?>
                      </div>
                     </div>
                 <?php }
-                if($item3){ // affichage de l'item top recommandation ?>
+                if($item3 != false){ // affichage de l'item top recommandation ?>
                     <div class="item <?php if(!$item1 && !$item2){ echo 'active'; } ?>">
                      <div class="IndexCarou"><a href='Serie.php'>TOP 9 <?php echo '<span id="$titre" style="color:red" class="glyphicon glyphicon-eye-open"></span>'; ?> SERIES TV </a></div>
                       <div class="SerieContainerIner" style="width: 100%">
-                      <?php $req2=$this->_db->serie_top_recommandation(9);
-                      $this->affichage_serie($req2, null, 'MediaObjectCaseP2', null); ?>
+                      <?php $this->affichage_serie($item3, null, 'MediaObjectCaseP2', null); ?>
                      </div>
                     </div>
                 <?php } ?>
@@ -182,7 +149,7 @@ class class_affichage{
     <?php }
     
     // affichage du menu haut
-    public function menu_top(){
+    public function menu_top($req, $nb){
         ob_start(); ?>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
@@ -213,8 +180,7 @@ class class_affichage{
                                         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span></button>
                                         <ul class="dropdown-menu menu_tags_motsCles" role="menu" >
                                             <div class="menu_tags_titre"><?php echo $this->_str['menu']['tags_titre']; ?></div>
-                                            <?php $nb = $this->_db->interesser_motcle_count();
-                                            $req = $this->_db->interesser_motcle();
+                                            <?php
                                             while($data = $req->fetch()){
                                                 // couleur aléatoire pour chaques mots-clés
                                                 $r = rand(1,200);
@@ -222,7 +188,7 @@ class class_affichage{
                                                 $b = rand(1,200);
                                                 echo " <a href='Search.php?mc=".$data['0']."' style='color:rgb($r,$g,$b);'>"
                                                     // la taille du mot-clé dépend du nombre d'utilisateur qui ont cherché ce mot 
-                                                    . "<FONT size='".($data['1']*$nb/$nb).";'>"
+                                                    . "<font size='".($data['1']*$nb/$nb).";'>"
                                                         .$data['0']
                                                     . '</font>'
                                                 . '</a> ';
@@ -247,7 +213,7 @@ class class_affichage{
     <?php }
     
     // affichage du menu bas
-    public function menu_bottom(){ ?>
+    public function menu_bottom($questionnaire){ ?>
         <nav class="navbar navbar-inverse navbar-fixed-bottom">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -265,7 +231,7 @@ class class_affichage{
                         </li>
                         <!-- item recommandation
                         affiche si le questionnaire n'a pas déjà été complété par l'utilisateur -->
-                        <?php if($this->_db->questionnaire_exist() == 0){ ?>
+                        <?php if($questionnaire == 0){ ?>
                             <li class="dropdown">
                                 <a href="donnervotreavis.php" class="ItemMenuBas">
                                     <?php echo $this->_str['menu']['avis']; ?>
@@ -332,11 +298,6 @@ class class_affichage{
             </div>
         </div>
         
-        <?php // Gestion des évènement lorsqu'un utilisateur veut envoyer un message
-        if(isset($_POST['Envoyer'])){
-            $this->_db->user_contact($_POST['pseudo'], $_POST['email'], $_POST['Sujet'], $_POST['Message']);
-        } ?>
-
         <!-- toggle Plan du Site  -->
         <div class="modal fade bs-example-modal-lg" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog modal-lg">

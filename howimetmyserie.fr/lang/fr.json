@@ -192,6 +192,9 @@
             "stat2": "Statistique pour l'année ",
             "total_membre": "Total Membre Actif :",
             "total_utilisateur": "Total Utilisateur :"
+        },
+        "message": {
+            "title": "MES MESSAGES :"
         }
     }
 }

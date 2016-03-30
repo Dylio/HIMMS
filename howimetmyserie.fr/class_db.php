@@ -88,8 +88,12 @@ class class_db {
     // IN : $TxtOrder ordre de restitution des valeurs
     // OUT : requete de selection des séries TV
     public function serie($TxtSearch, $TxtLike, $TxtRecommandation, $TxtOrder){
-        return $this->_db->query("SELECT s.* "
-                                . "from $this->_serie s left join (select * from nonrecommandation where num_user = '$this->_user') nr on s.num_serie = nr.num_serie "
+        return $this->_db->query("SELECT s.*, count(v.num_user) as 'like', count(nr.num_user) as 'nr' "                                
+                                . "from $this->_serie s "
+                                . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
+                                    . "on s.num_serie = nr.num_serie "
+                                . "left join (select * from voir where num_user = '$this->_user') v "
+                                    . "on s.num_serie = v.num_serie "
                                 . "where 1 $TxtSearch $TxtLike "
                                 . "group by s.num_serie "
                                 . "$TxtRecommandation "
@@ -100,9 +104,14 @@ class class_db {
     // IN : $num_serie numéro unique d'une série TV
     // OUT : requete de selection d'une série TV
     public function une_serie($num_serie){
-        return $this->_db->query("SELECT * "
-                                . "from serie "
-                                . "where num_serie = '$num_serie';");
+        $req = $this->_db->query("SELECT s.*, count(v.num_user) as 'like', count(nr.num_user) as 'nr' "                                
+                                . "from $this->_serie s "
+                                . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
+                                    . "on s.num_serie = nr.num_serie "
+                                . "left join (select * from voir where num_user = '$this->_user') v "
+                                    . "on s.num_serie = v.num_serie "
+                                . "where s.num_serie = '$num_serie';");
+        return $data = $req->fetch();
     }
     
     // requete : compte le nombre de séries TV selon plusieurs critères
@@ -125,19 +134,29 @@ class class_db {
     // IN : $limit nombre de tuple à retourner
     // OUT : requete de selection des séries TV les plus aimées
     public function serie_top_coeur($limit){
-        return $this->_db->query("SELECT s.* "
-                                . "from $this->_serie s left join voir v on s.num_serie = v.num_serie "
-                                . "group by s.num_serie "
-                                . "order by count(v.num_serie) desc, rand() "
-                                . "limit $limit;");
+        return $this->_db->query("SELECT s.*, count(v.num_user) as 'like', count(nr.num_user) as 'nr' "                                
+                        . "from $this->_serie s "
+                        . "left join voir v2 "
+                            . "on s.num_serie = v2.num_serie "
+                        . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
+                            . "on s.num_serie = nr.num_serie "
+                        . "left join (select * from voir where num_user = '$this->_user') v "
+                            . "on s.num_serie = v.num_serie "
+                        . "group by s.num_serie "
+                        . "order by count(v2.num_serie) desc, rand() "
+                        . "limit $limit;");
     }
     
     // requete : selectionne les séries TV les plus recommandées par tous les utilisateurs
     // IN : $limit nombre de tuple à retourner
     // OUT : requete de selection des séries TV les plus recommandées
     public function serie_top_recommandation($limit){
-        return $this->_db->query("SELECT s.* "
-                                . "from $this->_serie s left join nonrecommandation nr on s.num_serie = nr.num_serie "
+        return $this->_db->query("SELECT s.*, count(v.num_user) as 'like', count(nr.num_user) as 'nr' "                                
+                                . "from $this->_serie s "
+                                . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
+                                    . "on s.num_serie = nr.num_serie "
+                                . "left join (select * from voir where num_user = '$this->_user') v "
+                                    . "on s.num_serie = v.num_serie "
                                 . "group by s.num_serie "
                                 . "order by count(nr.num_serie) asc, rand() "
                                 . "limit $limit;");
@@ -152,12 +171,12 @@ class class_db {
     // IN : $limit nombre de tuple à retourner
     // OUT : requete de selection des séries TV recommandées
     public function recommandation($TxtLike, $TxtRecommandation, $TxtOrder, $limit){
-         return $this->_db->query("SELECT s.* "
-                    . "from $this->_serie s left join "
-                        . "(select * "
-                        . "from nonrecommandation "
-                        . "where num_user = '$this->_user') nr "
+        return $this->_db->query("SELECT s.*, count(v.num_user) as 'like', count(nr.num_user) as 'nr' "                                
+                    . "from $this->_serie s "
+                    . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
                         . "on s.num_serie = nr.num_serie "
+                    . "left join (select * from voir where num_user = '$this->_user') v "
+                        . "on s.num_serie = v.num_serie "
                     . "where (s.num_serie in (SELECT r1.num_serie from (SELECT s.num_serie " 
                         . "from $this->_serie s "
                         . "join appartenir a "
@@ -196,13 +215,17 @@ class class_db {
     // IN : $num_serie numéro unique de la série TV
     // OUT : requete de selection des séries TV ressemblant à la série TV
     public function recommandation_serie($num_serie){
-        return $this->_db->query("SELECT s.* "
-                    . "FROM appartenir a join $this->_serie s "
-                        . "on s.num_serie = a.num_serie "
+        return $this->_db->query("SELECT s.*, count(v.num_user) as 'like', count(nr.num_user) as 'nr' "                                
+                    . "from appartenir a, $this->_serie s "
+                    . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
+                        . "on s.num_serie = nr.num_serie "
+                    . "left join (select * from voir where num_user = '$this->_user') v "
+                        . "on s.num_serie = v.num_serie "
                     . "WHERE a.num_motcle in (select num_motcle "
                                 . "from appartenir "
                                 . "where num_serie = '$num_serie') "
                     . "and s.num_serie <> '$num_serie' "
+                    . "and s.num_serie = a.num_serie "
                     . "group by s.num_serie "
                     . "ORDER BY count(*) DESC "
                     . "limit 5;");
@@ -235,16 +258,18 @@ class class_db {
     // IN : $TxtOrder ordre de restitution des valeurs
     // OUT : requete de selection des séries TV
     public function search($TxtLike, $TxtSearch, $TxtRecommandation, $TxtOrder){
-        return $this->_db->query("SELECT s.* "
-                                . "from $this->_serie s "
-                                . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
-                                    . "on s.num_serie = nr.num_serie "
-                                . "where 1 "
-                                . "$TxtLike "
-                                . "$TxtSearch "
-                                . "group by s.titre "
-                                . "$TxtRecommandation "
-                                . "order by count(nr.num_serie) asc, $TxtOrder; ");
+        return $this->_db->query("SELECT s.*, count(v.num_user) as 'like', count(nr.num_user) as 'nr' "                                
+                            . "from $this->_serie s "
+                            . "left join (select * from nonrecommandation where num_user = '$this->_user') nr "
+                                . "on s.num_serie = nr.num_serie "
+                            . "left join (select * from voir where num_user = '$this->_user') v "
+                                . "on s.num_serie = v.num_serie "
+                            . "where 1 "
+                            . "$TxtLike "
+                            . "$TxtSearch "
+                            . "group by s.titre "
+                            . "$TxtRecommandation "
+                            . "order by count(nr.num_serie) asc, $TxtOrder; ");
     }
     
     // requete : compte le nombre de séries TV selon plusieurs critères
@@ -264,18 +289,6 @@ class class_db {
         return $data['0'];
     }
     
-    // requete : vérifie si la série est like
-    // IN : $num_serie numéro unique de la série TV
-    // OUT : renvoie 1 si la série est like sinon 0
-    public function serie_like_exist($serie){
-        $req = $this->_db->query("Select count(*), s.titre "
-                                . "from voir v, $this->_serie s "
-                                . "where v.num_user = '$this->_user' "
-                                . "and s.num_serie = v.num_serie "
-                                . "and s.num_serie = '$serie';");
-        $data = $req->fetch();
-        return $data['0'];
-    }
     // requete : insert dans la table "voir" le like de la série TV de l'utilisateur
     // IN : $num_serie numéro unique de la série TV 
     public function serie_like_insert($serie){
@@ -290,18 +303,6 @@ class class_db {
                         . "and num_serie='$serie';");
     }
     
-    // requete : vérifie si l'utilisateur veut être recommander par rapport à cette série
-    // IN : $num_serie numéro unique de la série TV
-    // OUT : renvoie 0 si l'utilisateur veut être recommander par rapport à cette série, sinon 1
-    public function serie_nonRecommandation_exist($serie){
-        $req = $this->_db->query("Select count(*), s.titre "
-                                . "from NonRecommandation r, serie s "
-                                . "where r.num_user = '$this->_user' "
-                                . "and s.num_serie = r.num_serie "
-                                . "and s.num_serie = '$serie';");
-        $data = $req->fetch();
-        return $data['0'];
-    }
     // requete : insert dans la table "NonRecommandation" le souhait de l'utilisateur de ne pas être recommander par rapport à cette série TV
     // IN : $num_serie numéro unique de la série TV 
     public function serie_nonRecommandation_insert($serie){

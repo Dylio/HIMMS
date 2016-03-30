@@ -1,9 +1,10 @@
 <?php
-require_once '../class_controleur.php';    // afficahge et gestion des controleurs
-require_once '../class_db.php';            // base de données
+require_once '../class_controleur.php';    // afficahge et gestion des controleurs            // base de données
+require_once '../connectBDD.php';
 class class_db_test {
     private  $_class_db;
     private  $_db;
+    private  $_controleur;
     
     const id_test = 'testdb';
     const value_test = 'testdb';
@@ -18,8 +19,7 @@ class class_db_test {
     const no = '<span style="color:red">NO</span>';
     
     public function __construct() {
-        require_once 'connectBDD.php';
-        $this->_db = Db::getInstance();
+        $this->_db = Db::getInstance();             // création de l'intance de connexion
         assert_options(ASSERT_WARNING,false);
     }
 
@@ -38,10 +38,8 @@ class class_db_test {
         $this->appartenir_insert(self::id_test2, self::id_test3);
         $this->appartenir_insert(self::id_test3, self::id_test3);
         $this->appartenir_insert(self::id_test3, self::id_test4);
-        if(isset($this->_class_db)){
-            unset($this->_class_db);
-        }
-        $this->_class_db = new class_db();
+        $this->_controleur = new class_controleur();
+        $this->_class_db = $this->_controleur->getDB();
         $this->_class_db->setUser(self::id_test);
         $this->_class_db->user_insert();
     }
@@ -69,7 +67,9 @@ class class_db_test {
         echo "<table class='table table-striped' style='width:85%; margin: 15px auto;'> "
             . "<tr style='font-size:23px' ><td class='alert-info'><b>Test</b></td>";
                 
-        echo "<td class='alert-info'><b>Résultat</b></td></tr>";
+        echo "<td class='alert-info'><b>RESULTAT</b></td></tr>";
+        
+        echo '<tr><td class="alert-success" colspan="2"><br/><b>UTILISATEUR</b></td></tr>';
             $this->test_up("Création d'un utilisateur", $this->test_user());
             $this->test_up("Nombre de visite d'un utilisateur à la création", $this->test_user_visite_first());
             $this->test_up("Incrémentation du nombre de visite d'un utilisateur", $this->test_user_visite_incrementation());
@@ -112,7 +112,7 @@ class class_db_test {
             $this->test_up("Recherche de serie à partir de plusieur mots-clés", $this->test_search_2mc());
             $this->test_up("Recherche de serie à partir de plusieur mots-clés dont un mot exclu", $this->test_search_2mc_motexclu());
             $this->test_up("Recherche de serie à partir de plusieur mots-clés dont un mot inconnu", $this->test_search_2mc_motinconnu());
-
+            
         echo '<tr><td  class="alert-success" colspan="2"><br/><b>RECOMMANDATION SERIE TV</b></td></tr>';
             $this->test_up("Recommandation : recherche", $this->test_recommandation_1search());
             $this->test_up("Recommandation : plusieurs recherches", $this->test_recommandation_2search());
@@ -188,8 +188,9 @@ class class_db_test {
     
     private function test_une_serie() {
         $this->setUp();
-        $req = $this->_class_db->une_serie(self::id_test);
-        $data = $req->fetch();
+        $this->_class_db->user_update_restriction(0);
+        $this->_class_db->restriction(true);
+        $data = $this->_class_db->une_serie(self::id_test);
         return (assert($data["titre"] == self::value_test))? self::ok : self::no;
     }
     
@@ -260,7 +261,8 @@ class class_db_test {
         $this->setUp();
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        return (assert($this->_class_db->serie_like_exist(self::id_test)==0))? self::ok : self::no;
+        $data = $this->_class_db->une_serie(self::id_test);
+        return (assert($data['like']==0))? self::ok : self::no;
     }
     
     private function test_like_oui() {
@@ -268,7 +270,8 @@ class class_db_test {
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
         $this->_class_db->serie_like_insert(self::id_test);
-        return (assert($this->_class_db->serie_like_exist(self::id_test)==1))? self::ok : self::no;
+        $data = $this->_class_db->une_serie(self::id_test);
+        return (assert($data['like']==1))? self::ok : self::no;
     }
     
     private function test_like_non() {
@@ -277,14 +280,16 @@ class class_db_test {
         $this->_class_db->restriction(true);
         $this->_class_db->serie_like_insert(self::id_test);
         $this->_class_db->serie_like_delete(self::id_test);
-        return (assert($this->_class_db->serie_like_exist(self::id_test)==0))? self::ok : self::no;
+        $data = $this->_class_db->une_serie(self::id_test);
+        return (assert($data['like']==0))? self::ok : self::no;
     }
     
     private function test_nonrecommandation_defaut() {
         $this->setUp();
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        return (assert($this->_class_db->serie_nonRecommandation_exist(self::id_test)==0))? self::ok : self::no;
+        $data = $this->_class_db->une_serie(self::id_test);
+        return (assert($data['nr']==0))? self::ok : self::no;
     }
     
     private function test_nonrecommandation_oui() {
@@ -292,7 +297,8 @@ class class_db_test {
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
         $this->_class_db->serie_nonRecommandation_insert(self::id_test);
-        return (assert($this->_class_db->serie_nonRecommandation_exist(self::id_test)==1))? self::ok : self::no;
+        $data = $this->_class_db->une_serie(self::id_test);
+        return (assert($data['nr']==1))? self::ok : self::no;
     }
     
     private function test_nonrecommandation_non() {
@@ -301,7 +307,8 @@ class class_db_test {
         $this->_class_db->restriction(true);
         $this->_class_db->serie_nonRecommandation_insert(self::id_test);
         $this->_class_db->serie_nonRecommandation_delete(self::id_test);
-        return (assert($this->_class_db->serie_nonRecommandation_exist(self::id_test)==0))? self::ok : self::no;
+        $data = $this->_class_db->une_serie(self::id_test);
+        return (assert($data['nr']==0))? self::ok : self::no;
     }
     
     private function test_interesser_defaut() {
@@ -333,11 +340,9 @@ class class_db_test {
     
     private function test_search_1mc() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $value = self::value_test2;
-        $txtSearch = $controleur->search_mc($this->_class_db, $value);
+        $txtSearch = $this->_controleur->search_mc(self::value_test2);
         $req = $this->_class_db->search($txtSearch ,null, null, 2);
         $data = $req->fetchAll();
         return (assert($data[0][1]==self::id_test && $data[1][1]==self::id_test3 && count($data)==2))? self::ok : self::no;
@@ -345,11 +350,9 @@ class class_db_test {
     
     private function test_search_2mc() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $value = self::value_test.' '.self::value_test2;
-        $txtSearch = $controleur->search_mc($this->_class_db, $value);
+        $txtSearch = $this->_controleur->search_mc(self::value_test.' '.self::value_test2);
         $req = $this->_class_db->search($txtSearch ,null, null, 2);
         $data = $req->fetchAll();
         return (assert($data[0][1]==self::id_test && count($data)==1))? self::ok : self::no;
@@ -357,11 +360,9 @@ class class_db_test {
     
     private function test_search_2mc_motexclu() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $value = self::value_test.' le '.self::value_test2;
-        $txtSearch = $controleur->search_mc($this->_class_db, $value);
+        $txtSearch = $this->_controleur->search_mc(self::value_test.' le '.self::value_test2);
         $req = $this->_class_db->search($txtSearch ,null, null, 2);
         $data = $req->fetchAll();
         return (assert($data[0][1]==self::id_test && count($data)==1))? self::ok : self::no;
@@ -369,11 +370,9 @@ class class_db_test {
     
     private function test_search_2mc_motinconnu() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $value = self::value_test.' valuetest4 '.self::value_test2;
-        $txtSearch = $controleur->search_mc($this->_class_db, $value);
+        $txtSearch = $this->_controleur->search_mc(self::value_test.' valuetest4 '.self::value_test2);
         $req = $this->_class_db->search($txtSearch ,null, null, 2);
         $data = $req->fetchAll();
         return (assert(count($data)==0))? self::ok : self::no;
@@ -381,10 +380,9 @@ class class_db_test {
     
     private function test_recommandation_1search() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $controleur->search_mc($this->_class_db, self::value_test2);
+        $this->_controleur->search_mc(self::value_test2);
         $req = $this->_class_db->recommandation(null ,null, 2, 10);
         $data = $req->fetchAll();
         return (assert($data[0][1]==self::id_test && $data[1][1]==self::id_test3 && count($data)==2))? self::ok : self::no;
@@ -392,11 +390,10 @@ class class_db_test {
     
     private function test_recommandation_2search() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $controleur->search_mc($this->_class_db, self::value_test);
-        $controleur->search_mc($this->_class_db, self::value_test2);
+        $this->_controleur->search_mc(self::value_test);
+        $this->_controleur->search_mc(self::value_test2);
         $req = $this->_class_db->recommandation(null ,null, 2, 10);
         $data = $req->fetchAll();
         return (assert($data[0][1]==self::id_test && $data[1][1]==self::id_test2  && $data[2][1]==self::id_test3 && count($data)==3))? self::ok : self::no;
@@ -404,11 +401,10 @@ class class_db_test {
     
     private function test_recommandation_2search_top() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $controleur->search_mc($this->_class_db, self::value_test);
-        $controleur->search_mc($this->_class_db, self::value_test2);
+        $this->_controleur->search_mc(self::value_test);
+        $this->_controleur->search_mc(self::value_test2);
         $req = $this->_class_db->recommandation(null ,null, 2, 1);
         $data = $req->fetchAll();
         return (assert($data[0][1]==self::id_test && count($data)==1))? self::ok : self::no;
@@ -426,11 +422,9 @@ class class_db_test {
     
     private function test_recommandation() {
         $this->setUp();
-        $controleur = new class_controleur(null, null);
         $this->_class_db->user_update_restriction(0);
         $this->_class_db->restriction(true);
-        $value = self::value_test2;
-        $controleur->search_mc($this->_class_db, $value);
+        $this->_controleur->search_mc(self::value_test2);
         $this->_class_db->serie_like_insert(self::id_test);
         $req = $this->_class_db->recommandation(null ,null, 2, 10);
         $data = $req->fetchAll();

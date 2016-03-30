@@ -13,7 +13,7 @@ $str = lang::getlang(); ?>
         <?php 
         $affichage->message_lu();
         $affichage->affichage_menu(5);
-        $affichage->affichage_site('MES MESSAGES');?>
+        $affichage->affichage_site($str['admin']['message']['title']);?>
         <br/>
         <?php $affichage->affichage_messagerie(); ?>
     </body>

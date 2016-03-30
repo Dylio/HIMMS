@@ -13,11 +13,9 @@ $str = lang::getlang(); ?>
         <h1 class="NomSite"><?php echo $str['site']['name']; ?></h1>
         <p class="IndexSlogan"><?php echo $str['site']['slogan']; ?></p><br/>
         
-        <?php $affichage->like_recommandation();
-        if($db->recommandation_exist() == 1){
-            $affichage->carouselle(true, true, true); 
-        }else{
-            $affichage->carouselle(false, true, true); 
-        } ?>
+        <?php
+        $controleur->like_recommandation();
+        $controleur->carouselle();
+        ?>
     </body>
 </html>

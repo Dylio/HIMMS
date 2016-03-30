@@ -11,28 +11,28 @@ class class_media_object {
     private  $_genre;           // genre de la série
     private  $_format;          // durée moyen d'un épisode, nombre de saison et nombre d'épisode total de la série
     private  $_classification;  // classification (restriction d'âge) de la série
+    private  $_like;
+    private  $_rec;
     private  $_str;             // constantes textuelles du site web
-    private  $_db;              // instance vers la base de données
     
     // Constructeur de la classe class_media_object
-    // IN : $db instance vers la base de données
-    // IN : $str constantes textuelles du site web
-    public function __construct($db, $str){
-        $this->_str = $str;
-        $this->_db = $db;
-    }
-    
-    // Supprimmer la série courante
-    private function cleanSerie(){
-        unset ($this->_serie);
-        unset ($this->_titre);
-        unset ($this->_date);
-        unset ($this->_nationalite);
-        unset ($this->_créateurs);
-        unset ($this->_acteurs);
-        unset ($this->_genre);
-        unset ($this->_format);
-        unset ($this->_classification);
+    // Permet d'initialiser les varibles nécessaire pour décrire une série
+    // IN : $data tableau contenant les informations nécessaire pour décrire une série.
+    // IN : $str constantes textuelles du site web (tooltip)
+    public function __construct($data){
+        require_once 'lang.php';
+        $this->_str = lang::getlang();
+        $this->_serie = $data['num_serie'];
+        $this->_titre = $data['titre'];
+        $this->date($data['dateD'], $data['dateF']);
+        $this->_nationalite = $data['nationalite'];
+        $this->_créateurs = $data['créateurs'];
+        $this->_acteurs = $data['acteurs'];
+        $this->_genre = $data['genre'];
+        $this->format($data['nbSaison'], $data['nbEpisode'], $data['format']);
+        $this->_classification = $data['classification'];
+        $this->_like = $data['like'];
+        $this->_rec = $data['nr'];
     }
     
     // Renvoie une forme textuel des dates de la série.
@@ -70,35 +70,14 @@ class class_media_object {
         $this->_format = $format;   
     }
     
-    // Permet d'initialiser les varibles minimum nécessaire pour décrire une série
-    // IN : $data tableau contenant les informations minimum nécessaire pour décrire une série.
-    public function newSerie($data){
-        $this->cleanSerie();
-        $this->_serie = $data['num_serie'];
-        $this->_titre = $data['titre'];
-        $this->date($data['dateD'], $data['dateF']);
-        $this->_classification = $data['classification'];
-    }
-    
-    // Permet d'initialiser les varibles nécessaire pour décrire une série
-    // IN : $data tableau contenant les informations nécessaire pour décrire une série.
-    public function newSerieDetail($data){
-        $this->cleanSerie();
-        $this->_serie = $data['num_serie'];
-        $this->_titre = $data['titre'];
-        $this->date($data['dateD'], $data['dateF']);
-        $this->_nationalite = $data['nationalite'];
-        $this->_créateurs = $data['créateurs'];
-        $this->_acteurs = $data['acteurs'];
-        $this->_genre = $data['genre'];
-        $this->format($data['nbSaison'], $data['nbEpisode'], $data['format']);
-        $this->_classification = $data['classification'];
-    }
-    
     // Renvoie le titre d'une série avec son style de representation
     // IN : $style style qui permet de décrire la representation du titre d'une série.
     private function serie_titre($style){
-        return "<div class='$style'><a href='./Serie_Detail.php?num_serie=$this->_serie' class='$style'>$this->_titre</a></div>";
+        return "<div class='$style'>"
+            . "<a href='./Serie_Detail.php?num_serie=$this->_serie' class='$style'>"
+                . "$this->_titre"
+            . "</a>"
+        . "</div>";
     }
     
     // Renvoie les dates d'une série avec son style de représentation
@@ -116,28 +95,28 @@ class class_media_object {
 
             // vérifie l'utilisateur like ou non cette série
             // change le glyphicons et le style(couleur) du bouton selon le cas
-            if($this->_db->serie_like_exist($this->_serie) == 0){
+            if($this->_like == 0){
                 // bouton de like avec un tooltip en bas "J'aime cette série !"
-                echo '<button type="submit" class="btn button2 '.$style.'N" name="Like" data-toggle="tooltip" data-placement="bottom" title="J\'aime cette série !">'
+                echo '<button type="submit" class="btn button2 '.$style.'N" name="Like" value="1" data-toggle="tooltip" data-placement="bottom" title="J\'aime cette série !">'
                     . '<span id="$titre" class="glyphicon glyphicon-heart-empty"/>'
                 . '</button>';
             }else{
                 // bouton de non like avec un tooltip en bas "Je n'aime plus cette série !"
-                echo '<button type="submit" class="btn button2 '.$style.'R" name="Like" data-toggle="tooltip" data-placement="bottom" title="Je n\'aime plus cette série !">'
+                echo '<button type="submit" class="btn button2 '.$style.'R" name="Like" value="0" data-toggle="tooltip" data-placement="bottom" title="Je n\'aime plus cette série !">'
                     . '<span id="$titre" class="glyphicon glyphicon-heart"/>'
                 . '</button>';
             }
 
             // vérifie l'utilisateur veut être recommander par rapport à cette série ou non
             // change le glyphicons et le style(couleur) du bouton selon le cas
-            if($this->_db->serie_nonRecommandation_exist($this->_serie) == 0){
+            if($this->_rec == 0){
                 // bouton de non recommandation avec un tooltip en bas "Je ne veux pas être recommandé par rapport à cette série."
-                echo '<button type="submit" class="btn button2 '.$style.'B" name="Recommandation" data-toggle="tooltip" data-placement="bottom" title="Je ne veux pas être recommandé par rapport à cette série.">'
+                echo '<button type="submit" class="btn button2 '.$style.'B" name="Recommandation" value="1" data-toggle="tooltip" data-placement="bottom" title="Je ne veux pas être recommandé par rapport à cette série.">'
                     . '<span id="$titre" class="glyphicon glyphicon-eye-open"/>'
                 . '</button>';
             }else{
                 // bouton de recommandation avec un tooltip en bas "Je veux être recommandé par rapport à cette série."
-                echo '<button type="submit" class="btn button2 '.$style.'N" name="Recommandation" data-toggle="tooltip" data-placement="bottom" title="Je veux être recommandé par rapport à cette série.">'
+                echo '<button type="submit" class="btn button2 '.$style.'N" name="Recommandation" value="0" data-toggle="tooltip" data-placement="bottom" title="Je veux être recommandé par rapport à cette série.">'
                     . '<span id="$titre" class="glyphicon glyphicon-eye-close"/>'
                 . '</button>';
             }
@@ -244,16 +223,6 @@ class class_media_object {
                     .$this->_str['serie_detail']['Genre']."<span class='Serie_Detail_txt'>$this->_genre</span><br/>"
                     .$this->_str['serie_detail']['Format']."<span class='Serie_Detail_txt'>$this->_format</span>"
                 ."</div>";
-                echo "<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
-                    ."<div style='text-align: center; font-size:25px;!important'>".$this->_str['serie_detail']['Recommandation']."</div>";
-                     echo '<div class="SerieContainerIner">';
-                    $req = $this->_db->recommandation_serie($this->_serie);
-                    while($data = $req->fetch()){
-                       $this->newSerieDetail($data);
-                       $this->media_object("MediaObjectCaseP2");
-                    }
-                    echo '</div>';
-                echo "</div>";
             break;
         }   
     }

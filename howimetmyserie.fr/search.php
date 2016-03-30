@@ -16,26 +16,24 @@ $str = lang::getlang(); ?>
     <body <?php echo $affichage->alea_Image_Fond(); ?> >
         <?php $affichage->affichage_titrePartie($str['search']['title'].' : </p>'
             . '<p class="MCRecherche">"'.$_GET['mc'].'"</p>');
-        $affichage->like_recommandation();
+        $controleur->like_recommandation();
         
         if(isset($_GET['mc'])){
-            $_SESSION['SerieTV']->controleur();
-            $affichage->vue_tri($_SESSION['SerieTV']->getLike(),
-                    $_SESSION['SerieTV']->getOrder(),
-                    $_SESSION['SerieTV']->getRecommandation(),
-                    $_SESSION['SerieTV']->getMediaObject(),
+            // gestion de l'évènement séries TV aimé ou recommandé et son contraire
+            $controleur->like_recommandation();
+
+            // affichage des composants servant au tri des séries TV
+            $affichage->vue_tri($_SESSION['SerieTV_like'],
+                    $_SESSION['SerieTV_order'],
+                    $_SESSION['SerieTV_recommandation'],
+                    $_SESSION['SerieTV_MediaObject'],
                     null,
-                    $str['search']['input_search']);
-            $txtSearch = class_controleur::search_mc($db, $_GET['mc']);
+                    $str['serie']['input_search']);
+
+            $txtSearch = $controleur->search_mc($_GET['mc']);
             
-            $req=$db->search($_SESSION['SerieTV']->getTxtLike(),
-                $txtSearch,
-                $_SESSION['SerieTV']->getTxtRecommandation(),
-                $_SESSION['SerieTV']->getTxtOrder());
-            $SearchNb=$db->search_count($_SESSION['SerieTV']->getTxtLike(),
-                $txtSearch,
-                $_SESSION['SerieTV']->getTxtRecommandation());
-            $affichage->affichage_serie($req, $SearchNb, $_SESSION['SerieTV']->getMediaObject(), true);
+            // affichage des séries TV
+            $controleur->search($txtSearch);
         } ?>
     </body>
 </html>

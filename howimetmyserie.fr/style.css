@@ -47,7 +47,6 @@ html {
     color: #3B88C9 !important;
 }
 
-
 .compteur_tab{
     width: 50% !important;
     margin: 0 auto;
@@ -472,7 +471,12 @@ html {
     margin-left:15px;
     margin-top: 20px;
 }
-
+.SerieDetailNomPartie{
+    font-size : 28px !important;
+    color: black !important;
+    font-weight: 300 !important;
+    text-align: center !important;
+}
 
 /* BOUTTONS */
 .SerieCasePButtonR:hover, .SerieCaseGButtonR:hover, .SerieListButtonR:hover, .SerieDetailButtonR:hover, 
