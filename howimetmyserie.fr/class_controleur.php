@@ -204,8 +204,8 @@ class class_controleur {
         }
         $this->f_like();
         
-        if(!isset($_SESSION['SerieTV_Order'])){
-            $_SESSION['SerieTV_Order']= 'sort1';
+        if(!isset($_SESSION['SerieTV_order'])){
+            $_SESSION['SerieTV_order']= 'sort1';
         }
         if(!isset($_SESSION['SerieTV_recommandation'])){
             $_SESSION['SerieTV_recommandation']= 'false';
