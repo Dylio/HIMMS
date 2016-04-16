@@ -4,7 +4,7 @@ class Db {
 
     private function __construct() {}
 
-    // Création d'une instance de connection vers la bd
+    // Création d'une instance de connexion vers la bd
     public static function getInstance() {
        $host= "localhost";  // Hébergement 
        $dbname= "test";     // Table
@@ -12,8 +12,9 @@ class Db {
        $user= "";           // Utilisateur
        $mdp= "";            // Mot de passe
       if (!isset(self::$instance)) { // vérification si la conncetion n'est pas déjà faite.
-        $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION; // gestion des erreurs de connection.
-        self::$instance = new PDO("mysql:$host=localhost;dbname=$dbname;charset=$charset", "$user","$mdp"); // intance de la connection à la bd
+        $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION; // gestion des erreurs de connexion.
+        // intance de la connection à la bd
+        self::$instance = new PDO("mysql:$host=localhost;dbname=$dbname;charset=$charset", "$user","$mdp"); 
       }
       return self::$instance;
     }

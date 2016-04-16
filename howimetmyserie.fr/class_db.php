@@ -7,8 +7,8 @@ class class_db {
      
     // Constructeur de la classe class_db
     public function __construct() {
-        require_once 'connectBDD.php';              // connection à la bd 
-        $this->_db = Db::getInstance();             // création de l'intance de connexion
+        require_once 'connectBDD.php';              // connexion à la bd 
+        $this->_db = Db::getInstance();             // création de l'instance de connexion
     }
     
     // Initialisation de la classe class_db
@@ -25,8 +25,8 @@ class class_db {
             setcookie('himms_log', $this->_user , time() + 365*24*3600, null, null, false, true); // création d'un cookie contenant le numéro d'utilisateur
             $this->user_insert();           // insertion du nouveau utilisateur dans la base de données
         }
-        session_start(); // demarre la session
-        $this->restriction($pageIndexFirst);
+        session_start(); // Démarre une nouvelle session ou reprend une session existante
+        $this->restriction($pageIndexFirst);    //gestion des restrictions des séries pour l'utilisateur
     }
         
     // requete : insertion du nouveau utilisateur dans la base de données
