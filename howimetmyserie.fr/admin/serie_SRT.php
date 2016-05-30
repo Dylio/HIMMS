@@ -36,11 +36,11 @@ $str = lang::getlang(); ?>
                 //Exclusion
                 $MotExclu = array();
                 $tab = array();
-                $TotalS=0;
                 $req = $db->motexclu();
                 while ($dataMCE = $req->fetch()){
                     array_push($MotExclu, $dataMCE['libelle']);
                 }
+                $TotalS=0;
                 $zip = zip_open($_FILES['fichier']['tmp_name']);
                 if ($zip) {
                     while ($zip_entry = zip_read($zip)) {
@@ -65,6 +65,7 @@ $str = lang::getlang(); ?>
                                                     $lineContent = explode(" ", $lineContent);
                                                     // Pour chaque mot ...
                                                     foreach ($lineContent as $linetxt){
+                                                        $linetxt = trim(preg_replace( "/[\\x00-\\x20]+/" , '' , $linetxt ) , '\\x00-\\x20' );
                                                         // Si le texte n'est pas vide 
                                                         // ou n'est pas un caractère numérique 
                                                         // ou n'est pas un mot clé representatif (selon une liste) 

@@ -4,7 +4,6 @@ class class_affichage{
     private  $_str;             // constantes textuelles du site web
     
     // Constructeur de la classe class_media_object
-    // IN : $str constantes textuelles du site web
     public function __construct(){
         require_once 'class_media_object.php';
         require_once 'lang.php';

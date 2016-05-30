@@ -1,6 +1,6 @@
 <?php
 // Cette classe permet de restituer sous différents styles d'objets abstraits la construction graphique d'une
-// séries TV via divers types de composants qui présentent son affiche et le contenu textuel.
+// séries TV via divers types de composants tel que son affiche et le contenu textuel.
 class class_media_object {
     private  $_serie;           // numéro de la série
     private  $_titre;           // titre de la série
@@ -18,7 +18,6 @@ class class_media_object {
     // Constructeur de la classe class_media_object
     // Permet d'initialiser les varibles nécessaire pour décrire une série
     // IN : $data tableau contenant les informations nécessaire pour décrire une série.
-    // IN : $str constantes textuelles du site web (tooltip)
     public function __construct($data){
         require_once 'lang.php';
         $this->_str = lang::getlang();

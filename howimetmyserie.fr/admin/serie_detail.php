@@ -115,11 +115,12 @@ $str = lang::getlang(); ?>
                         // Pour chaque ligne du fichier srt ... ($i numéro de ligne)
                         foreach ($lines as $i => $lineContent){
                             // Exécute pour supprimmer ou modifier les différents caractères spéciaux
-                            $lineContent = class_admin_affichage::no_special_character($lineContent);
+                            $lineContent = class_admin_controleur::no_special_character($lineContent);
                             // Tableau contenant chaque mot 
                             $lineContent = explode(" ", $lineContent);
                             // Pour chaque mot ...
                             foreach ($lineContent as $linetxt){
+                                $linetxt = trim(preg_replace( "/[\\x00-\\x20]+/" , '' , $linetxt ) , '\\x00-\\x20' );
                                 // Si le texte n'est pas vide ou n'est pas un caractère numérique 
                                 // ou n'est pas un mot clé representatif (selon une liste) 
                                 if(!in_array($linetxt, $MotExclu)){

@@ -6,16 +6,15 @@ class class_controleur {
     private  $_user;                  // instance vers la base de données
     
     // Constructeur de la classe class_controleur
-    // IN : $user numéro unique identifiant un utilisateur
     public function __construct(){
         require_once 'class_affichage.php';
         require_once 'class_db.php';
         $this->_db = new class_db();
-        $this->_user = $_COOKIE['himms_log'];
     }
     
     public function init(){
         $this->_db->init(false);
+        $this->_user = $_COOKIE['himms_log'];
         $this->_affichage = new class_affichage();
         $this->menu();
     }
@@ -192,34 +191,19 @@ class class_controleur {
         return $txtSearch;
     }
     
-    // Constructeur de la classe class_controleur
+
     public function filtre(){
-        if(!isset($_SESSION['SerieTV_search'])){
-            $_SESSION['SerieTV_search']= '';
-        }
+        (!isset($_SESSION['SerieTV_search'])) ? $_SESSION['SerieTV_search']='' : null;
         $this->f_search();
-        
-        if(!isset($_SESSION['SerieTV_like'])){
-            $_SESSION['SerieTV_like']= 'all';
-        }
+        (!isset($_SESSION['SerieTV_like'])) ? $_SESSION['SerieTV_like']='all' : null;
         $this->f_like();
-        
-        if(!isset($_SESSION['SerieTV_order'])){
-            $_SESSION['SerieTV_order']= 'sort1';
-        }
-        if(!isset($_SESSION['SerieTV_recommandation'])){
-            $_SESSION['SerieTV_recommandation']= 'false';
-        }
+        (!isset($_SESSION['SerieTV_order'])) ? $_SESSION['SerieTV_order']='sort1' : null;
+        (!isset($_SESSION['SerieTV_recommandation'])) ? $_SESSION['SerieTV_recommandation']='false' : null;
         $this->f_order();
-        
-        if(!isset($_SESSION['SerieTV_MediaObject'])){
-            $_SESSION['SerieTV_MediaObject']= 'MediaObjectCaseG';
-        }
+        (!isset($_SESSION['SerieTV_MediaObject'])) ? $_SESSION['SerieTV_MediaObject']='MediaObjectCaseG' : null;
         $this->f_media();
     }
     
-    // IN : $placeholder texte indicatif par défaut dans un champ de formulaire
-    // IN : $valueEmpty 1 si la valeur dans la zone de texte doit être garder en mémoire sinon 0
     private function f_search(){
         if(isset($_POST['ok'])){
            // enlève les caractères spécials 

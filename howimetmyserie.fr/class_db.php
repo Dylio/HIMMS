@@ -17,16 +17,24 @@ class class_db {
         if(isset($_COOKIE['himms_log'])){                 // si un cookie contenant le numéro d'utilisateur existe
             $this->setUser($_COOKIE['himms_log']); 
             if(!isset($_COOKIE['PHPSESSID'])){      // s'il n'y a pas déjà eu une création d'une session avant
-                setcookie('himms_log', $this->_user , time() + 365*24*3600, null, null, false, true);     // mise à jour du cookie : rajout un an à sa durée 
-                $this->user_update_visite();       // mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
+                // mise à jour du cookie : rajout un an à sa durée 
+                setcookie('himms_log', $this->_user , time() + 365*24*3600, null, null, false, true);     
+                // mise à jour des données de l'utilisateur (incrémente de 1 le nombre de visite)
+                $this->user_update_visite();       
             }
-        }else{  // si un cookie contenant le numéro d'utilisateur n'existe pas encore et donc est un nouveau utilisateur
-            $this->setUser(uniqid(rand(), true));    // création d'un numéro d'utilisateur aléatoire unique
-            setcookie('himms_log', $this->_user , time() + 365*24*3600, null, null, false, true); // création d'un cookie contenant le numéro d'utilisateur
-            $this->user_insert();           // insertion du nouveau utilisateur dans la base de données
+        }else{
+            // si un cookie contenant le numéro d'utilisateur n'existe pas encore et donc est un nouveau utilisateur
+            // création d'un numéro d'utilisateur aléatoire unique
+            $this->setUser(uniqid(rand(), true));    
+            // création d'un cookie contenant le numéro d'utilisateur
+            setcookie('himms_log', $this->_user , time() + 365*24*3600, null, null, false, true); 
+            // insertion du nouveau utilisateur dans la base de données
+            $this->user_insert();           
         }
-        session_start(); // Démarre une nouvelle session ou reprend une session existante
-        $this->restriction($pageIndexFirst);    //gestion des restrictions des séries pour l'utilisateur
+        // Démarre une nouvelle session ou reprend une session existante
+        session_start(); 
+        //gestion des restrictions des séries pour l'utilisateur
+        $this->restriction($pageIndexFirst);    
     }
         
     // requete : insertion du nouveau utilisateur dans la base de données
@@ -201,9 +209,9 @@ class class_db {
                                                                         . "and v2.num_serie not in (select num_serie "
                                                                                                     . "from nonrecommandation "
                                                                                                     . "where num_user = v2.num_user) ) "
-                        . "group by s.num_serie "
-                        . "order by count(*) desc "
-                        . "limit $limit ) as r2 )) "
+                                                . "group by s.num_serie "
+                                                . "order by count(*) desc "
+                                                . "limit $limit ) as r2 )) "
                     . "$TxtLike "
                     . "group by s.num_serie "
                     . "$TxtRecommandation "
