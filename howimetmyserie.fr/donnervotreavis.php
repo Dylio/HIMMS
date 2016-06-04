@@ -7,17 +7,29 @@ $str = lang::getlang(); ?>
     <head>
         <title><?php echo $str['site']['name2']; ?></title>	
         <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-        <?php include_once 'incl_import.php'; 
-        if($db->questionnaire_exist() == 1){
-            header("Location:index.php");
-            exit;
-        }?>
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="style.css" rel="stylesheet">
+
+        <!-- gestion des tooltips -->
+        <script type="text/javascript"> $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })</script>
+
+        <?php 
+        require_once 'class_affichage.php';     // affichage global
+        require_once 'class_controleur.php';    // afficahge et gestion des controleurs
+        $affichage = new class_affichage($str);
+        $controleur = new class_controleur();
+        $controleur-> init();
+        $controleur-> filtre();
+        ?>
     </head>
     
-    <body style='background: url(css/cgu.png) no-repeat center fixed; background-size: 100% 100%; min-width: 100%;'>
-         
-        <?php $affichage->affichage_titrePartie($str['questionnaire']['title']); ?>
-
+    <body>
+        <?php $affichage->affichage_titrePartie($str['questionnaire']['title']); 
+        $controleur -> questionnaire(); ?>
         <form action="" method="POST">
             <div  class="jumbotron SerieDetailContainer2"> 
                 <?php $i = 1;                
@@ -37,16 +49,5 @@ $str = lang::getlang(); ?>
                 </div>
             </div>
         </form>
-        <?php if(isset($_POST['valider'])){
-            $db->questionnaire($_POST['question1'],
-                                $_POST['question2'],
-                                $_POST['question3'],
-                                $_POST['question4'],
-                                $_POST['question5'],
-                                $_POST['question6'],
-                                $_POST['question7'],
-                                $_POST['commentaire']);
-        }
-        ?>
     </body>               
 </html>

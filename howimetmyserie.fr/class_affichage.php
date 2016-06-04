@@ -22,7 +22,7 @@ class class_affichage{
             $j = 0;                                 // $j nombre de fond d'écran
             $dir = opendir($dirname);
             while($file = readdir($dir)) {          // compte le nombre d'affiche de la série TV
-                if(substr($file, -4) == ".jpg"){    // les affiches doivent être tous sous format .jpg
+                if(substr($file, -4) == ".png"){    // les affiches doivent être tous sous format .jpg
                     $j++;
                 }
             }
@@ -31,10 +31,10 @@ class class_affichage{
             $i = 1;                                   // $i numéro actuel de l'affiche de la série TV
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
-                if($i === $aleaImage and substr($file, -4) == ".jpg"){      // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
+                if($i === $aleaImage and substr($file, -4) == ".png"){      // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
                     return "style='background: url(./css/fond/$file);'"; // renvoie la $aleaImage fond d'écran
                 }
-                if(substr($file, -4) == ".jpg"){
+                if(substr($file, -4) == ".png"){
                     $i++;
                 }
             }
@@ -46,7 +46,7 @@ class class_affichage{
     // IN : $num_serie numéro d'une série TV
     // OUT : adresse relatif d'une image aléatoire de la série TV
     function alea_Image($num_serie){
-        return class_media_object::alea_image2($num_serie);
+        return class_media_object::alea_image($num_serie);
     }       
     
     // Affiche toutes les séries TV resultant d'une requete
@@ -82,15 +82,13 @@ class class_affichage{
             $media_object = new class_media_object($data);
             $media_object->media_object('MediaObjectDetail');
             echo "<div class='jumbotron SerieDetailContainer2'>" // conteneur des recommandations par rapport à la serie TV
-                ."<div class='SerieDetailNomPartie'>".$this->_str['serie_detail']['Recommandation']."</div>"
-                .'<div class="SerieContainerIner">';
+                ."<div class='SerieDetailNomPartie'>".$this->_str['serie_detail']['Recommandation']."</div>";
+            echo '</div>';
                     while($data = $req->fetch()){
                         $media_object = new class_media_object($data);
-                        $media_object->media_object("MediaObjectCaseP");
+                        $media_object->media_object("MediaObjectCaseG2");
                     }
                 echo '</div>';
-            echo "</div>";
-        echo '</div>';
     }
     
     // Affiche un carouselle à 3 items : recommandation / top like / top recommandation
@@ -98,7 +96,7 @@ class class_affichage{
     // IN : $item2 affichage de l'item top like
     // IN : $item3 affichage de l'item top recommandation
     public function carouselle($item1, $item2, $item3){ ?>
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="4000" style="height: 380px;">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="4000" style="height: 430px;">
             <div class="carousel-inner" role="listbox" style="width:72%; margin-left: auto; margin-right : auto;">
                 <?php if($item1 != false){ // affichage de l'item recommandation ?>
                     <div class="item active">
@@ -128,21 +126,21 @@ class class_affichage{
             </div> 
             <!-- Indicateurs -->
             <ol class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active" style="background-image: none; border: 2px rgb(227, 225, 219) solid;"></li>
               <?php if(($item1 && $item2) or ($item2 && $item3) or ($item1 && $item3)){ ?>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1" style="background-image: none; border: 2px rgb(227, 225, 219) solid;"></li>
               <?php }
               if($item1 && $item2 && $item3){ ?>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2" style="background-image: none; border: 2px rgb(227, 225, 219) solid;"></li>
               <?php } ?>
             </ol>
             <!-- Controls -->
-            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev" style="color : #57d1d1; width: 7% !important; padding-right: 15%;">
-              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev" style="background-image: none; width: 7% !important; padding-right: 15%;">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="color: rgb(227, 225, 219);"></span>
               <span class="sr-only">Previous</span>
             </a>
-            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next" style="color : #57d1d1; width: 7% !important; padding-left: 15%;">
-              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next" style="background-image: none; width: 7% !important; padding-left: 15%;">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="color: rgb(227, 225, 219);"></span>
               <span class="sr-only">Next</span>
             </a>
         </div>

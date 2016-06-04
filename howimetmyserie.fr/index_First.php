@@ -28,17 +28,11 @@ $str = lang::getlang(); ?>
                 exit;
             }
             require_once 'class_affichage.php';     // affichage global
-            require_once 'class_controleur.php';    // afficahge et gestion des controleurs
             $affichage = new class_affichage($db, $str);
-            // garde en mémoire pour la session actuel les préférences visuelles de l'utilisateur
-            if(!isset($_SESSION['SerieTV'])){
-                $_SESSION['SerieTV'] = new class_controleur($db->getUser(), $str);
-            }
         ?>
     </head>
     
-    <body style='background: url(css/4243604.png)'> 
-
+    <body class='interfaceUser'> 
         <div class="modal IndexFirst_Modal" id='myModal'>
             <div class="modal-header"></div>
             <form method='POST'>    

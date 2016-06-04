@@ -62,23 +62,23 @@ class class_controleur {
             
             // affichage des composants servant au tri des séries TV
             $this->_affichage->vue_tri2($_SESSION['SerieTV_like'],
-                    $_SESSION['SerieTV_order'],
-                    $_SESSION['SerieTV_recommandation'],
-                    $_SESSION['SerieTV_MediaObject']);
+                                        $_SESSION['SerieTV_order'],
+                                        $_SESSION['SerieTV_recommandation'],
+                                        $_SESSION['SerieTV_MediaObject']);
 
             // selection séries TV selon les choix de tri de l'utilisateur
-            $req= $this->_db->recommandation($this->getTxtLike(),
-                    $this->getTxtRecommandation(),
-                    $this->getTxtOrder(),
-                    $limit);
+            $req = $this->_db->recommandation($this->getTxtLike(),
+                                              $this->getTxtRecommandation(),
+                                              $this->getTxtOrder(),
+                                              $limit);
 
             // calcul nombre de séries TV selon les choix de tri hors recherche de l'utilisateur
-            $dataNb =  $this->_db->serie_count($this->getTxtLike(),
-                    $this->getTxtRecommandation());
+            $dataNb = $this->_db->serie_count($this->getTxtLike(),
+                                              $this->getTxtRecommandation());
 
             // affichage des séries TV
             $this->_affichage->affichage_serie($req, $dataNb, $_SESSION['SerieTV_MediaObject'], true);
-        }else{
+        } else {
             $this->_affichage->affichage_titrePartie("<span class='NomPartie2'>".$str['recommandation']['input_search_no_recommandation']."</span>");
             // selection du top 20 séries TV si aucune recommandation n'est possible (aucun goût exprimé par l'utilisateur)
             $req=$this->_db->serie_top_coeur(20);
@@ -86,6 +86,23 @@ class class_controleur {
             $this->_affichage->affichage_serie($req, null, 'MediaObjectCaseG', null);
         }
     }     
+    
+    public function questionnaire(){
+        if(isset($_POST['valider'])){
+            $this->_db->questionnaire($_POST['question1'],
+                                $_POST['question2'],
+                                $_POST['question3'],
+                                $_POST['question4'],
+                                $_POST['question5'],
+                                $_POST['question6'],
+                                $_POST['question7'],
+                                $_POST['commentaire']);
+        }
+        if($this->_db->questionnaire_exist() == 1){
+            header("Location:index.php");
+            exit;
+        }
+    }
     
     // Gestion des évenements quand un utilisateur change d'état une série TV
     public function like_recommandation(){

@@ -163,10 +163,10 @@ class class_admin_controleur {
         $carac = array('.' ,'!', '?' ,'-->' ,',' ,'<i>' ,'</i>' ,':' ,'"','|' ,'\'' ,'"' ,'-' ,';' ,'_' ,'&' ,'>' ,'<', '$', '\\', '/', '$', '€', '£', '+', '=', '[', ']', '*', '(', ')', '{', '}', 1,2,3,4,5,6,7,8,9,0);
         $chaine = str_replace ($carac, ' ', $chaine);
         $chaine = str_replace ('œ', 'oe', $chaine);
-        $chaine=nl2br($chaine, true);
+        $chaine = nl2br($chaine, true);
         $chaine = str_replace ('<br />', ' ', $chaine);
         $chaine = preg_replace('/\s{2,}/', ' ', $chaine);
-        $chaine=trim($chaine);
+        $chaine = trim($chaine);
         return $chaine;
     }
 }

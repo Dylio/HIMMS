@@ -1,3 +1,0 @@
-AuthName "Page d'administration protégé"
-AuthType Basic
-Require valid-user

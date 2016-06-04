@@ -12,17 +12,21 @@ body{
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
 }
+
+.interfaceUser{
+    background-image: linear-gradient(black, rgb(55, 11, 0), rgb(136, 43, 35), rgb(136, 43, 35),rgb(136, 43, 35),rgb(136, 43, 35), rgb(55, 21, 0), black);
+}
 html {
     height: 100%
 }
 .NomPartie{
     text-align: center;
-    font-size : 55px !important;
+    font-size : 65px !important;
     color: #3B88C9 !important;
     padding: 0px !important;
     margin: 0px !important;
     line-height: 1.4;
-    font-weight: 400 !important;
+    font-weight: 600 !important;
 }
 .MCRecherche{
     text-align: center;
@@ -73,7 +77,8 @@ html {
     width:92% !important
 }
 .IndexFirst_img{
-   float:left; margin-left:30px;
+   float:left; 
+   margin-left:30px;
 }
 .IndexFirst_Footer{
    height: 10%!important;
@@ -95,26 +100,31 @@ html {
 /* INDEX */
 .NomSite{
     text-align: center;
-    font-size : 60px;
+    font-size : 70px;
     color: #3B88C9 !important;
     margin-top: 75px;
-    margin-bottom: 45px;
+    margin-bottom: 30px;
+    font-weight: 700 !important;
 }
 .IndexSlogan{
     width: 45%;
     text-align: center;
-    font-size: 25px;
+    font-size: 30px;
     color: #3B88C9 !important;
+    font-weight: 500 !important;
 }
 .IndexCarou{
-    font-size : 27px !important;
+    font-size : 32px !important;
     text-align : center;
     color : #3B88C9 !important;
-    background-color: rgba(220, 220, 220, 0.70);
+    background-color: rgba(227, 225, 219, 0.9);
+    border: 2px black solid;
+    border-radius: 20px;
     padding: 5px;
     width : 100%;
     margin-left: auto;
     margin-right: auto;
+    font-weight: 500 !important;
 }
 
 
@@ -168,10 +178,13 @@ html {
     margin-left: auto;
     margin-right: auto;
     width: 30%;
+    background-color: rgba(247, 247, 247, 0);
 }
 .SearchInput{
     height: 40px !important;
     margin: 20px 0px !important;
+    background-color: rgba(227, 225, 219, 0.9);
+    border: 1px black solid;
 }
 .formSearch{
     text-align:center;
@@ -230,14 +243,16 @@ html {
 .SerieCaseGContainerSerie{
    height:300px;
    width: 450px;
-   background-color: rgba(255,255,255,0.65);
+   background-color: rgba(227, 225, 219, 0.9);
+   border: 3px black solid;
    margin:10px;
    padding:5px;
 }
 .SerieCaseG2ContainerSerie{
    height:255px;
    width:245px;
-   background-color: rgba(255,255,255,0.65);
+   background-color: rgba(227, 225, 219, 0.9);
+   border: 3px black solid;
    padding:5px;
    margin: 15px;
 }
@@ -297,7 +312,8 @@ html {
     width: 90%;
 }
 .SerieCasePContainerSerie{
-    background-color: rgba(220, 220, 220, 0.65);
+    background-color: rgba(227, 225, 219, 0.9);
+    border: 2px black solid;
     width: auto;
     height: auto;
     padding: 3px;
@@ -363,7 +379,8 @@ html {
     text-decoration:none !important;
 }
 .SerieListContainerSerie{
-    background-color: rgba(220, 220, 220, 0.65);
+    background-color: rgba(227, 225, 219, 0.9);
+    border: 3px black solid;
     width: 85%;
     height: auto;
     padding: 5px;
@@ -375,7 +392,8 @@ html {
     color : black;
 }
 .SerieListContainer{
-    background-color: rgba(220, 220, 220, 0.65);
+    background-color: rgba(227, 225, 219, 0.9);
+    border: 3px black solid;
     padding: 10px;
     width : 90%;
     margin-left: auto;
@@ -413,7 +431,7 @@ html {
 
 /* DETAIL */
 .TitreSerie{
-    font-size : 45px !important;
+    font-size : 55px !important;
     margin-bottom : 5px !important;
     padding-top : 11px !important;
     padding-bottom : 5px !important;
@@ -422,12 +440,14 @@ html {
     vertical-align:middle;
     float:left;
     color : #1C4E6D;
+    font-weight: 700 !important;
 }
 .Serie_Detail_txt{
+    font-weight: 600 !important;
     color : #1C4E6D;
 }
 .SerieDetailContainer{
-    background-color: rgba(200, 200, 200, 0.90) !important;
+    background-color: rgba(227, 225, 219, 0.9);
     width : 100%;
     margin-left: auto;
     margin-right: auto;
@@ -436,7 +456,7 @@ html {
     border: solid 3px black;
 }
 .SerieDetailContainer2{
-    background-color: rgba(220, 220, 220, 0.70);
+    background-color: rgba(227, 225, 219, 0.9);
     padding: 10px;
     width : 90%;
     margin-left: auto;
@@ -447,35 +467,40 @@ html {
     font-size: 45px; 
     margin-left:15px;
     color: red;
-    float : left;
     margin-top: 8px;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 .SerieDetailButtonB {
     font-size: 50px; 
     margin-left:15px;
     color: blue;
-    float : left;
     margin-top: 8px;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 .SerieDetailButtonN {
     font-size: 50px; 
     margin-left:15px;
     color: black;
-    float : left;
     margin-top: 8px;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 .SerieDetailButtonClassification {
     width: 50px;
     height: 45px;
-    float : left;
     margin-left:15px;
     margin-top: 20px;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 .SerieDetailNomPartie{
     font-size : 28px !important;
     color: black !important;
     font-weight: 300 !important;
     text-align: center !important;
+    font-weight: 600 !important;
 }
 
 /* BOUTTONS */

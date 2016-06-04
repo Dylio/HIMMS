@@ -236,7 +236,7 @@ class class_db {
                     . "and s.num_serie = a.num_serie "
                     . "group by s.num_serie "
                     . "ORDER BY count(*) DESC "
-                    . "limit 5;");
+                    . "limit 4;");
     }
     
     // requete : vérification si l'utilisateur a entré ses goûts (like ou recherche)
@@ -246,12 +246,12 @@ class class_db {
         $reqRec = $this->_db->query("Select count(*) "
                                 . "from interesser "
                                 . "where num_user = '$this->_user';");
-            $dataRec = $reqRec->fetch();
+        $dataRec = $reqRec->fetch();
         // Nombre de série TV like par l'utilisateur
         $reqRec2 = $this->_db->query("Select count(*) "
                                     . "from voir "
                                     . "where num_user = '$this->_user';");
-            $dataRec2 = $reqRec2->fetch();
+        $dataRec2 = $reqRec2->fetch();
         if($dataRec['0'] > 0 or $dataRec2['0'] > 0){
             return 1;
         } else{

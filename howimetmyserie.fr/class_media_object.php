@@ -229,34 +229,6 @@ class class_media_object {
     // Renvoie l'adresse relatif d'une image aléatoire de la série TV
     // OUT : adresse relatif d'une image aléatoire de la série TV
     public static function alea_image($num_Serie){
-        $dirname = "./affiche_1/$num_Serie";       // adresse relatif de la série TV
-        if(file_exists($dirname) ){                 // vérification que le dossier existe
-            $j = 0;                        // $j nombre d'affiche de la série TV
-            $dir = opendir($dirname);       
-            while($file = readdir($dir)) {          // compte le nombre d'affiche de la série TV
-                if(substr($file, -4) == ".png"){    // les affiches doivent être tous sous format .png
-                    $j++;
-                }
-            }
-            closedir($dir);
-            $aleaImage = rand(1, $j);                 // $aleaImage un nombre aléatoire entre 1 et $j
-            $i = 1;                                   // $i numéro actuel de l'affiche de la série TV
-            $dir = opendir($dirname);
-            while($file = readdir($dir)) {
-                if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "affiche_1/$num_Serie/".$file;              // renvoie la $aleaImage affiche de série TV
-                }
-                if(substr($file, -4) == ".png"){
-                    $i++;
-                }
-            }
-            closedir($dir);
-        }
-    }
-    
-    // Renvoie l'adresse relatif d'une image aléatoire de la série TV
-    // OUT : adresse relatif d'une image aléatoire de la série TV
-    public static function alea_image2($num_Serie){
         $dirname = "./affiche/$num_Serie";       // adresse relatif de la série TV
         if(file_exists($dirname) ){                 // vérification que le dossier existe
             $j = 0;                        // $j nombre d'affiche de la série TV
@@ -272,7 +244,7 @@ class class_media_object {
             $dir = opendir($dirname);
             while($file = readdir($dir)) {
                 if($i === $aleaImage and substr($file, -4) == ".png"){  // tant que $i et $aleaImage ne sont pas égal, incrémenter $i
-                    return "./affiche/$num_Serie/".$file;              // renvoie la $aleaImage affiche de série TV
+                    return "affiche/$num_Serie/".$file;              // renvoie la $aleaImage affiche de série TV
                 }
                 if(substr($file, -4) == ".png"){
                     $i++;
